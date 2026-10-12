@@ -1,0 +1,555 @@
+/* ================================
+   CONFIGURACIÓN GENERAL
+================================ */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #eef2f6;
+    color: #172033;
+    min-height: 100vh;
+}
+
+
+/* ================================
+   CONTENEDOR PRINCIPAL
+================================ */
+
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+}
+
+
+/* ================================
+   LADO IZQUIERDO
+================================ */
+
+.welcome-section {
+    width: 42%;
+
+    background-color: #102a43;
+    color: white;
+
+    padding: 55px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* ================================
+   LOGO
+================================ */
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+
+    border-radius: 14px;
+
+    overflow: hidden;
+
+    background-color: #5bc0be;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+.logo h1 {
+    font-size: 19px;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    display: block;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+
+    color: #9edbd9;
+
+    margin-top: 3px;
+}
+
+
+/* ================================
+   TEXTO DE BIENVENIDA
+================================ */
+
+.welcome-content {
+    max-width: 480px;
+}
+
+.small-title {
+    color: #5bc0be;
+
+    font-size: 13px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 18px;
+}
+
+.welcome-content h2 {
+    font-size: 42px;
+
+    line-height: 1.15;
+
+    font-weight: 700;
+
+    margin-bottom: 22px;
+}
+
+.welcome-content h2 span {
+    color: #5bc0be;
+}
+
+.welcome-content > p:last-child {
+    color: #c5d1dc;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    max-width: 430px;
+}
+
+
+/* ================================
+   PIE DEL LADO IZQUIERDO
+================================ */
+
+.welcome-footer {
+    display: flex;
+
+    gap: 10px;
+
+    color: #9eafbf;
+
+    font-size: 13px;
+}
+
+
+/* ================================
+   LADO DERECHO
+================================ */
+
+.login-section {
+    width: 58%;
+
+    background-color: #f7f9fb;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 40px;
+}
+
+
+/* ================================
+   CAJA DEL LOGIN
+================================ */
+
+.login-box {
+    width: 100%;
+
+    max-width: 600px;
+}
+
+
+/* ================================
+   ENCABEZADO
+================================ */
+
+.login-header {
+    margin-bottom: 28px;
+}
+
+.login-subtitle {
+    color: #318c8a;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 8px;
+}
+
+.login-header h2 {
+    font-size: 32px;
+
+    color: #172033;
+
+    margin-bottom: 8px;
+}
+
+.login-header > p:last-child {
+    color: #718096;
+
+    font-size: 14px;
+}
+
+
+/* ================================
+   INPUTS
+================================ */
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344054;
+
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+
+    height: 48px;
+
+    border: 1px solid #d6dde5;
+
+    border-radius: 9px;
+
+    background-color: white;
+
+    padding: 0 15px;
+
+    font-size: 14px;
+
+    color: #172033;
+
+    outline: none;
+
+    transition: 0.2s;
+}
+
+.input-group input::placeholder {
+    color: #a0a9b5;
+}
+
+.input-group input:focus {
+    border-color: #5bc0be;
+
+    box-shadow: 0 0 0 3px rgba(91, 192, 190, 0.12);
+}
+
+
+/* ================================
+   SECCIÓN DE ROLES
+================================ */
+
+.role-section {
+    margin-top: 25px;
+
+    margin-bottom: 22px;
+}
+
+.role-title {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+}
+
+.role-title label {
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #344054;
+}
+
+.role-title span {
+    font-size: 11px;
+
+    color: #8a95a3;
+}
+
+
+/* ================================
+   CONTENEDOR DE ROLES
+================================ */
+
+.roles-container {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+}
+
+
+/* ================================
+   TARJETA DE ROL
+================================ */
+
+.role-card {
+    position: relative;
+
+    cursor: pointer;
+}
+
+
+/* Ocultar radio original */
+
+.role-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+/* Contenido de la tarjeta */
+
+.role-content {
+    min-height: 70px;
+
+    border: 1px solid #d9e0e7;
+
+    border-radius: 10px;
+
+    background-color: white;
+
+    padding: 11px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    transition: all 0.2s ease;
+}
+
+
+/* Icono */
+
+.role-icon {
+    width: 40px;
+
+    height: 40px;
+
+    flex-shrink: 0;
+
+    border-radius: 9px;
+
+    background-color: #edf6f6;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 19px;
+}
+
+
+/* Texto */
+
+.role-content strong {
+    display: block;
+
+    color: #253247;
+
+    font-size: 13px;
+
+    margin-bottom: 4px;
+}
+
+.role-content small {
+    display: block;
+
+    color: #8994a3;
+
+    font-size: 10px;
+
+    line-height: 1.3;
+}
+
+
+/* Hover */
+
+.role-card:hover .role-content {
+    border-color: #7acdcc;
+
+    transform: translateY(-1px);
+}
+
+
+/* Rol seleccionado */
+
+.role-card input:checked + .role-content {
+    border-color: #318c8a;
+
+    background-color: #f0f9f8;
+
+    box-shadow: 0 0 0 2px rgba(49, 140, 138, 0.12);
+}
+
+.role-card input:checked + .role-content .role-icon {
+    background-color: #5bc0be;
+}
+
+
+/* ================================
+   BOTÓN DE LOGIN
+================================ */
+
+.login-button {
+    width: 100%;
+
+    height: 50px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background-color: #102a43;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    transition: 0.2s;
+}
+
+.login-button:hover {
+    background-color: #173d5d;
+
+    transform: translateY(-1px);
+}
+
+.login-button span {
+    font-size: 18px;
+}
+
+
+/* ================================
+   PIE DEL LOGIN
+================================ */
+
+.login-footer {
+    text-align: center;
+
+    margin-top: 22px;
+}
+
+.login-footer p {
+    color: #9aa4b2;
+
+    font-size: 10px;
+}
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 900px) {
+
+    .login-container {
+        flex-direction: column;
+    }
+
+    .welcome-section {
+        width: 100%;
+
+        min-height: 330px;
+
+        padding: 35px;
+    }
+
+    .welcome-content {
+        margin-top: 45px;
+    }
+
+    .welcome-content h2 {
+        font-size: 32px;
+    }
+
+    .welcome-footer {
+        margin-top: 35px;
+    }
+
+    .login-section {
+        width: 100%;
+
+        padding: 35px 25px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .welcome-section {
+        padding: 25px;
+    }
+
+    .welcome-content h2 {
+        font-size: 27px;
+    }
+
+    .roles-container {
+        grid-template-columns: 1fr;
+    }
+
+    .login-section {
+        padding: 30px 18px;
+    }
+}
