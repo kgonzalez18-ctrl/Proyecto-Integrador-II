@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rúbricas | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item active">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        EVALUACIÓN
+                    </p>
+                    <h2>
+                        Rúbricas
+                    </h2>
+                    <p>
+                        Configura rúbricas con criterios, niveles de desempeño
+                        y ponderaciones para calcular la nota final.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">
+                        + Nueva rúbrica
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Rúbricas</span>
+                    <strong id="c-rubricas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Criterios en total</span>
+                    <strong id="c-criterios">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>En uso en cuestionarios</span>
+                    <strong id="c-uso">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Escala de calificación</span>
+                    <strong>0.0 – 5.0</strong>
+                </div>
+            </div>
+
+            <div class="callout">
+                La nota de una rúbrica se calcula automáticamente: cada criterio aporta
+                <b>(peso ÷ 100) × puntaje del nivel elegido</b>. La suma de los pesos
+                debe ser 100 %. Las evaluaciones ya calificadas conservan la versión
+                de la rúbrica con la que se calificaron.
+            </div>
+
+            <!-- LISTADO -->
+            <div id="lista-rubricas"></div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        const copia = o => JSON.parse(JSON.stringify(o));
+
+        function cuestionariosQueUsan(id) {
+            return D.cuestionarios.filter(q => q.rubricaId === id);
+        }
+
+
+        /* =========================================
+           LISTADO
+        ========================================= */
+
+        function resumen() {
+            $("#c-rubricas").textContent = D.rubricas.length;
+            $("#c-criterios").textContent = D.rubricas.reduce((s, r) => s + r.criterios.length, 0);
+            $("#c-uso").textContent = D.rubricas.filter(r => cuestionariosQueUsan(r.id).length).length;
+        }
+
+        function listado() {
+            if (!D.rubricas.length) {
+                $("#lista-rubricas").innerHTML = `
+                <div class="empty-card">
+                    <div class="empty-icon">▤</div>
+                    <h3>No hay rúbricas configuradas</h3>
+                    <p>Crea una rúbrica para evaluar a tus estudiantes por criterios y niveles de desempeño.</p>
+                </div>`;
+                return;
+            }
+
+            $("#lista-rubricas").innerHTML = D.rubricas.map(r => {
+                const usos = cuestionariosQueUsan(r.id);
+                return `
+                <div class="info-card" style="margin-bottom:16px">
+                    <div class="info-card-head">
+                        <div>
+                            <p class="section-tag">${r.criterios.length} CRITERIOS · ${r.niveles.length} NIVELES</p>
+                            <h3>${esc(r.nombre)}</h3>
+                        </div>
+                        <span class="badge ${usos.length ? "badge-teal" : ""}">${usos.length
+                            ? "En uso en " + usos.length + (usos.length === 1 ? " cuestionario" : " cuestionarios")
+                            : "Sin uso"}</span>
+                    </div>
+                    <p style="color:var(--text-light);font-size:11px;line-height:1.6;margin-bottom:14px">${esc(r.descripcion)}</p>
+                    <div class="levels-row" style="margin-bottom:16px">
+                        ${r.niveles.map(n => `<span class="level-chip">${esc(n.nombre)} · <b>${Number(n.puntaje).toFixed(1)}</b></span>`).join("")}
+                    </div>
+                    <details style="margin-bottom:16px">
+                        <summary style="cursor:pointer;color:var(--teal-dark);font-size:11px;font-weight:600">Ver matriz de criterios</summary>
+                        <div style="margin-top:12px">${DEM.htmlMatriz(r, {}, false)}</div>
+                    </details>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid #edf0f3">
+                        <button type="button" class="secondary-button small-button" data-probar="${r.id}">Probar cálculo</button>
+                        <button type="button" class="secondary-button small-button" data-editar="${r.id}">Editar</button>
+                        <button type="button" class="secondary-button small-button" data-duplicar="${r.id}">Duplicar</button>
+                        <button type="button" class="danger-button small-button" data-eliminar="${r.id}">Eliminar</button>
+                    </div>
+                </div>`;
+            }).join("");
+
+            $$("[data-probar]").forEach(b => { b.onclick = () => probar(b.dataset.probar); });
+            $$("[data-editar]").forEach(b => { b.onclick = () => editor(b.dataset.editar); });
+            $$("[data-duplicar]").forEach(b => { b.onclick = () => duplicar(b.dataset.duplicar); });
+            $$("[data-eliminar]").forEach(b => { b.onclick = () => eliminar(b.dataset.eliminar); });
+        }
+
+        function refrescar() { resumen(); listado(); }
+
+
+        /* =========================================
+           PROBAR EL CÁLCULO (SIMULADOR)
+        ========================================= */
+
+        function probar(id) {
+            const r = DEM.rubrica(id);
+            const sel = {};
+
+            DEM.abrirModal({
+                tam: "xl",
+                tag: "SIMULADOR",
+                titulo: r.nombre,
+                sub: "Elige un nivel por criterio para ver cómo se calcula la nota. Esta prueba no se guarda.",
+                cuerpo: `<div id="sim-matriz"></div>
+                         <div class="rubric-result"><span id="sim-detalle">Selecciona un nivel en cada criterio.</span>
+                         <span>Nota de la rúbrica: <strong id="sim-nota">—</strong></span></div>`,
+                pie: '<button type="button" class="secondary-button" id="sim-cerrar">Cerrar</button>'
+            });
+            $("#sim-cerrar").onclick = DEM.cerrarModal;
+
+            function calcular() {
+                const nota = DEM.notaRubrica(r, sel);
+                $("#sim-nota").textContent = DEM.fmtNota(nota);
+                const partes = r.criterios.filter(c => sel[c.id]).map(c => {
+                    const n = r.niveles.find(x => x.id === sel[c.id]);
+                    return c.peso + "% × " + Number(n.puntaje).toFixed(1);
+                });
+                $("#sim-detalle").textContent = partes.length ? partes.join("  +  ") : "Selecciona un nivel en cada criterio.";
+            }
+            DEM.montarMatriz($("#sim-matriz"), r, sel, calcular);
+        }
+
+
+        /* =========================================
+           DUPLICAR / ELIMINAR
+        ========================================= */
+
+        function duplicar(id) {
+            const original = DEM.rubrica(id);
+            const nueva = copia(original);
+            nueva.id = DEM.uid("r");
+            nueva.nombre = original.nombre + " (copia)";
+            DEM.agregar("rubricas", nueva);
+            DEM.guardar();
+            refrescar();
+            DEM.aviso("Rúbrica duplicada. Ya puedes editarla.");
+        }
+
+        function eliminar(id) {
+            const usos = cuestionariosQueUsan(id);
+            if (usos.length) {
+                DEM.aviso("No se puede eliminar: la usan " + usos.length + " cuestionario(s).", "error");
+                return;
+            }
+            if (!confirm("¿Eliminar esta rúbrica?")) return;
+            D.rubricas = D.rubricas.filter(r => r.id !== id);
+            DEM.guardar();
+            refrescar();
+            DEM.aviso("Rúbrica eliminada.");
+        }
+
+
+        /* =========================================
+           EDITOR DE RÚBRICA (CREAR / EDITAR)
+        ========================================= */
+
+        function nuevoId(p) { return p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+
+        function editor(id) {
+            const original = id ? DEM.rubrica(id) : null;
+            const w = original ? copia(original) : {
+                nombre: "", descripcion: "",
+                niveles: [
+                    { id: nuevoId("n"), nombre: "Superior", puntaje: 5 },
+                    { id: nuevoId("n"), nombre: "Alto", puntaje: 4 },
+                    { id: nuevoId("n"), nombre: "Básico", puntaje: 3 },
+                    { id: nuevoId("n"), nombre: "Bajo", puntaje: 1 }
+                ],
+                criterios: [{ id: nuevoId("c"), nombre: "", peso: 100, descriptores: {} }]
+            };
+            const usos = original ? cuestionariosQueUsan(original.id) : [];
+
+            DEM.abrirModal({
+                tam: "xl",
+                tag: "RÚBRICAS",
+                titulo: original ? "Editar rúbrica" : "Nueva rúbrica",
+                sub: "Define los niveles de desempeño, los criterios, su ponderación y el descriptor de cada nivel.",
+                cuerpo: `
+                    ${usos.length ? '<div class="callout warn">Esta rúbrica está en uso. Los cambios se aplicarán a las evaluaciones pendientes; las ya calificadas conservan su versión.</div>' : ""}
+                    <div class="form-grid" style="margin-bottom:22px">
+                        <div class="form-field"><label for="r-nombre">Nombre de la rúbrica <span class="req">*</span></label>
+                            <input type="text" class="text-input" id="r-nombre" value="${esc(w.nombre)}" placeholder="Ej: Desempeño en la práctica pedagógica"></div>
+                        <div class="form-field"><label for="r-desc">Descripción</label>
+                            <input type="text" class="text-input" id="r-desc" value="${esc(w.descripcion)}" placeholder="¿Qué evalúa esta rúbrica?"></div>
+                    </div>
+                    <div id="editor-estructura"></div>
+                    <div class="form-error" id="r-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="r-cancelar">Cancelar</button>
+                      <button type="button" class="primary-button" id="r-guardar">Guardar rúbrica</button>`
+            });
+
+            $("#r-nombre").oninput = e => { w.nombre = e.target.value; };
+            $("#r-desc").oninput = e => { w.descripcion = e.target.value; };
+            $("#r-cancelar").onclick = DEM.cerrarModal;
+
+            // Dibuja niveles y criterios (se vuelve a dibujar al agregar o quitar filas)
+            function dibujar() {
+                const total = DEM.pesoTotalRubrica(w);
+                const ok = Math.abs(total - 100) < 0.001;
+
+                $("#editor-estructura").innerHTML = `
+                <div class="modal-block">
+                    <h4>NIVELES DE DESEMPEÑO</h4>
+                    <table class="editor-table" style="max-width:520px">
+                        <thead><tr><th>NOMBRE</th><th>PUNTAJE (0 – 5)</th><th></th></tr></thead>
+                        <tbody>
+                        ${w.niveles.map((n, i) => `
+                            <tr>
+                                <td><input type="text" class="text-input" data-path="niveles.${i}.nombre" value="${esc(n.nombre)}"></td>
+                                <td><input type="number" class="text-input num-input" min="0" max="5" step="0.1" data-path="niveles.${i}.puntaje" data-num="1" value="${n.puntaje}"></td>
+                                <td><button type="button" class="remove-row" data-quitar-nivel="${i}" title="Quitar nivel">×</button></td>
+                            </tr>`).join("")}
+                        </tbody>
+                    </table>
+                    <button type="button" class="secondary-button small-button" id="add-nivel" ${w.niveles.length >= 6 ? "disabled" : ""}>+ Agregar nivel</button>
+                </div>
+
+                <div class="modal-block">
+                    <div class="card-header-row" style="margin-bottom:10px">
+                        <h4 style="margin:0">CRITERIOS, PONDERACIÓN Y DESCRIPTORES</h4>
+                        <span class="weight-meter ${ok ? "" : "bad"}" id="medidor">Peso total: <span id="peso-total">${total}</span>% ${ok ? "✓" : "(debe ser 100%)"}</span>
+                    </div>
+                    <div style="overflow-x:auto">
+                    <table class="editor-table" style="min-width:${360 + w.niveles.length * 190}px">
+                        <thead><tr><th style="width:190px">CRITERIO</th><th style="width:78px">PESO (%)</th>
+                            ${w.niveles.map(n => "<th>" + esc(n.nombre || "Nivel") + "</th>").join("")}<th></th></tr></thead>
+                        <tbody>
+                        ${w.criterios.map((c, i) => `
+                            <tr>
+                                <td><textarea class="text-area" style="min-height:62px" data-path="criterios.${i}.nombre" placeholder="Nombre del criterio">${esc(c.nombre)}</textarea></td>
+                                <td><input type="number" class="text-input num-input" min="1" max="100" step="1" data-path="criterios.${i}.peso" data-num="1" data-peso="1" value="${c.peso}"></td>
+                                ${w.niveles.map(n => `<td><textarea class="text-area" data-path="criterios.${i}.descriptores.${n.id}" placeholder="Descriptor del nivel">${esc(c.descriptores[n.id] || "")}</textarea></td>`).join("")}
+                                <td><button type="button" class="remove-row" data-quitar-criterio="${i}" title="Quitar criterio">×</button></td>
+                            </tr>`).join("")}
+                        </tbody>
+                    </table>
+                    </div>
+                    <button type="button" class="secondary-button small-button" id="add-criterio" ${w.criterios.length >= 10 ? "disabled" : ""}>+ Agregar criterio</button>
+                </div>`;
+
+                // Escritura de los valores en el objeto de trabajo
+                $$("#editor-estructura [data-path]").forEach(campo => {
+                    campo.oninput = () => {
+                        const ruta = campo.dataset.path.split(".");
+                        let o = w;
+                        for (let k = 0; k < ruta.length - 1; k++) o = o[ruta[k]];
+                        const valor = campo.dataset.num ? parseFloat(campo.value) : campo.value;
+                        o[ruta[ruta.length - 1]] = (campo.dataset.num && isNaN(valor)) ? 0 : valor;
+                        if (campo.dataset.peso) actualizarMedidor();
+                    };
+                });
+
+                $$("[data-quitar-nivel]").forEach(b => {
+                    b.onclick = () => {
+                        if (w.niveles.length <= 2) { DEM.aviso("La rúbrica necesita al menos 2 niveles.", "error"); return; }
+                        const n = w.niveles.splice(parseInt(b.dataset.quitarNivel, 10), 1)[0];
+                        w.criterios.forEach(c => delete c.descriptores[n.id]);
+                        dibujar();
+                    };
+                });
+                $$("[data-quitar-criterio]").forEach(b => {
+                    b.onclick = () => {
+                        if (w.criterios.length <= 1) { DEM.aviso("La rúbrica necesita al menos 1 criterio.", "error"); return; }
+                        w.criterios.splice(parseInt(b.dataset.quitarCriterio, 10), 1);
+                        dibujar();
+                    };
+                });
+                $("#add-nivel").onclick = () => { w.niveles.push({ id: nuevoId("n"), nombre: "", puntaje: 0 }); dibujar(); };
+                $("#add-criterio").onclick = () => { w.criterios.push({ id: nuevoId("c"), nombre: "", peso: 0, descriptores: {} }); dibujar(); };
+            }
+
+            function actualizarMedidor() {
+                const total = DEM.pesoTotalRubrica(w);
+                const ok = Math.abs(total - 100) < 0.001;
+                $("#medidor").className = "weight-meter" + (ok ? "" : " bad");
+                $("#medidor").innerHTML = 'Peso total: <span id="peso-total">' + total + "</span>% " + (ok ? "✓" : "(debe ser 100%)");
+            }
+
+            dibujar();
+
+            $("#r-guardar").onclick = function () {
+                const fallo = msg => DEM.mostrarError($(".modal"), msg);
+
+                if (!w.nombre.trim()) return fallo("Escribe el nombre de la rúbrica.");
+                for (const n of w.niveles) {
+                    if (!String(n.nombre).trim()) return fallo("Todos los niveles necesitan un nombre.");
+                    if (!(n.puntaje >= 0 && n.puntaje <= 5)) return fallo("El puntaje de cada nivel debe estar entre 0 y 5.");
+                }
+                const nombres = w.niveles.map(n => n.nombre.trim().toLowerCase());
+                if (new Set(nombres).size !== nombres.length) return fallo("Los niveles no pueden tener nombres repetidos.");
+                for (const c of w.criterios) {
+                    if (!String(c.nombre).trim()) return fallo("Todos los criterios necesitan un nombre.");
+                    if (!(c.peso > 0)) return fallo("El peso de cada criterio debe ser mayor que 0.");
+                }
+                if (Math.abs(DEM.pesoTotalRubrica(w) - 100) > 0.001) {
+                    return fallo("Los pesos de los criterios deben sumar exactamente 100% (ahora suman " + DEM.pesoTotalRubrica(w) + "%).");
+                }
+
+                // Orden de mayor a menor desempeño
+                w.niveles.sort((a, b) => b.puntaje - a.puntaje);
+                w.nombre = w.nombre.trim();
+                w.descripcion = (w.descripcion || "").trim();
+                w.criterios.forEach(c => { c.nombre = c.nombre.trim(); });
+
+                if (original) {
+                    Object.assign(original, w);
+                } else {
+                    w.id = DEM.uid("r");
+                    DEM.agregar("rubricas", w);
+                }
+                DEM.guardar();
+                DEM.cerrarModal();
+                refrescar();
+                DEM.aviso(original ? "Rúbrica actualizada." : "Rúbrica creada correctamente.");
+            };
+        }
+
+        $("#btn-nueva").onclick = () => editor();
+
+
+        /* =========================================
+           INICIO DE LA PANTALLA
+        ========================================= */
+
+        refrescar();
+    </script>
+
+</body>
+</html>

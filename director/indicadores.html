@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicadores | Docente en Marcha</title>
+    <link rel="stylesheet" href="director.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                DI
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Director</strong>
+                <span>Director de programa</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="director.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <p class="menu-title second-title">
+                GESTIÓN
+            </p>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                ANÁLISIS
+            </p>
+            <a href="reportes.html" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+            <a href="indicadores.html" class="menu-item active">
+                <span class="menu-icon">◐</span>
+                <span>Indicadores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    DI
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Director
+                    </strong>
+                    <span>
+                        Director de programa
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        ANÁLISIS
+                    </p>
+                    <h2>
+                        Indicadores
+                    </h2>
+                    <p>
+                        Consulta los indicadores clave, analiza el cumplimiento de horas y los resultados, y compara las prácticas.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="secondary-button" id="btn-metas">Configurar metas</button><button type="button" class="primary-button" id="btn-exportar">Exportar indicadores (CSV)</button>
+                </div>
+            </div>
+
+            <div class="kpi-grid" id="kpis"></div>
+
+            <div class="two-columns" style="margin-top:0">
+                <div class="content-card"><div class="card-title"><p>HORAS</p><h3>Cumplimiento por práctica</h3></div><div id="g-horas"></div></div>
+                <div class="content-card"><div class="card-title"><p>EVALUACIONES</p><h3>Promedio por práctica</h3></div><div id="g-notas"></div></div>
+            </div>
+            <div class="two-columns">
+                <div class="content-card"><div class="card-title"><p>RESULTADOS</p><h3>Distribución de calificaciones</h3></div><div id="g-dist"></div></div>
+                <div class="content-card"><div class="card-title"><p>DOCENTES</p><h3>Visitas realizadas por docente</h3></div><div id="g-docentes"></div></div>
+            </div>
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title"><p>COMPARATIVO</p><h3>Comparar prácticas</h3></div>
+                <div id="t-comparativo"></div>
+            </div>
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title"><p>AUTOEVALUACIÓN Y ACREDITACIÓN</p><h3>Insumos para los procesos institucionales</h3></div>
+                <p style="color:var(--text-light);font-size:11px;line-height:1.7;margin-bottom:14px;max-width:760px">
+                    Resumen automático de los indicadores del programa frente a las metas definidas, con su fuente de información.
+                    Puedes exportarlo para soportar los procesos de autoevaluación y acreditación.
+                </p>
+                <div id="t-acreditacion"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="director.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+
+        function pintar() {
+            const ind = calcularIndicadores(), asign = DEM.estudiantesAsignados();
+
+            // ---- tarjetas ----
+            $("#kpis").innerHTML = ind.map(i => `<div class="kpi-card"><span class="kpi-name">${esc(i.nombre)}</span><strong class="kpi-value">${i.texto}</strong>
+                <div class="kpi-foot"><span>Meta ${i.metaTxt}</span>${DEM.badge(i.estado.txt, i.estado.cls)}</div></div>`).join("");
+
+            // ---- gráficos por práctica ----
+            const est = D.practicas.map(p => ({ p, s: DEM.estadisticasPractica(p.id) }));
+            $("#g-horas").innerHTML = DEM.barrasHTML(est.map(x => ({ etq: x.p.nombre.split(" – ")[0] + " · " + x.p.programa, valor: x.s.cumplimiento, max: 100, texto: x.s.horasTot ? x.s.cumplimiento + "%" : "Sin datos",
+                clase: x.s.horasTot && x.s.cumplimiento < D.config.metaHoras * 0.8 ? "warn" : "" })), "Aún no hay prácticas configuradas.");
+            $("#g-notas").innerHTML = DEM.barrasHTML(est.map(x => ({ etq: x.p.nombre.split(" – ")[0] + " · " + x.p.programa, valor: x.s.promedio || 0, max: 5, texto: DEM.fmtNota(x.s.promedio),
+                clase: x.s.promedio !== null && x.s.promedio < D.config.metaNota ? "warn" : "dark" })), "Aún no hay prácticas configuradas.");
+            $("#g-dist").innerHTML = DEM.barrasHTML(distribucionNotas(asign));
+            const maxV = Math.max(1, ...D.docentes.map(d => DEM.estadisticasDocente(d.id).visitas));
+            $("#g-docentes").innerHTML = DEM.barrasHTML(D.docentes.map(d => { const v = DEM.estadisticasDocente(d.id).visitas; return { etq: d.nombre, valor: v, max: maxV, texto: v + " visitas", clase: "dark" }; }), "Aún no hay docentes registrados.");
+
+            // ---- comparativo ----
+            $("#t-comparativo").innerHTML = DEM.tablaHTML(["PRÁCTICA", "ESTADO", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN", "VISITAS / EST.", "REZAGADOS"],
+                est.map(x => [ "<strong style='color:var(--dark-blue)'>" + esc(x.p.nombre) + "</strong><small>" + esc(x.p.programa) + "</small>", DEM.badge(DEM.estadoPractica(x.p), DEM.CLASE_PRACTICA[DEM.estadoPractica(x.p)]),
+                    x.s.estudiantes, x.s.horasTot ? x.s.cumplimiento + "%" : "—", DEM.pillNota(x.s.promedio), x.s.aprobacion === null ? "—" : x.s.aprobacion + "%", x.s.visitasPorEstudiante, x.s.rezagados ]),
+                "Aún no hay prácticas para comparar.");
+
+            // ---- acreditación ----
+            $("#t-acreditacion").innerHTML = DEM.tablaHTML(["INDICADOR", "VALOR", "META", "ESTADO", "FUENTE DE INFORMACIÓN"],
+                ind.map(i => ["<strong style='color:var(--dark-blue)'>" + esc(i.nombre) + "</strong>", "<b>" + i.texto + "</b>", i.metaTxt, DEM.badge(i.estado.txt, i.estado.cls), esc(i.fuente)]));
+        }
+
+        $("#btn-metas").onclick = function () {
+            const C = D.config;
+            DEM.formModal({
+                tam: "", tag: "INDICADORES", titulo: "Configurar metas", sub: "Define las metas con las que se compara cada indicador.", valores: C,
+                campos: [
+                    { k: "metaHoras", label: "Cumplimiento de horas (%)", tipo: "number", req: true, min: 1, max: 100 },
+                    { k: "metaNota", label: "Promedio de evaluaciones (0 – 5)", tipo: "number", req: true, min: 1, max: 5, step: 0.1 },
+                    { k: "metaAprobacion", label: "Tasa de aprobación (%)", tipo: "number", req: true, min: 1, max: 100 },
+                    { k: "metaConvenios", label: "Convenios vigentes (%)", tipo: "number", req: true, min: 1, max: 100 },
+                    { k: "metaVisitas", label: "Visitas por estudiante", tipo: "number", req: true, min: 1, max: 20, step: 0.5 }
+                ],
+                validar: v => (v.metaHoras > 100 || v.metaAprobacion > 100 || v.metaConvenios > 100 || v.metaNota > 5) ? "Revisa los valores: los porcentajes no pueden superar 100 ni la nota 5." : null,
+                guardar: v => { Object.assign(D.config, v); DEM.guardar(); DEM.cerrarModal(); pintar(); DEM.aviso("Metas actualizadas."); }
+            });
+        };
+
+        $("#btn-exportar").onclick = function () {
+            const ind = calcularIndicadores();
+            DEM.descargarCSV("indicadores_programa", [["INDICADORES DEL PROGRAMA", "Periodo " + DEM.periodo(), DEM.hoy()], [], ["INDICADOR", "VALOR", "META", "ESTADO", "FUENTE"],
+                ...ind.map(i => [i.nombre, i.texto, i.metaTxt, i.estado.txt, i.fuente]), [], ["PRÁCTICA", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN"],
+                ...D.practicas.map(p => { const s = DEM.estadisticasPractica(p.id); return [p.nombre, s.estudiantes, s.cumplimiento + "%", DEM.fmtNota(s.promedio), s.aprobacion === null ? "" : s.aprobacion + "%"]; })]);
+        };
+
+        pintar();
+    </script>
+
+</body>
+</html>

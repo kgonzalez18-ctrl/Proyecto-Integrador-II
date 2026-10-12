@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudiantes | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item active">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        PERSONAS
+                    </p>
+                    <h2>
+                        Estudiantes
+                    </h2>
+                    <p>
+                        Registra a los estudiantes practicantes. Luego prepara su asignación a un grupo desde Asignaciones.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">+ Registrar estudiante</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Estudiantes registrados</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Con asignación aprobada</span>
+                    <strong id="c-asignados">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>En trámite</span>
+                    <strong id="c-tramite">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Sin asignación</span>
+                    <strong id="c-sin">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre, cédula o programa...">
+                <select class="select-input" id="f-programa"></select>
+                <select class="select-input" id="f-estado"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        // Estado de la asignación de un estudiante
+        function asig(e) {
+            const g = e.grupoId && DEM.grupo(e.grupoId);
+            const ult = D.asignaciones.filter(a => a.estudianteId === e.id && a.estado !== "Reemplazada")
+                .sort((a, b) => (b.fechaCreacion || "").localeCompare(a.fechaCreacion || ""))[0];
+            if (g) {
+                const cambio = ult && DEM.ESTADOS_ACTIVOS.includes(ult.estado) && ult.grupoId !== g.id;
+                return { txt: "Aprobada", cls: "badge-green", grupo: g, nota: cambio ? "Cambio de grupo en trámite" : "" };
+            }
+            if (!ult) return { txt: "Sin asignación", cls: "" };
+            const gg = DEM.grupo(ult.grupoId);
+            if (ult.estado === "Rechazada") return { txt: "Rechazada", cls: "badge-red", grupo: gg, nota: ult.motivo || "" };
+            return { txt: "En trámite", cls: "badge-amber", grupo: gg, nota: ult.estado };
+        }
+
+        function resumen() {
+            const a = D.estudiantes.map(asig);
+            $("#c-total").textContent = D.estudiantes.length;
+            $("#c-asignados").textContent = a.filter(x => x.txt === "Aprobada").length;
+            $("#c-tramite").textContent = a.filter(x => x.txt === "En trámite").length;
+            $("#c-sin").textContent = a.filter(x => x.txt === "Sin asignación" || x.txt === "Rechazada").length;
+        }
+
+        function filtros() {
+            const fp = $("#f-programa").value, fe = $("#f-estado").value;
+            const progs = [...new Set(D.estudiantes.map(e => e.programa))].sort();
+            $("#f-programa").innerHTML = DEM.opciones(progs.map(x => ({ valor: x, texto: x })), fp, "Todos los programas");
+            $("#f-estado").innerHTML = DEM.opciones(["Aprobada", "En trámite", "Rechazada", "Sin asignación"].map(x => ({ valor: x, texto: "Asignación: " + x })), fe, "Todas las asignaciones");
+        }
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fp = $("#f-programa").value, fe = $("#f-estado").value;
+            const lista = D.estudiantes.filter(e => (!q || (e.nombre + " " + e.cedula + " " + e.programa).toLowerCase().includes(q)) &&
+                (!fp || e.programa === fp) && (!fe || asig(e).txt === fe));
+            $("#tabla").innerHTML = DEM.tablaHTML(
+                ["ESTUDIANTE", "PROGRAMA", "CONTACTO", "ASIGNACIÓN", "ESTADO", ""],
+                lista.map(e => {
+                    const a = asig(e);
+                    const puede = e.estado === "Activo" && (a.txt === "Sin asignación" || a.txt === "Rechazada");
+                    return [
+                        DEM.persona(e.nombre, "C.C. " + e.cedula),
+                        esc(e.programa) + "<small>" + e.semestre + ".º semestre</small>",
+                        esc(e.correo) + "<small>" + esc(e.telefono || "") + "</small>",
+                        DEM.badge(a.txt, a.cls) + (a.grupo ? "<small>" + esc(a.grupo.nombre) + (a.nota ? " · " + esc(a.nota) : "") + "</small>" : ""),
+                        DEM.badge(e.estado, e.estado === "Activo" ? "badge-green" : ""),
+                        (puede ? `<a class="primary-button small-button" href="asignaciones.html?asignar=${e.id}">Asignar</a> ` : "") +
+                        `<button type="button" class="secondary-button small-button" data-editar="${e.id}">Editar</button>
+                         <button type="button" class="danger-button small-button" data-eliminar="${e.id}">Eliminar</button>`
+                    ];
+                }),
+                D.estudiantes.length ? "No hay estudiantes con esos filtros." : "Aún no has registrado estudiantes.");
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+            $$("[data-eliminar]").forEach(b => b.onclick = () => eliminar(b.dataset.eliminar));
+        }
+
+        function refrescar() { resumen(); filtros(); tabla(); }
+        ["#f-buscar", "#f-programa", "#f-estado"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+        function formulario(id) {
+            const e = id ? DEM.estudiante(id) : null;
+            DEM.formModal({
+                tag: "ESTUDIANTES", titulo: e ? "Editar estudiante" : "Registrar estudiante",
+                sub: "El estudiante ingresa a la plataforma con su cédula como usuario y contraseña inicial.",
+                valores: e ? { nombre: e.nombre, cedula: e.cedula, programa: e.programa, semestre: String(e.semestre), correo: e.correo, telefono: e.telefono, estado: e.estado } : { estado: "Activo" },
+                campos: [
+                    { k: "nombre", label: "Nombre completo", tipo: "text", req: true, full: true },
+                    { k: "cedula", label: "Cédula", tipo: "text", req: true },
+                    { k: "correo", label: "Correo electrónico", tipo: "email", req: true },
+                    { k: "programa", label: "Programa académico", tipo: "text", req: true, ph: "Ej: Licenciatura en Matemáticas" },
+                    { k: "semestre", label: "Semestre", tipo: "select", req: true, vacio: "Selecciona", opciones: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => ({ valor: n, texto: n + ".º semestre" })) },
+                    { k: "telefono", label: "Teléfono", tipo: "text" },
+                    { k: "estado", label: "Estado", tipo: "select", opciones: ["Activo", "Inactivo"].map(x => ({ valor: x, texto: x })) }
+                ],
+                validar: v => {
+                    if (!/^\S+@\S+\.\S+$/.test(v.correo)) return "Escribe un correo electrónico válido.";
+                    if (D.estudiantes.some(x => x.id !== id && x.cedula === v.cedula)) return "Ya existe un estudiante con esa cédula.";
+                    return null;
+                },
+                guardar: v => {
+                    const datos = Object.assign({}, v, { semestre: parseInt(v.semestre, 10) });
+                    if (e) Object.assign(e, datos);
+                    else D.estudiantes.push(Object.assign({ id: DEM.uid("es"), grupoId: null, horasReal: 0, actividades: [], evidencias: [] }, datos));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(e ? "Estudiante actualizado." : "Estudiante registrado correctamente.");
+                }
+            });
+        }
+
+        function eliminar(id) {
+            const e = DEM.estudiante(id);
+            if (e.grupoId || DEM.evaluacionesDe(id).length || DEM.visitasDe(id).length) {
+                DEM.aviso("No se puede eliminar: el estudiante ya tiene una práctica en curso o registros asociados. Puedes inactivarlo.", "error");
+                return;
+            }
+            if (!confirm("¿Eliminar este estudiante?")) return;
+            D.estudiantes = D.estudiantes.filter(x => x.id !== id);
+            D.asignaciones = D.asignaciones.filter(a => a.estudianteId !== id);
+            DEM.guardar(); refrescar(); DEM.aviso("Estudiante eliminado.");
+        }
+        refrescar();
+    </script>
+
+</body>
+</html>

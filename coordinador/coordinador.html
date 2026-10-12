@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item active">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- INICIO -->
+        <section class="home-section home-docente">
+            <div class="home-content">
+
+                <div class="home-logo">
+                    <img src="../imagenes/fotoiniciosesion.jpg"
+                         alt="Docente en Marcha">
+                </div>
+
+                <p class="home-tag">
+                    PLATAFORMA DE PRÁCTICAS ACADÉMICAS
+                </p>
+
+                <h2>
+                    Bienvenido a
+                    <span>
+                        Docente en Marcha
+                    </span>
+                </h2>
+
+                <p class="home-description">
+                    Plataforma para la gestión y seguimiento de las prácticas académicas. Desde aquí configuras prácticas, grupos e instituciones y preparas las asignaciones.
+                </p>
+
+                <div class="home-line"></div>
+
+                <p class="home-help">
+                    Selecciona una opción del menú lateral para comenzar.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="content-page dashboard">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        RESUMEN
+                    </p>
+                    <h2>
+                        Gestión de prácticas
+                    </h2>
+                    <p>
+                        Lo que necesitas organizar y revisar en un vistazo.
+                    </p>
+                </div>
+                <span class="status-badge teal" id="periodo">Periodo académico</span>
+            </div>
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Prácticas configuradas</span>
+                    <strong id="r-practicas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Grupos</span>
+                    <strong id="r-grupos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Estudiantes sin asignar</span>
+                    <strong id="r-sin">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Asignaciones por aprobar</span>
+                    <strong id="r-pendientes">0</strong>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>ASIGNACIONES</p>
+                            <h3>Requieren tu acción</h3>
+                        </div>
+                        <a href="asignaciones.html" class="link-more">Ver asignaciones</a>
+                    </div>
+                    <div id="l-accion"></div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>CONVENIOS</p>
+                            <h3>Vencidos o por vencer</h3>
+                        </div>
+                        <a href="instituciones.html" class="link-more">Ver instituciones</a>
+                    </div>
+                    <div id="l-convenios"></div>
+                </div>
+            </div>
+                <div class="content-card" style="margin-top: 16px;">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>ORGANIZACIÓN</p>
+                            <h3>Pendientes de organizar</h3>
+                        </div>
+                        <a href="estudiantes.html" class="link-more">Ver estudiantes</a>
+                    </div>
+                    <div id="l-organizar"></div>
+                </div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+
+        $("#periodo").textContent = "Periodo académico " + DEM.periodo();
+
+        const sinAsignar = D.estudiantes.filter(e => e.estado === "Activo" && !e.grupoId &&
+            !D.asignaciones.some(a => a.estudianteId === e.id && a.estado !== "Reemplazada"));
+
+        $("#r-practicas").textContent = D.practicas.length;
+        $("#r-grupos").textContent = D.grupos.length;
+        $("#r-sin").textContent = sinAsignar.length;
+        $("#r-pendientes").textContent = D.asignaciones.filter(a => a.estado === "Pendiente de aprobación").length;
+
+        /* ---------- ASIGNACIONES QUE REQUIEREN ACCIÓN ---------- */
+
+        const accion = D.asignaciones.filter(a => a.estado === "Rechazada" || a.estado === "Borrador").slice(0, 5);
+        $("#l-accion").innerHTML = accion.length ? accion.map(a => {
+            const e = DEM.estudiante(a.estudianteId);
+            const g = DEM.grupo(a.grupoId);
+            return `<div class="list-row">
+                <div class="list-main"><strong>${esc(e ? e.nombre : "Estudiante")}</strong>
+                    <span>${esc(g ? g.nombre : "—")}${a.estado === "Rechazada" && a.motivo ? " · " + esc(a.motivo) : ""}</span></div>
+                <span class="badge ${a.estado === "Rechazada" ? "badge-red" : "badge-amber"}">${a.estado}</span></div>`;
+        }).join("") : '<div class="list-empty">No tienes asignaciones pendientes de acción.</div>';
+
+        /* ---------- CONVENIOS ---------- */
+
+        const lim = DEM.sumarDias(30);
+        const convenios = D.instituciones.filter(i => {
+            const e = DEM.estadoConvenio(i);
+            return e === "Vencido" || e === "Sin convenio" || e === "En trámite" || (e === "Vigente" && i.convenio.fechaFin <= lim);
+        }).slice(0, 5);
+        $("#l-convenios").innerHTML = convenios.length ? convenios.map(i => {
+            const e = DEM.estadoConvenio(i);
+            const nota = e === "Vigente" ? "Vence el " + DEM.fmtFecha(i.convenio.fechaFin) : (e === "Vencido" ? "Venció el " + DEM.fmtFecha(i.convenio.fechaFin) : esc(i.ciudad));
+            return `<div class="list-row"><div class="list-main"><strong>${esc(i.nombre)}</strong><span>${nota}</span></div>
+                <span class="badge ${e === "Vigente" ? "badge-amber" : DEM.CLASE_CONVENIO[e]}">${e === "Vigente" ? "Por vencer" : e}</span></div>`;
+        }).join("") : '<div class="list-empty">' + (D.instituciones.length ? "Todos los convenios están al día." : "Aún no hay instituciones registradas.") + "</div>";
+
+        /* ---------- PENDIENTES DE ORGANIZAR ---------- */
+
+        const filas = [];
+        sinAsignar.slice(0, 4).forEach(e => filas.push({ t: e.nombre, s: "Estudiante sin grupo asignado", b: "Asignar", h: "asignaciones.html?asignar=" + e.id }));
+        D.grupos.filter(g => !g.docenteId).slice(0, 3).forEach(g => filas.push({ t: g.nombre, s: "Grupo sin docente asesor responsable", b: "Asignar docente", h: "grupos.html?editar=" + g.id }));
+        D.practicas.filter(p => !DEM.gruposDePractica(p.id).length).slice(0, 3).forEach(p => filas.push({ t: p.nombre, s: "Práctica sin grupos creados", b: "Crear grupo", h: "grupos.html?nuevo=" + p.id }));
+        $("#l-organizar").innerHTML = filas.length ? filas.map(f => `<div class="list-row">
+            <div class="list-main"><strong>${esc(f.t)}</strong><span>${f.s}</span></div>
+            <a href="${f.h}" class="secondary-button small-button">${f.b}</a></div>`).join("")
+            : '<div class="list-empty">' + (D.practicas.length || D.estudiantes.length ? "Todo está organizado." : "Empieza registrando instituciones y prácticas.") + "</div>";
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupos | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item active">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        GESTIÓN
+                    </p>
+                    <h2>
+                        Grupos
+                    </h2>
+                    <p>
+                        Crea grupos para cada práctica, define la institución receptora y el docente asesor responsable.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">+ Nuevo grupo</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Grupos</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Con docente asesor</span>
+                    <strong id="c-docente">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Sin docente asesor</span>
+                    <strong id="c-sin">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Cupos disponibles</span>
+                    <strong id="c-cupos">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por grupo, institución o docente...">
+                <select class="select-input" id="f-practica"></select>
+                <select class="select-input" id="f-docente"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v || "—")}</strong></div>`;
+
+        function resumen() {
+            $("#c-total").textContent = D.grupos.length;
+            $("#c-docente").textContent = D.grupos.filter(g => g.docenteId).length;
+            $("#c-sin").textContent = D.grupos.filter(g => !g.docenteId).length;
+            $("#c-cupos").textContent = D.grupos.reduce((s, g) => s + Math.max(0, g.cupo - DEM.cupoUsado(g.id)), 0);
+        }
+
+        function filtros() {
+            const fp = $("#f-practica").value, fd = $("#f-docente").value;
+            $("#f-practica").innerHTML = DEM.opciones(D.practicas.map(p => ({ valor: p.id, texto: p.nombre })), fp, "Todas las prácticas");
+            $("#f-docente").innerHTML = DEM.opciones(D.docentes.map(d => ({ valor: d.id, texto: d.nombre })), fd, "Todos los docentes");
+        }
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fp = $("#f-practica").value, fd = $("#f-docente").value;
+            const lista = D.grupos.filter(g => {
+                const d = g.docenteId && DEM.docente(g.docenteId);
+                return (!q || (g.nombre + " " + g.institucion + " " + (d ? d.nombre : "")).toLowerCase().includes(q)) &&
+                       (!fp || g.practicaId === fp) && (!fd || g.docenteId === fd);
+            });
+            $("#tabla").innerHTML = DEM.tablaHTML(
+                ["GRUPO", "PRÁCTICA", "INSTITUCIÓN", "DOCENTE ASESOR", "ESTUDIANTES", ""],
+                lista.map(g => {
+                    const p = DEM.practica(g.practicaId), d = g.docenteId && DEM.docente(g.docenteId);
+                    const apr = DEM.estudiantesDeGrupo(g.id).length, usados = DEM.cupoUsado(g.id);
+                    return [
+                        "<strong style='color:var(--dark-blue)'>" + esc(g.nombre) + "</strong><small>" + esc(g.jornada) + (g.horario ? " · " + esc(g.horario) : "") + "</small>",
+                        esc(p ? p.nombre.split(" – ")[0] : "—") + "<small>" + esc(p ? p.programa : "") + "</small>",
+                        esc(g.institucion || "—") + "<small>" + esc(g.ciudad || "") + "</small>",
+                        d ? esc(d.nombre) : DEM.badge("Sin docente", "badge-amber"),
+                        apr + " / " + g.cupo + (usados > apr ? "<small>+" + (usados - apr) + " en trámite</small>" : ""),
+                        `<button type="button" class="secondary-button small-button" data-ver="${g.id}">Ver</button>
+                         <button type="button" class="secondary-button small-button" data-editar="${g.id}">Editar</button>
+                         <button type="button" class="danger-button small-button" data-eliminar="${g.id}">Eliminar</button>`
+                    ];
+                }),
+                D.grupos.length ? "No hay grupos con esos filtros." : "Aún no has creado grupos. Primero registra prácticas e instituciones.");
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+            $$("[data-eliminar]").forEach(b => b.onclick = () => eliminar(b.dataset.eliminar));
+        }
+
+        function refrescar() { resumen(); filtros(); tabla(); }
+        ["#f-buscar", "#f-practica", "#f-docente"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+        function ver(id) {
+            const g = DEM.grupo(id), p = DEM.practica(g.practicaId), d = g.docenteId && DEM.docente(g.docenteId);
+            const apr = DEM.estudiantesDeGrupo(id);
+            const tram = D.asignaciones.filter(a => a.grupoId === id && DEM.ESTADOS_ACTIVOS.includes(a.estado));
+            DEM.abrirModal({
+                tam: "wide", tag: "GRUPO", titulo: g.nombre, sub: p ? p.nombre : "",
+                cuerpo: `
+                <div class="modal-block"><h4>INFORMACIÓN</h4><div class="info-grid">
+                    ${info("Práctica", p && p.nombre)}${info("Institución receptora", g.institucion + (g.ciudad ? " · " + g.ciudad : ""))}
+                    ${info("Docente asesor", d ? d.nombre : "Sin asignar")}${info("Jornada", g.jornada)}${info("Horario", g.horario)}
+                    ${info("Cupo", DEM.cupoUsado(id) + " de " + g.cupo + " ocupados")}
+                    ${info("Inicio", DEM.fmtFecha(g.inicio))}${info("Finalización", DEM.fmtFecha(g.fin))}
+                </div></div>
+                <div class="modal-block"><h4>ESTUDIANTES ASIGNADOS (${apr.length})</h4>
+                    ${apr.length ? apr.map(e => `<div class="list-row">${DEM.persona(e.nombre, e.programa)}<span class="badge ${DEM.CLASE_AVANCE[DEM.estadoAvance(e)]}">${DEM.estadoAvance(e)} · ${DEM.progreso(e)}%</span></div>`).join("")
+                    : '<div class="list-empty">Aún no hay estudiantes con asignación aprobada.</div>'}</div>
+                ${tram.length ? `<div class="modal-block"><h4>ASIGNACIONES EN TRÁMITE (${tram.length})</h4>${tram.map(a => { const e = DEM.estudiante(a.estudianteId);
+                    return `<div class="list-row"><div class="list-main"><strong>${esc(e ? e.nombre : "")}</strong></div><span class="badge badge-amber">${a.estado}</span></div>`; }).join("")}</div>` : ""}`,
+                pie: `<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>
+                      <a class="secondary-button" href="asignaciones.html?grupo=${id}">Asignar estudiantes</a>
+                      <button type="button" class="primary-button" id="x-editar">Editar</button>`
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+            $("#x-editar").onclick = () => formulario(id);
+        }
+
+        function formulario(id, practicaId) {
+            if (!id && !D.practicas.length) { DEM.aviso("Primero configura al menos una práctica.", "error"); return; }
+            const g = id ? DEM.grupo(id) : null;
+            DEM.formModal({
+                tag: "GRUPOS", titulo: g ? "Editar grupo" : "Nuevo grupo",
+                sub: "La institución debe estar asociada a la práctica y tener convenio vigente.",
+                valores: g ? { nombre: g.nombre, practicaId: g.practicaId, institucionId: g.institucionId, docenteId: g.docenteId || "", jornada: g.jornada, horario: g.horario, cupo: g.cupo }
+                           : { practicaId: practicaId || "", jornada: "Mañana" },
+                campos: [
+                    { k: "nombre", label: "Nombre del grupo", tipo: "text", req: true, full: true, ph: "Ej: Grupo 01 – Matemáticas" },
+                    { k: "practicaId", label: "Práctica", tipo: "select", req: true, refresca: true, vacio: "Selecciona la práctica", deshabilitado: !!g,
+                      opciones: D.practicas.map(p => ({ valor: p.id, texto: p.nombre })) },
+                    { k: "institucionId", label: "Institución receptora", tipo: "select", req: true, vacio: "Selecciona la institución",
+                      opciones: v => {
+                          const p = DEM.practica(v.practicaId);
+                          if (!p) return [];
+                          return p.institucionIds.map(DEM.institucion).filter(i => i && (DEM.convenioVigente(i) || (g && g.institucionId === i.id)))
+                                  .map(i => ({ valor: i.id, texto: i.nombre + " · " + i.ciudad }));
+                      } },
+                    { k: "docenteId", label: "Docente asesor responsable", tipo: "select", vacio: "Sin docente por ahora",
+                      opciones: D.docentes.filter(d => d.estado === "Activo" || (g && g.docenteId === d.id)).map(d => ({ valor: d.id, texto: d.nombre })) },
+                    { k: "jornada", label: "Jornada", tipo: "select", req: true, opciones: ["Mañana", "Tarde", "Noche"].map(x => ({ valor: x, texto: x })) },
+                    { k: "horario", label: "Horario", tipo: "text", ph: "Ej: Martes y jueves · 6:30 a. m. – 12:30 p. m." },
+                    { k: "cupo", label: "Cupo de estudiantes", tipo: "number", req: true, min: 1, max: 60 }
+                ],
+                validar: v => {
+                    const practica = g ? g.practicaId : v.practicaId;
+                    if (!(v.cupo >= 1)) return "El cupo debe ser de al menos 1 estudiante.";
+                    if (g && v.cupo < DEM.cupoUsado(g.id)) return "El cupo no puede ser menor a los estudiantes ya asignados (" + DEM.cupoUsado(g.id) + ").";
+                    if (D.grupos.some(x => x.id !== id && x.practicaId === practica && x.nombre.toLowerCase() === v.nombre.toLowerCase())) return "Ya existe un grupo con ese nombre en la práctica.";
+                    return null;
+                },
+                guardar: v => {
+                    if (g && g.docenteId && v.docenteId !== g.docenteId && DEM.estudiantesDeGrupo(g.id).length &&
+                        !confirm("El grupo ya tiene estudiantes: pasarán al panel del nuevo docente. ¿Continuar?")) return;
+                    const datos = { nombre: v.nombre, institucionId: v.institucionId, docenteId: v.docenteId || null, jornada: v.jornada, horario: v.horario, cupo: v.cupo };
+                    if (g) Object.assign(g, datos);
+                    else D.grupos.push(Object.assign({ id: DEM.uid("gr"), practicaId: v.practicaId }, datos));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(g ? "Grupo actualizado." : "Grupo creado correctamente.");
+                }
+            });
+        }
+
+        function eliminar(id) {
+            if (DEM.cupoUsado(id)) { DEM.aviso("No se puede eliminar: tiene estudiantes asignados o asignaciones en trámite.", "error"); return; }
+            if (!confirm("¿Eliminar este grupo?")) return;
+            D.grupos = D.grupos.filter(g => g.id !== id);
+            D.asignaciones = D.asignaciones.filter(a => a.grupoId !== id);
+            DEM.guardar(); refrescar(); DEM.aviso("Grupo eliminado.");
+        }
+
+        refrescar();
+        const params = DEM.parametros();
+        if (params.get("nuevo") && DEM.practica(params.get("nuevo"))) formulario(null, params.get("nuevo"));
+        else if (params.get("editar") && DEM.grupo(params.get("editar"))) formulario(params.get("editar"));
+    </script>
+
+</body>
+</html>

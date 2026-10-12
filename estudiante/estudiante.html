@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Docente en Marcha</title>
+
+    <link rel="stylesheet" href="estudiante.css">
+
+</head>
+
+<body>
+
+
+    <!-- BARRA LATERAL -->
+
+    <aside class="sidebar">
+
+
+        <!-- LOGO -->
+
+        <div class="sidebar-logo">
+
+            <div class="logo-image">
+
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+
+            </div>
+
+            <div class="logo-text">
+
+                <strong>DOCENTE</strong>
+
+                <span>EN MARCHA</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- USUARIO -->
+
+        <div class="user-card">
+
+            <div class="user-avatar">
+                ES
+            </div>
+
+            <div class="user-info">
+
+                <strong>Estudiante</strong>
+
+                <span>Practicante</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MENÚ -->
+
+        <nav class="menu">
+
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+
+
+            <a href="estudiante.html" class="menu-item active">
+
+                <span class="menu-icon">⌂</span>
+
+                <span>Inicio</span>
+
+            </a>
+
+
+            <a href="practica.html" class="menu-item">
+
+                <span class="menu-icon">▣</span>
+
+                <span>Mi práctica</span>
+
+            </a>
+
+
+            <a href="actividades.html" class="menu-item">
+
+                <span class="menu-icon">✓</span>
+
+                <span>Actividades</span>
+
+            </a>
+
+
+            <a href="evidencias.html" class="menu-item">
+
+                <span class="menu-icon">▧</span>
+
+                <span>Evidencias</span>
+
+            </a>
+
+
+            <a href="evaluaciones.html" class="menu-item">
+
+                <span class="menu-icon">★</span>
+
+                <span>Evaluaciones</span>
+
+            </a>
+
+
+            <a href="retroalimentacion.html" class="menu-item">
+
+                <span class="menu-icon">◌</span>
+
+                <span>Retroalimentaciones</span>
+
+            </a>
+
+
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+
+
+            <a href="perfil.html" class="menu-item">
+
+                <span class="menu-icon">●</span>
+
+                <span>Mi perfil</span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- CERRAR SESIÓN -->
+
+        <div class="sidebar-bottom">
+
+            <button
+                type="button"
+                class="logout"
+                onclick="cerrarSesion()">
+
+                <span>←</span>
+
+                Cerrar sesión
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <!-- ENCABEZADO -->
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+
+                <h1>
+                    Docente en Marcha
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-user">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <div class="top-user-avatar">
+                    ES
+                </div>
+
+                <div class="top-user-info">
+
+                    <strong>
+                        Estudiante
+                    </strong>
+
+                    <span>
+                        Practicante
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ÚNICAMENTE INICIO -->
+
+        <section class="home-section">
+
+
+            <div class="home-content">
+
+
+                <div class="home-logo">
+
+                    <img src="../imagenes/fotoiniciosesion.jpg"
+                         alt="Docente en Marcha">
+
+                </div>
+
+
+                <p class="home-tag">
+                    PLATAFORMA DE PRÁCTICAS ACADÉMICAS
+                </p>
+
+
+                <h2>
+
+                    Bienvenido a
+
+                    <span>
+                        Docente en Marcha
+                    </span>
+
+                </h2>
+
+
+                <p class="home-description">
+
+                    Plataforma para la gestión y seguimiento
+                    de las prácticas académicas.
+
+                </p>
+
+
+                <div class="home-line"></div>
+
+
+                <p class="home-help">
+
+                    Selecciona una opción del menú lateral para comenzar.
+
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- CERRAR SESIÓN -->
+
+    <script>
+
+        function cerrarSesion() {
+
+            const confirmar =
+                confirm("¿Estás seguro de cerrar sesión?");
+
+
+            if (confirmar) {
+
+                window.location.replace(
+                    "../inicio/index.html"
+                );
+
+            }
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

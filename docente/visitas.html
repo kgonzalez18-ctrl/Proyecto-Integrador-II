@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitas | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item active">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        SEGUIMIENTO
+                    </p>
+                    <h2>
+                        Visitas
+                    </h2>
+                    <p>
+                        Registra y consulta las visitas de acompañamiento
+                        a tus estudiantes, con sus observaciones pedagógicas.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">
+                        + Registrar visita
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Visitas totales</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Realizadas</span>
+                    <strong id="c-realizadas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Programadas</span>
+                    <strong id="c-programadas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Estudiantes sin visita realizada</span>
+                    <strong id="c-sinvisita">0</strong>
+                </div>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar"
+                       placeholder="Buscar por estudiante, institución u observación...">
+                <select class="select-input" id="f-estudiante"></select>
+                <select class="select-input" id="f-estado"></select>
+            </div>
+
+            <!-- LISTADO -->
+            <div class="table-card">
+                <div class="table-scroll">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>FECHA Y HORA</th>
+                                <th>ESTUDIANTE</th>
+                                <th>INSTITUCIÓN</th>
+                                <th>MODALIDAD</th>
+                                <th>VALORACIÓN</th>
+                                <th>ESTADO</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla-visitas"></tbody>
+                    </table>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        const VALORACIONES = ["Excelente", "Bueno", "Aceptable", "Por mejorar"];
+        const CLASE_VAL = { "Excelente": "badge-green", "Bueno": "badge-teal", "Aceptable": "badge-amber", "Por mejorar": "badge-red" };
+
+        const insigniaEstado = v =>
+            '<span class="badge ' + (v.estado === "Realizada" ? "badge-green" : "badge-blue") + '">' + v.estado + "</span>";
+
+
+        /* =========================================
+           RESUMEN Y LISTADO
+        ========================================= */
+
+        function resumen() {
+            const realizadas = D.visitas.filter(v => v.estado === "Realizada");
+            const sin = D.estudiantes.filter(e => !realizadas.some(v => v.estudianteId === e.id));
+            $("#c-total").textContent = D.visitas.length;
+            $("#c-realizadas").textContent = realizadas.length;
+            $("#c-programadas").textContent = D.visitas.filter(v => v.estado === "Programada").length;
+            $("#c-sinvisita").textContent = sin.length;
+        }
+
+        $("#f-estudiante").innerHTML = DEM.opciones(
+            D.estudiantes.map(e => ({ valor: e.id, texto: e.nombre })), "", "Todos los estudiantes");
+        $("#f-estado").innerHTML = DEM.opciones(
+            ["Programada", "Realizada"].map(x => ({ valor: x, texto: x })), "", "Todos los estados");
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const fe = $("#f-estudiante").value;
+            const fs = $("#f-estado").value;
+
+            const lista = D.visitas.filter(v => {
+                const e = DEM.estudiante(v.estudianteId);
+                const texto = (e.nombre + " " + DEM.grupoDe(e).institucion + " " + v.objetivo + " " +
+                               v.desarrollo + " " + v.fortalezas + " " + v.aspectosMejorar).toLowerCase();
+                return (!q || texto.includes(q)) && (!fe || v.estudianteId === fe) && (!fs || v.estado === fs);
+            }).sort((a, b) => (b.fecha + b.hora).localeCompare(a.fecha + a.hora));
+
+            $("#tabla-visitas").innerHTML = lista.length ? lista.map(v => {
+                const e = DEM.estudiante(v.estudianteId);
+                const g = DEM.grupoDe(e);
+                return `
+                <tr>
+                    <td><strong>${DEM.fmtFecha(v.fecha)}</strong><small>${DEM.fmtHora(v.hora)} · ${v.duracion} min</small></td>
+                    <td>
+                        <div class="person-cell">
+                            <div class="mini-avatar">${DEM.iniciales(e.nombre)}</div>
+                            <div><strong>${esc(e.nombre)}</strong><span>${esc(g.nombre)}</span></div>
+                        </div>
+                    </td>
+                    <td>${esc(g.institucion)}<small>${esc(g.ciudad)}</small></td>
+                    <td>${esc(v.modalidad)}</td>
+                    <td>${v.valoracion ? '<span class="badge ' + CLASE_VAL[v.valoracion] + '">' + v.valoracion + "</span>" : "—"}</td>
+                    <td>${insigniaEstado(v)}</td>
+                    <td class="actions">
+                        <button type="button" class="secondary-button small-button" data-ver="${v.id}">Ver</button>
+                        <button type="button" class="primary-button small-button" data-editar="${v.id}">${v.estado === "Programada" ? "Registrar resultado" : "Editar"}</button>
+                    </td>
+                </tr>`;
+            }).join("") : '<tr><td colspan="7" class="table-empty">' + (D.visitas.length ? "No hay visitas con esos filtros." : "Aún no has registrado visitas.") + '</td></tr>';
+
+            $$("[data-ver]").forEach(b => { b.onclick = () => verVisita(b.dataset.ver); });
+            $$("[data-editar]").forEach(b => { b.onclick = () => formulario(b.dataset.editar); });
+        }
+
+        ["#f-buscar", "#f-estudiante", "#f-estado"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+
+        /* =========================================
+           DETALLE DE UNA VISITA
+        ========================================= */
+
+        function bloqueTexto(titulo, texto) {
+            return texto ? `<div class="modal-block"><h4>${titulo}</h4><div class="text-block">${esc(texto)}</div></div>` : "";
+        }
+
+        function verVisita(id) {
+            const v = D.visitas.find(x => x.id === id);
+            const e = DEM.estudiante(v.estudianteId);
+            const g = DEM.grupoDe(e);
+            const realizada = v.estado === "Realizada";
+
+            DEM.abrirModal({
+                tam: "wide",
+                tag: "VISITA " + v.estado.toUpperCase(),
+                titulo: "Visita a " + e.nombre,
+                sub: DEM.fmtFecha(v.fecha) + " · " + DEM.fmtHora(v.hora) + " · " + v.modalidad,
+                cuerpo: `
+                    <div class="modal-block">
+                        <h4>INFORMACIÓN DE LA VISITA</h4>
+                        <div class="info-grid">
+                            <div class="info-item"><span>Estudiante</span><strong>${esc(e.nombre)}</strong></div>
+                            <div class="info-item"><span>Docente asesor</span><strong>${esc(DEM.nombreDocente())}</strong></div>
+                            <div class="info-item"><span>Institución receptora</span><strong>${esc(g.institucion)} · ${esc(g.ciudad)}</strong></div>
+                            <div class="info-item"><span>Grupo</span><strong>${esc(g.nombre)}</strong></div>
+                            <div class="info-item"><span>Clase observada</span><strong>${esc(v.claseObservada || "—")}</strong></div>
+                            <div class="info-item"><span>Duración</span><strong>${v.duracion} minutos</strong></div>
+                        </div>
+                    </div>
+                    ${bloqueTexto("OBJETIVO DE LA VISITA", v.objetivo)}
+                    ${realizada ? `
+                        ${bloqueTexto("DESARROLLO DE LA VISITA", v.desarrollo)}
+                        <div class="modal-block"><h4>OBSERVACIONES PEDAGÓGICAS</h4>
+                            <div style="margin-bottom:10px"><span class="badge ${CLASE_VAL[v.valoracion]}">Valoración: ${v.valoracion}</span></div>
+                        </div>
+                        ${bloqueTexto("FORTALEZAS", v.fortalezas)}
+                        ${bloqueTexto("ASPECTOS POR MEJORAR", v.aspectosMejorar)}
+                        ${bloqueTexto("COMPROMISOS Y ACUERDOS", v.compromisos)}
+                        <div class="callout" style="margin-bottom:0">${v.enviarRetro
+                            ? "Estas observaciones fueron compartidas con el estudiante como retroalimentación."
+                            : "Estas observaciones no se han compartido con el estudiante."}</div>
+                    ` : '<div class="callout" style="margin-bottom:0">Esta visita está programada. Cuando se realice, registra el resultado con las observaciones pedagógicas.</div>'}`,
+                pie: `<button type="button" class="danger-button footer-left" id="v-eliminar">Eliminar</button>
+                      <button type="button" class="secondary-button" id="v-cerrar">Cerrar</button>
+                      <button type="button" class="primary-button" id="v-editar">${realizada ? "Editar" : "Registrar resultado"}</button>`
+            });
+            $("#v-cerrar").onclick = DEM.cerrarModal;
+            $("#v-editar").onclick = () => formulario(id);
+            $("#v-eliminar").onclick = () => eliminar(id);
+        }
+
+        function eliminar(id) {
+            if (!confirm("¿Eliminar esta visita? También se retirará la retroalimentación asociada.")) return;
+            D.visitas = D.visitas.filter(v => v.id !== id);
+            DEM.quitarRetro("Visita", id);
+            DEM.guardar();
+            DEM.cerrarModal();
+            resumen(); tabla();
+            DEM.aviso("Visita eliminada.");
+        }
+
+
+        /* =========================================
+           FORMULARIO: REGISTRAR / EDITAR VISITA
+        ========================================= */
+
+        function formulario(id, estudianteId) {
+            if (!D.estudiantes.length) {
+                DEM.aviso("Aún no tienes estudiantes asignados para registrar visitas.", "error");
+                return;
+            }
+            const v = id ? D.visitas.find(x => x.id === id) : null;
+            const actual = v || {
+                estudianteId: estudianteId || "", fecha: DEM.hoy(), hora: "08:00", duracion: 60,
+                modalidad: "Presencial", estado: "Programada", claseObservada: "", objetivo: "",
+                desarrollo: "", fortalezas: "", aspectosMejorar: "", compromisos: "", valoracion: "",
+                enviarRetro: true
+            };
+
+            const m = DEM.abrirModal({
+                tam: "wide",
+                tag: "VISITAS",
+                titulo: v ? (v.estado === "Programada" ? "Registrar resultado de la visita" : "Editar visita") : "Registrar visita",
+                sub: "Los datos de la visita se vinculan automáticamente con la práctica del estudiante.",
+                cuerpo: `
+                <div class="form-grid">
+                    <div class="form-field full">
+                        <label for="v-est">Estudiante <span class="req">*</span></label>
+                        <select class="select-input" id="v-est">
+                            ${DEM.opciones(D.estudiantes.map(e => ({ valor: e.id, texto: e.nombre + " – " + DEM.grupoDe(e).institucion })), actual.estudianteId, "Selecciona un estudiante")}
+                        </select>
+                        <p class="form-hint" id="v-est-info"></p>
+                    </div>
+
+                    <div class="form-field"><label for="v-fecha">Fecha <span class="req">*</span></label>
+                        <input type="date" class="text-input" id="v-fecha" value="${actual.fecha}"></div>
+                    <div class="form-field"><label for="v-hora">Hora <span class="req">*</span></label>
+                        <input type="time" class="text-input" id="v-hora" value="${actual.hora}"></div>
+                    <div class="form-field"><label for="v-dur">Duración (minutos) <span class="req">*</span></label>
+                        <input type="number" class="text-input" id="v-dur" min="10" max="480" value="${actual.duracion}"></div>
+                    <div class="form-field"><label for="v-mod">Modalidad</label>
+                        <select class="select-input" id="v-mod">
+                            ${DEM.opciones(["Presencial", "Virtual"].map(x => ({ valor: x, texto: x })), actual.modalidad)}
+                        </select></div>
+
+                    <div class="form-field"><label for="v-clase">Clase o actividad observada</label>
+                        <input type="text" class="text-input" id="v-clase" placeholder="Ej: Grado 8°-2 · Matemáticas" value="${esc(actual.claseObservada)}"></div>
+                    <div class="form-field"><label for="v-estado">Estado de la visita</label>
+                        <select class="select-input" id="v-estado">
+                            ${DEM.opciones(["Programada", "Realizada"].map(x => ({ valor: x, texto: x })), actual.estado)}
+                        </select>
+                        <p class="form-hint" id="v-estado-hint"></p></div>
+
+                    <div class="form-field full"><label for="v-obj">Objetivo de la visita <span class="req">*</span></label>
+                        <textarea class="text-area" id="v-obj" style="min-height:56px" placeholder="¿Qué se busca observar o acompañar?">${esc(actual.objetivo)}</textarea></div>
+
+                    <div id="bloque-registro" style="grid-column:1/-1;display:none">
+                        <div class="form-grid">
+                            <div class="form-section-title">INFORMACIÓN DE LA VISITA</div>
+                            <div class="form-field full"><label for="v-des">Desarrollo de la visita <span class="req">*</span></label>
+                                <textarea class="text-area" id="v-des" placeholder="Describe lo ocurrido durante la visita y la conversación con el estudiante o el docente titular.">${esc(actual.desarrollo)}</textarea></div>
+
+                            <div class="form-section-title">OBSERVACIONES PEDAGÓGICAS</div>
+                            <div class="form-field"><label for="v-fort">Fortalezas <span class="req">*</span></label>
+                                <textarea class="text-area" id="v-fort">${esc(actual.fortalezas)}</textarea></div>
+                            <div class="form-field"><label for="v-mej">Aspectos por mejorar <span class="req">*</span></label>
+                                <textarea class="text-area" id="v-mej">${esc(actual.aspectosMejorar)}</textarea></div>
+                            <div class="form-field"><label for="v-comp">Compromisos y acuerdos</label>
+                                <textarea class="text-area" id="v-comp">${esc(actual.compromisos)}</textarea></div>
+                            <div class="form-field"><label for="v-val">Valoración cualitativa <span class="req">*</span></label>
+                                <select class="select-input" id="v-val">
+                                    ${DEM.opciones(VALORACIONES.map(x => ({ valor: x, texto: x })), actual.valoracion, "Selecciona")}
+                                </select>
+                                <p class="form-hint">Es un componente cualitativo; la nota cuantitativa se asigna en Evaluaciones.</p></div>
+                            <div class="form-field full">
+                                <label class="check-row"><input type="checkbox" id="v-enviar" ${actual.enviarRetro ? "checked" : ""}>
+                                    <span>Compartir estas observaciones con el estudiante como retroalimentación.</span></label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-error" id="v-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="v-cancelar">Cancelar</button>
+                      <button type="button" class="primary-button" id="v-guardar">Guardar visita</button>`
+            });
+
+            const sel = $("#v-est");
+
+            function actualizarInfo() {
+                const e = DEM.estudiante(sel.value);
+                $("#v-est-info").textContent = e
+                    ? "Práctica: " + DEM.practicaDe(e).nombre + " · Grupo: " + DEM.grupoDe(e).nombre
+                    : "";
+            }
+
+            // Una visita futura no puede quedar como realizada
+            function actualizarEstado() {
+                const futura = $("#v-fecha").value > DEM.hoy();
+                const estado = $("#v-estado");
+                if (futura) {
+                    estado.value = "Programada";
+                    estado.disabled = true;
+                    $("#v-estado-hint").textContent = "La fecha es futura: la visita queda como programada.";
+                } else {
+                    estado.disabled = false;
+                    $("#v-estado-hint").textContent = "";
+                }
+                $("#bloque-registro").style.display = estado.value === "Realizada" ? "block" : "none";
+            }
+
+            sel.onchange = actualizarInfo;
+            $("#v-fecha").oninput = actualizarEstado;
+            $("#v-estado").onchange = actualizarEstado;
+            actualizarInfo();
+            actualizarEstado();
+
+            $("#v-cancelar").onclick = DEM.cerrarModal;
+
+            $("#v-guardar").onclick = function () {
+                const datos = {
+                    estudianteId: sel.value,
+                    fecha: $("#v-fecha").value,
+                    hora: $("#v-hora").value,
+                    duracion: parseInt($("#v-dur").value, 10),
+                    modalidad: $("#v-mod").value,
+                    claseObservada: $("#v-clase").value.trim(),
+                    estado: $("#v-estado").value,
+                    objetivo: $("#v-obj").value.trim(),
+                    desarrollo: $("#v-des").value.trim(),
+                    fortalezas: $("#v-fort").value.trim(),
+                    aspectosMejorar: $("#v-mej").value.trim(),
+                    compromisos: $("#v-comp").value.trim(),
+                    valoracion: $("#v-val").value,
+                    enviarRetro: $("#v-enviar").checked
+                };
+
+                const fallo = msg => { DEM.mostrarError($(".modal"), msg); };
+
+                if (!datos.estudianteId) return fallo("Selecciona el estudiante.");
+                if (!datos.fecha || !datos.hora) return fallo("Indica la fecha y la hora de la visita.");
+                if (!(datos.duracion >= 10)) return fallo("La duración debe ser de al menos 10 minutos.");
+                if (!datos.objetivo) return fallo("Escribe el objetivo de la visita.");
+                if (datos.estado === "Programada" && datos.fecha < DEM.hoy()) {
+                    return fallo("La fecha ya pasó: marca la visita como realizada y registra sus observaciones.");
+                }
+                if (datos.estado === "Realizada") {
+                    if (!datos.desarrollo) return fallo("Describe el desarrollo de la visita.");
+                    if (!datos.fortalezas) return fallo("Registra las fortalezas observadas.");
+                    if (!datos.aspectosMejorar) return fallo("Registra los aspectos por mejorar.");
+                    if (!datos.valoracion) return fallo("Selecciona la valoración cualitativa.");
+                } else {
+                    datos.enviarRetro = false;
+                    datos.desarrollo = datos.fortalezas = datos.aspectosMejorar = datos.compromisos = "";
+                    datos.valoracion = "";
+                }
+
+                let registro = v;
+                if (registro) {
+                    Object.assign(registro, datos);
+                } else {
+                    registro = Object.assign({ id: DEM.uid("v") }, datos);
+                    DEM.agregar("visitas", registro);
+                }
+
+                // Retroalimentación vinculada a la visita
+                if (registro.estado === "Realizada" && registro.enviarRetro) {
+                    DEM.upsertRetro({
+                        estudianteId: registro.estudianteId, tipo: "Visita", origenId: registro.id,
+                        titulo: "Visita de acompañamiento del " + DEM.fmtFecha(registro.fecha),
+                        comentario: DEM.textoRetroVisita(registro), valoracion: registro.valoracion
+                    });
+                } else {
+                    DEM.quitarRetro("Visita", registro.id);
+                }
+
+                DEM.guardar();
+                DEM.cerrarModal();
+                resumen(); tabla();
+                DEM.aviso(v ? "Visita actualizada correctamente." : "Visita registrada correctamente.");
+            };
+        }
+
+
+        /* =========================================
+           INICIO DE LA PANTALLA
+        ========================================= */
+
+        resumen();
+        tabla();
+
+        const params = DEM.parametros();
+        if (params.get("nuevo") && DEM.estudiante(params.get("nuevo"))) {
+            formulario(null, params.get("nuevo"));
+        } else if (params.get("ver") && D.visitas.some(v => v.id === params.get("ver"))) {
+            verVisita(params.get("ver"));
+        }
+    </script>
+
+</body>
+</html>

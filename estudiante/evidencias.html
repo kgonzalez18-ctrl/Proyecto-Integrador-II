@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Evidencias | Docente en Marcha</title>
+
+    <link rel="stylesheet" href="estudiante.css">
+
+</head>
+
+<body>
+
+
+    <!-- BARRA LATERAL -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <div class="logo-image">
+
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+
+            </div>
+
+            <div class="logo-text">
+
+                <strong>DOCENTE</strong>
+
+                <span>EN MARCHA</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="user-card">
+
+            <div class="user-avatar">
+                ES
+            </div>
+
+            <div class="user-info">
+
+                <strong>Estudiante</strong>
+
+                <span>Practicante</span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+
+
+            <a href="estudiante.html" class="menu-item">
+
+                <span class="menu-icon">⌂</span>
+
+                <span>Inicio</span>
+
+            </a>
+
+
+            <a href="practica.html" class="menu-item">
+
+                <span class="menu-icon">▣</span>
+
+                <span>Mi práctica</span>
+
+            </a>
+
+
+            <a href="actividades.html" class="menu-item">
+
+                <span class="menu-icon">✓</span>
+
+                <span>Actividades</span>
+
+            </a>
+
+
+            <a href="evidencias.html" class="menu-item active">
+
+                <span class="menu-icon">▧</span>
+
+                <span>Evidencias</span>
+
+            </a>
+
+
+            <a href="evaluaciones.html" class="menu-item">
+
+                <span class="menu-icon">★</span>
+
+                <span>Evaluaciones</span>
+
+            </a>
+
+
+            <a href="retroalimentacion.html" class="menu-item">
+
+                <span class="menu-icon">◌</span>
+
+                <span>Retroalimentaciones</span>
+
+            </a>
+
+
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+
+
+            <a href="perfil.html" class="menu-item">
+
+                <span class="menu-icon">●</span>
+
+                <span>Mi perfil</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+        <button type="button" class="logout" onclick="cerrarSesion()">
+        <span>←</span>
+        Cerrar sesión
+        </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+
+                <h1>
+                    Docente en Marcha
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-user">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <div class="top-user-avatar">
+                    ES
+                </div>
+
+                <div class="top-user-info">
+
+                    <strong>
+                        Estudiante
+                    </strong>
+
+                    <span>
+                        Practicante
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="content-page">
+
+
+            <!-- TITULO -->
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-tag">
+                        ARCHIVOS
+                    </p>
+
+                    <h2>
+                        Evidencias
+                    </h2>
+
+                    <p>
+                        Consulta y entrega las evidencias solicitadas
+                        durante tu práctica.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RESUMEN -->
+
+            <div class="small-cards">
+
+
+                <div class="small-card">
+
+                    <span>
+                        Evidencias entregadas
+                    </span>
+
+                    <strong id="contador-entregadas">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Evidencias revisadas
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Pendientes
+                    </span>
+
+                    <strong id="contador-pendientes">
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong id="contador-total">
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ACTIVIDAD QUE REQUIERE EVIDENCIA -->
+
+            <div class="activity-card">
+
+
+                <div class="activity-information">
+
+                    <span class="section-tag">
+                        ACTIVIDAD
+                    </span>
+
+                    <h3>
+                        No hay actividades pendientes de evidencia
+                    </h3>
+
+                    <p>
+                        Cuando un responsable de tu práctica solicite
+                        una evidencia, aparecerá aquí y podrás adjuntarla.
+                    </p>
+
+                </div>
+
+
+                <div class="activity-status">
+
+                    <span class="status-disabled">
+                        Sin evidencias pendientes
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- ZONA DE CARGA -->
+
+            <div class="content-card upload-card">
+
+
+                <div class="upload-header">
+
+                    <div>
+
+                        <h3>
+                            Entregar evidencias
+                        </h3>
+
+                        <p>
+                            Esta opción estará disponible cuando tengas
+                            una actividad que requiera evidencias.
+                        </p>
+
+                    </div>
+
+
+                    <!-- BOTÓN -->
+
+                    <label
+                        for="archivo-evidencia"
+                        class="upload-button disabled-button">
+
+                        + Agregar archivos
+
+                    </label>
+
+
+                    <input
+                        type="file"
+                        id="archivo-evidencia"
+                        class="file-input"
+                        multiple
+                        disabled
+                        onchange="seleccionarArchivos(this)"
+                    >
+
+                </div>
+
+
+
+                <!-- ARCHIVOS POR ENTREGAR -->
+
+                <div
+                    id="archivos-pendientes"
+                    class="files-container">
+
+                    <div class="empty-files">
+
+                        <div class="empty-icon">
+                            ▧
+                        </div>
+
+                        <h3>
+                            No hay archivos para entregar
+                        </h3>
+
+                        <p>
+                            Cuando una actividad requiera evidencia,
+                            podrás agregar uno o varios archivos.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BOTON ENTREGAR -->
+
+                <div
+                    id="zona-entrega"
+                    class="delivery-area"
+                    style="display: none;">
+
+                    <button
+                        class="deliver-button"
+                        onclick="entregarEvidencias()">
+
+                        Entregar evidencias
+
+                    </button>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- EVIDENCIAS YA ENTREGADAS -->
+
+            <div class="content-card">
+
+
+                <div class="delivered-header">
+
+                    <div>
+
+                        <h3>
+                            Evidencias entregadas
+                        </h3>
+
+                        <p>
+                            Aquí podrás verificar los archivos
+                            que ya fueron entregados.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div
+                    id="evidencias-entregadas"
+                    class="files-container">
+
+                    <div class="empty-files">
+
+                        <div class="empty-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            Aún no has entregado evidencias
+                        </h3>
+
+                        <p>
+                            Las evidencias entregadas aparecerán
+                            aquí para que puedas verificarlas.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script>
+
+
+        /*
+        ==========================================
+        VARIABLES
+        ==========================================
+        */
+
+
+        let archivosPendientes = [];
+
+        let evidenciasEntregadas = [];
+
+
+
+        /*
+        ==========================================
+        SELECCIONAR ARCHIVOS
+        ==========================================
+        */
+
+
+        function seleccionarArchivos(input) {
+
+
+            const nuevosArchivos =
+                Array.from(input.files);
+
+
+            nuevosArchivos.forEach(archivo => {
+
+
+                /*
+                Evitamos agregar exactamente
+                el mismo archivo dos veces.
+                */
+
+                const existe =
+                    archivosPendientes.some(
+                        archivoActual =>
+                        archivoActual.name === archivo.name &&
+                        archivoActual.size === archivo.size
+                    );
+
+
+                if (!existe) {
+
+                    archivosPendientes.push(archivo);
+
+                }
+
+            });
+
+
+            mostrarArchivosPendientes();
+
+
+            /*
+            Limpiamos el input para permitir
+            seleccionar nuevamente archivos.
+            */
+
+            input.value = "";
+
+        }
+
+
+
+        /*
+        ==========================================
+        MOSTRAR ARCHIVOS PENDIENTES
+        ==========================================
+        */
+
+
+        function mostrarArchivosPendientes() {
+
+
+            const contenedor =
+                document.getElementById(
+                    "archivos-pendientes"
+                );
+
+
+            const zonaEntrega =
+                document.getElementById(
+                    "zona-entrega"
+                );
+
+
+            if (archivosPendientes.length === 0) {
+
+
+                zonaEntrega.style.display =
+                    "none";
+
+
+                contenedor.innerHTML = `
+
+                    <div class="empty-files">
+
+                        <div class="empty-icon">
+                            ▧
+                        </div>
+
+                        <h3>
+                            No hay archivos para entregar
+                        </h3>
+
+                        <p>
+                            Agrega uno o varios archivos
+                            para preparar tu entrega.
+                        </p>
+
+                    </div>
+
+                `;
+
+
+                return;
+
+            }
+
+
+
+            zonaEntrega.style.display =
+                "block";
+
+
+            let html = "";
+
+
+            archivosPendientes.forEach(
+                (archivo, indice) => {
+
+
+                html += `
+
+                    <div class="file-item">
+
+                        <div class="file-icon">
+                            📄
+                        </div>
+
+
+                        <div class="file-information">
+
+                            <span class="file-label">
+                                POR ENTREGAR
+                            </span>
+
+                            <h3>
+                                ${archivo.name}
+                            </h3>
+
+                            <p>
+                                ${obtenerTamano(
+                                    archivo.size
+                                )}
+                            </p>
+
+                        </div>
+
+
+                        <button
+                            class="remove-file"
+                            onclick="eliminarArchivo(${indice})">
+
+                            ×
+
+                        </button>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            contenedor.innerHTML = html;
+
+        }
+
+
+
+        /*
+        ==========================================
+        ELIMINAR ARCHIVO PENDIENTE
+        ==========================================
+        */
+
+
+        function eliminarArchivo(indice) {
+
+
+            archivosPendientes.splice(
+                indice,
+                1
+            );
+
+
+            mostrarArchivosPendientes();
+
+        }
+
+
+
+        /*
+        ==========================================
+        ENTREGAR EVIDENCIAS
+        ==========================================
+        */
+
+
+        function entregarEvidencias() {
+
+
+            if (
+                archivosPendientes.length === 0
+            ) {
+
+                alert(
+                    "Debes agregar al menos un archivo."
+                );
+
+                return;
+
+            }
+
+
+
+            /*
+            Pasamos los archivos pendientes
+            a la lista de entregados.
+            */
+
+
+            archivosPendientes.forEach(
+                archivo => {
+
+                    evidenciasEntregadas.push({
+
+                        nombre: archivo.name,
+
+                        tamaño: archivo.size,
+
+                        fecha:
+                            new Date().toLocaleString()
+
+                    });
+
+                }
+            );
+
+
+
+            /*
+            Limpiamos los pendientes.
+            */
+
+            archivosPendientes = [];
+
+
+            mostrarArchivosPendientes();
+
+
+            mostrarEvidenciasEntregadas();
+
+
+            actualizarContadores();
+
+
+            alert(
+                "Las evidencias fueron entregadas correctamente."
+            );
+
+        }
+
+
+
+        /*
+        ==========================================
+        MOSTRAR EVIDENCIAS ENTREGADAS
+        ==========================================
+        */
+
+
+        function mostrarEvidenciasEntregadas() {
+
+
+            const contenedor =
+                document.getElementById(
+                    "evidencias-entregadas"
+                );
+
+
+            if (
+                evidenciasEntregadas.length === 0
+            ) {
+
+                contenedor.innerHTML = `
+
+                    <div class="empty-files">
+
+                        <div class="empty-icon">
+                            ✓
+                        </div>
+
+                        <h3>
+                            Aún no has entregado evidencias
+                        </h3>
+
+                        <p>
+                            Las evidencias entregadas aparecerán aquí.
+                        </p>
+
+                    </div>
+
+                `;
+
+                return;
+
+            }
+
+
+
+            let html = "";
+
+
+            evidenciasEntregadas.forEach(
+                (evidencia, indice) => {
+
+
+                html += `
+
+                    <div class="file-item delivered-file">
+
+                        <div class="file-icon">
+                            ✓
+                        </div>
+
+
+                        <div class="file-information">
+
+                            <span class="file-label delivered-label">
+                                ENTREGADO
+                            </span>
+
+                            <h3>
+                                ${evidencia.nombre}
+                            </h3>
+
+                            <p>
+                                ${obtenerTamano(
+                                    evidencia.tamaño
+                                )}
+                                ·
+                                Entregado:
+                                ${evidencia.fecha}
+                            </p>
+
+                        </div>
+
+
+                        <span class="delivered-check">
+                            ✓
+                        </span>
+
+                    </div>
+
+                `;
+
+            });
+
+
+            contenedor.innerHTML = html;
+
+        }
+
+
+
+        /*
+        ==========================================
+        ACTUALIZAR CONTADORES
+        ==========================================
+        */
+
+
+        function actualizarContadores() {
+
+
+            const cantidad =
+                evidenciasEntregadas.length;
+
+
+            document.getElementById(
+                "contador-entregadas"
+            ).textContent = cantidad;
+
+
+            document.getElementById(
+                "contador-total"
+            ).textContent = cantidad;
+
+
+            /*
+            Por ahora no hay pendientes
+            porque todo lo entregado se considera
+            entregado correctamente.
+            */
+
+            document.getElementById(
+                "contador-pendientes"
+            ).textContent = 0;
+
+        }
+
+
+
+        /*
+        ==========================================
+        TAMAÑO DEL ARCHIVO
+        ==========================================
+        */
+
+
+        function obtenerTamano(bytes) {
+
+
+            if (bytes === 0) {
+
+                return "0 Bytes";
+
+            }
+
+
+            const unidades = [
+                "Bytes",
+                "KB",
+                "MB",
+                "GB"
+            ];
+
+
+            const indice =
+                Math.floor(
+                    Math.log(bytes) /
+                    Math.log(1024)
+                );
+
+
+            return (
+                parseFloat(
+                    (
+                        bytes /
+                        Math.pow(
+                            1024,
+                            indice
+                        )
+                    ).toFixed(2)
+                )
+                +
+                " "
+                +
+                unidades[indice]
+            );
+
+        }
+
+
+    </script>
+
+<script>
+
+    function cerrarSesion() {
+
+        const confirmar = confirm("¿Estás seguro de cerrar sesión?");
+
+        if (confirmar) {
+
+            window.location.replace("../inicio/index.html");
+
+        }
+
+    }
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docentes asesores | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item active">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        PERSONAS
+                    </p>
+                    <h2>
+                        Docentes asesores
+                    </h2>
+                    <p>
+                        Registra a los docentes y consulta su carga de grupos y estudiantes.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">+ Registrar docente</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Docentes registrados</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Activos</span>
+                    <strong id="c-activos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Con grupos asignados</span>
+                    <strong id="c-grupos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Sin grupo</span>
+                    <strong id="c-libres">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre, cédula o programa...">
+                <select class="select-input" id="f-estado"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v || "—")}</strong></div>`;
+        const gruposDe = d => D.grupos.filter(g => g.docenteId === d.id);
+
+        function resumen() {
+            $("#c-total").textContent = D.docentes.length;
+            $("#c-activos").textContent = D.docentes.filter(d => d.estado === "Activo").length;
+            $("#c-grupos").textContent = D.docentes.filter(d => gruposDe(d).length).length;
+            $("#c-libres").textContent = D.docentes.filter(d => d.estado === "Activo" && !gruposDe(d).length).length;
+        }
+        $("#f-estado").innerHTML = DEM.opciones(["Activo", "Inactivo"].map(x => ({ valor: x, texto: x })), "", "Todos los estados");
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fe = $("#f-estado").value;
+            const lista = D.docentes.filter(d => (!q || (d.nombre + " " + d.cedula + " " + d.programa).toLowerCase().includes(q)) && (!fe || d.estado === fe));
+            $("#tabla").innerHTML = DEM.tablaHTML(
+                ["DOCENTE", "PROGRAMA", "CONTACTO", "GRUPOS", "ESTUDIANTES", "ESTADO", ""],
+                lista.map(d => [
+                    DEM.persona(d.nombre, "C.C. " + d.cedula),
+                    esc(d.programa || "—") + "<small>" + esc(d.facultad || "") + "</small>",
+                    esc(d.correo) + "<small>" + esc(d.telefono || "") + "</small>",
+                    gruposDe(d).length,
+                    DEM.estadisticasDocente(d.id).estudiantes,
+                    DEM.badge(d.estado, d.estado === "Activo" ? "badge-green" : ""),
+                    `<button type="button" class="secondary-button small-button" data-ver="${d.id}">Ver</button>
+                     <button type="button" class="secondary-button small-button" data-editar="${d.id}">Editar</button>
+                     <button type="button" class="danger-button small-button" data-eliminar="${d.id}">Eliminar</button>`
+                ]),
+                D.docentes.length ? "No hay docentes con esos filtros." : "Aún no has registrado docentes asesores.");
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+            $$("[data-eliminar]").forEach(b => b.onclick = () => eliminar(b.dataset.eliminar));
+        }
+        function refrescar() { resumen(); tabla(); }
+        ["#f-buscar", "#f-estado"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+        function ver(id) {
+            const d = DEM.docente(id), s = DEM.estadisticasDocente(id), gs = gruposDe(d);
+            DEM.abrirModal({
+                tam: "wide", tag: "DOCENTE ASESOR",
+                encabezado: `<div class="modal-person"><div class="mini-avatar">${DEM.iniciales(d.nombre)}</div><div><h3>${esc(d.nombre)}</h3><p class="modal-sub">${esc(d.programa || "Sin programa")} · ${d.estado}</p></div></div>`,
+                cuerpo: `
+                <div class="small-cards">
+                    <div class="small-card"><span>Grupos</span><strong>${gs.length}</strong></div>
+                    <div class="small-card"><span>Estudiantes</span><strong>${s.estudiantes}</strong></div>
+                    <div class="small-card"><span>Visitas realizadas</span><strong>${s.visitas}</strong></div>
+                    <div class="small-card"><span>Evaluaciones calificadas</span><strong>${s.evaluaciones}</strong></div>
+                </div>
+                <div class="modal-block"><h4>INFORMACIÓN</h4><div class="info-grid">
+                    ${info("Cédula", d.cedula)}${info("Correo electrónico", d.correo)}${info("Teléfono", d.telefono)}
+                    ${info("Facultad", d.facultad)}${info("Programa", d.programa)}${info("Estado", d.estado)}
+                </div></div>
+                <div class="modal-block"><h4>GRUPOS A CARGO (${gs.length})</h4>
+                    ${gs.length ? gs.map(g => { const p = DEM.practica(g.practicaId); return `<div class="list-row"><div class="list-main"><strong>${esc(g.nombre)}</strong>
+                        <span>${esc(p ? p.nombre : "")} · ${esc(g.institucion)}</span></div><span class="badge badge-teal">${DEM.estudiantesDeGrupo(g.id).length}/${g.cupo}</span></div>`; }).join("")
+                    : '<div class="list-empty">No tiene grupos asignados. Asígnalo desde Grupos.</div>'}</div>`,
+                pie: `<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button><button type="button" class="primary-button" id="x-editar">Editar</button>`
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+            $("#x-editar").onclick = () => formulario(id);
+        }
+
+        function formulario(id) {
+            const d = id ? DEM.docente(id) : null;
+            DEM.formModal({
+                tag: "DOCENTES ASESORES", titulo: d ? "Editar docente" : "Registrar docente",
+                sub: "El docente ingresa a la plataforma con su cédula como usuario y contraseña inicial.",
+                valores: d ? { nombre: d.nombre, cedula: d.cedula, correo: d.correo, telefono: d.telefono, facultad: d.facultad, programa: d.programa, estado: d.estado } : { estado: "Activo" },
+                campos: [
+                    { k: "nombre", label: "Nombre completo", tipo: "text", req: true, full: true },
+                    { k: "cedula", label: "Cédula", tipo: "text", req: true },
+                    { k: "correo", label: "Correo electrónico", tipo: "email", req: true },
+                    { k: "telefono", label: "Teléfono", tipo: "text" },
+                    { k: "estado", label: "Estado", tipo: "select", opciones: ["Activo", "Inactivo"].map(x => ({ valor: x, texto: x })) },
+                    { k: "facultad", label: "Facultad", tipo: "text" },
+                    { k: "programa", label: "Programas que asesora", tipo: "text", ph: "Ej: Licenciatura en Matemáticas" }
+                ],
+                validar: v => {
+                    if (!/^\S+@\S+\.\S+$/.test(v.correo)) return "Escribe un correo electrónico válido.";
+                    if (D.docentes.some(x => x.id !== id && x.cedula === v.cedula)) return "Ya existe un docente con esa cédula.";
+                    if (d && v.estado === "Inactivo" && gruposDe(d).length) return "No puedes inactivar a un docente con grupos a cargo. Reasigna sus grupos primero.";
+                    return null;
+                },
+                guardar: v => {
+                    if (d) Object.assign(d, v); else D.docentes.push(Object.assign({ id: DEM.uid("dc") }, v));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(d ? "Docente actualizado." : "Docente registrado correctamente.");
+                }
+            });
+        }
+
+        function eliminar(id) {
+            if (gruposDe(DEM.docente(id)).length) { DEM.aviso("No se puede eliminar: el docente tiene grupos a cargo.", "error"); return; }
+            if (!confirm("¿Eliminar este docente?")) return;
+            D.docentes = D.docentes.filter(d => d.id !== id);
+            DEM.guardar(); refrescar(); DEM.aviso("Docente eliminado.");
+        }
+        refrescar();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prácticas | Docente en Marcha</title>
+    <link rel="stylesheet" href="director.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                DI
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Director</strong>
+                <span>Director de programa</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="director.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item active">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <p class="menu-title second-title">
+                GESTIÓN
+            </p>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                ANÁLISIS
+            </p>
+            <a href="reportes.html" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+            <a href="indicadores.html" class="menu-item">
+                <span class="menu-icon">◐</span>
+                <span>Indicadores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    DI
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Director
+                    </strong>
+                    <span>
+                        Director de programa
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        SUPERVISIÓN
+                    </p>
+                    <h2>
+                        Prácticas
+                    </h2>
+                    <p>
+                        Supervisa el estado de cada práctica, sus fechas, horas reglamentarias y grupos.
+                    </p>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Prácticas</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>En curso</span>
+                    <strong id="c-curso">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Estudiantes en práctica</span>
+                    <strong id="c-estudiantes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Cumplimiento de horas</span>
+                    <strong id="c-cumplimiento">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre o programa...">
+                <select class="select-input" id="f-estado"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="director.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v || "—")}</strong></div>`;
+
+        $("#f-estado").innerHTML = DEM.opciones(["Planeada", "En curso", "Finalizada"].map(x => ({ valor: x, texto: x })), "", "Todos los estados");
+
+        function resumen() {
+            const s = DEM.estadisticas(DEM.estudiantesAsignados());
+            $("#c-total").textContent = D.practicas.length;
+            $("#c-curso").textContent = D.practicas.filter(p => DEM.estadoPractica(p) === "En curso").length;
+            $("#c-estudiantes").textContent = s.estudiantes;
+            $("#c-cumplimiento").textContent = s.horasTot ? s.cumplimiento + "%" : "—";
+        }
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fe = $("#f-estado").value;
+            const lista = D.practicas.filter(p => (!q || (p.nombre + " " + p.programa).toLowerCase().includes(q)) && (!fe || DEM.estadoPractica(p) === fe));
+            $("#tabla").innerHTML = DEM.tablaHTML(["PRÁCTICA", "EJECUCIÓN", "HORAS REGL.", "GRUPOS", "ESTUDIANTES", "CUMPLIMIENTO", "ESTADO", ""],
+                lista.map(p => {
+                    const s = DEM.estadisticasPractica(p.id), est = DEM.estadoPractica(p);
+                    return ["<strong style='color:var(--dark-blue)'>" + esc(p.nombre) + "</strong><small>" + esc(p.programa) + " · " + p.semestre + ".º semestre</small>",
+                        DEM.fmtFecha(p.inicio) + "<small>al " + DEM.fmtFecha(p.fin) + "</small>", p.horas + " h", DEM.gruposDePractica(p.id).length, s.estudiantes,
+                        '<div class="progress-cell">' + DEM.barra(s.cumplimiento) + "<small>" + (s.horasTot ? s.cumplimiento + "%" : "Sin estudiantes") + "</small></div>",
+                        DEM.badge(est, DEM.CLASE_PRACTICA[est]),
+                        `<button type="button" class="secondary-button small-button" data-ver="${p.id}">Ver</button>`];
+                }), D.practicas.length ? "No hay prácticas con esos filtros." : "El coordinador aún no ha configurado prácticas.");
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+        }
+        resumen(); tabla();
+        ["#f-buscar", "#f-estado"].forEach(s => $(s).addEventListener("input", tabla));
+
+        function ver(id) {
+            const p = DEM.practica(id), s = DEM.estadisticasPractica(id), grupos = DEM.gruposDePractica(id), est = DEM.estadoPractica(p);
+            const dias = DEM.diasEntre(DEM.hoy(), p.fin);
+            DEM.abrirModal({
+                tam: "wide", tag: "PRÁCTICA", titulo: p.nombre, sub: p.programa + " · " + p.semestre + ".º semestre",
+                cuerpo: `
+                <div class="small-cards">
+                    <div class="small-card"><span>Estudiantes</span><strong>${s.estudiantes}</strong></div>
+                    <div class="small-card"><span>Cumplimiento de horas</span><strong>${s.horasTot ? s.cumplimiento + "%" : "—"}</strong></div>
+                    <div class="small-card"><span>Promedio evaluaciones</span><strong>${DEM.fmtNota(s.promedio)}</strong></div>
+                    <div class="small-card"><span>Estudiantes rezagados</span><strong>${s.rezagados}</strong></div>
+                </div>
+                <div class="modal-block"><h4>FECHAS Y HORAS</h4><div class="info-grid">
+                    ${info("Estado", est)}${info("Horas reglamentarias", p.horas + " h")}${info("Inicio", DEM.fmtFecha(p.inicio))}
+                    ${info("Finalización", DEM.fmtFecha(p.fin))}${info("Tiempo", est === "Finalizada" ? "Finalizó hace " + Math.abs(dias) + " días" : est === "Planeada" ? "Inicia en " + DEM.diasEntre(DEM.hoy(), p.inicio) + " días" : "Finaliza en " + dias + " días")}
+                    ${info("Instituciones asociadas", p.institucionIds.length)}
+                </div></div>
+                <div class="modal-block"><h4>GRUPOS (${grupos.length})</h4>
+                    ${grupos.length ? grupos.map(g => { const d = g.docenteId && DEM.docente(g.docenteId), e = DEM.estadisticasGrupo(g.id);
+                        return `<div class="list-row"><div class="list-main"><strong>${esc(g.nombre)}</strong><span>${esc(g.institucion)} · ${d ? esc(d.nombre) : "Sin docente asesor"}</span></div>
+                        <div class="list-side"><span class="badge badge-teal">${e.estudiantes}/${g.cupo}</span> ${e.horasTot ? DEM.badge(e.cumplimiento + "% horas", "") : ""}</div></div>`; }).join("")
+                    : '<div class="list-empty">Aún no hay grupos en esta práctica.</div>'}</div>`,
+                pie: '<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>'
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+        }
+    </script>
+
+</body>
+</html>

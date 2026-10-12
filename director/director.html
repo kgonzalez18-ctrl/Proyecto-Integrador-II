@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Docente en Marcha</title>
+    <link rel="stylesheet" href="director.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                DI
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Director</strong>
+                <span>Director de programa</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="director.html" class="menu-item active">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <p class="menu-title second-title">
+                GESTIÓN
+            </p>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                ANÁLISIS
+            </p>
+            <a href="reportes.html" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+            <a href="indicadores.html" class="menu-item">
+                <span class="menu-icon">◐</span>
+                <span>Indicadores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    DI
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Director
+                    </strong>
+                    <span>
+                        Director de programa
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- INICIO -->
+        <section class="home-section home-docente">
+            <div class="home-content">
+
+                <div class="home-logo">
+                    <img src="../imagenes/fotoiniciosesion.jpg"
+                         alt="Docente en Marcha">
+                </div>
+
+                <p class="home-tag">
+                    PLATAFORMA DE PRÁCTICAS ACADÉMICAS
+                </p>
+
+                <h2>
+                    Bienvenido a
+                    <span>
+                        Docente en Marcha
+                    </span>
+                </h2>
+
+                <p class="home-description">
+                    Plataforma para la gestión y seguimiento de las prácticas académicas. Desde aquí supervisas las prácticas, apruebas asignaciones y analizas los resultados del programa.
+                </p>
+
+                <div class="home-line"></div>
+
+                <p class="home-help">
+                    Selecciona una opción del menú lateral para comenzar.
+                </p>
+
+            </div>
+        </section>
+
+        <section class="content-page dashboard">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        DASHBOARD GENERAL
+                    </p>
+                    <h2>
+                        Panel del programa
+                    </h2>
+                    <p>
+                        Estado general de las prácticas, estudiantes, horas, evaluaciones e instituciones.
+                    </p>
+                </div>
+                <span class="status-badge teal" id="periodo">Periodo académico</span>
+            </div>
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Prácticas en curso</span>
+                    <strong id="r-practicas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Estudiantes en práctica</span>
+                    <strong id="r-estudiantes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Cumplimiento de horas</span>
+                    <strong id="r-horas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Promedio de evaluaciones</span>
+                    <strong id="r-nota">0</strong>
+                </div>
+            </div>
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Asignaciones por aprobar</span>
+                    <strong id="r-asignaciones">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Instituciones con convenio vigente</span>
+                    <strong id="r-instituciones">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Tasa de aprobación</span>
+                    <strong id="r-aprobacion">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Evaluaciones calificadas</span>
+                    <strong id="r-evaluaciones">0</strong>
+                </div>
+            </div>
+
+            <div class="two-columns">
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>PRÁCTICAS</p>
+                            <h3>Cumplimiento de horas por práctica</h3>
+                        </div>
+                        <a href="practicas.html" class="link-more">Ver prácticas</a>
+                    </div>
+                    <div id="l-practicas"></div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>ASIGNACIONES</p>
+                            <h3>Por aprobar</h3>
+                        </div>
+                        <a href="asignaciones.html" class="link-more">Ver asignaciones</a>
+                    </div>
+                    <div id="l-asignaciones"></div>
+                </div>
+            </div>
+            <div class="two-columns">
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>INSTITUCIONES</p>
+                            <h3>Estado de los convenios</h3>
+                        </div>
+                        <a href="instituciones.html" class="link-more">Ver instituciones</a>
+                    </div>
+                    <div id="l-convenios"></div>
+                </div>
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>INDICADORES</p>
+                            <h3>Indicadores clave</h3>
+                        </div>
+                        <a href="indicadores.html" class="link-more">Ver indicadores</a>
+                    </div>
+                    <div id="l-indicadores"></div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="director.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+
+        $("#periodo").textContent = "Periodo académico " + DEM.periodo();
+
+        const asignados = DEM.estudiantesAsignados();
+        const s = DEM.estadisticas(asignados);
+        const ind = calcularIndicadores();
+        const vigentes = D.instituciones.filter(DEM.convenioVigente).length;
+
+        /* ---------- TARJETAS ---------- */
+
+        $("#r-practicas").textContent = D.practicas.filter(p => DEM.estadoPractica(p) === "En curso").length;
+        $("#r-estudiantes").textContent = s.estudiantes;
+        $("#r-horas").textContent = s.horasTot ? s.cumplimiento + "%" : "—";
+        $("#r-nota").textContent = DEM.fmtNota(s.promedio);
+        $("#r-asignaciones").textContent = D.asignaciones.filter(a => a.estado === "Pendiente de aprobación").length;
+        $("#r-instituciones").textContent = vigentes + " de " + D.instituciones.length;
+        $("#r-aprobacion").textContent = s.aprobacion === null ? "—" : s.aprobacion + "%";
+        $("#r-evaluaciones").textContent = s.evaluaciones;
+
+        /* ---------- ESTADO DE LAS PRÁCTICAS ---------- */
+
+        $("#l-practicas").innerHTML = DEM.barrasHTML(D.practicas.map(p => {
+            const e = DEM.estadisticasPractica(p.id);
+            return { etq: p.nombre.split(" – ")[0] + " · " + p.programa, valor: e.cumplimiento, max: 100, texto: e.horasTot ? e.cumplimiento + "%" : "Sin estudiantes",
+                     clase: e.cumplimiento < D.config.metaHoras * 0.8 ? "warn" : "" };
+        }), "Aún no hay prácticas configuradas.");
+
+        /* ---------- ASIGNACIONES POR APROBAR ---------- */
+
+        const pend = D.asignaciones.filter(a => a.estado === "Pendiente de aprobación").slice(0, 5);
+        $("#l-asignaciones").innerHTML = pend.length ? pend.map(a => {
+            const e = DEM.estudiante(a.estudianteId), g = DEM.grupo(a.grupoId);
+            return `<div class="list-row"><div class="list-main"><strong>${esc(e ? e.nombre : "")}</strong><span>${esc(g ? g.nombre + " · " + g.institucion : "")}</span></div>
+                <a class="primary-button small-button" href="asignaciones.html?ver=${a.id}">Revisar</a></div>`;
+        }).join("") : '<div class="list-empty">No hay asignaciones pendientes de aprobación.</div>';
+
+        /* ---------- CONVENIOS ---------- */
+
+        const total = D.instituciones.length;
+        $("#l-convenios").innerHTML = DEM.barrasHTML(total ? ["Vigente", "En trámite", "Vencido", "Sin convenio"].map(est => {
+            const n = D.instituciones.filter(i => DEM.estadoConvenio(i) === est).length;
+            return { etq: "Convenio " + est.toLowerCase(), valor: n, max: total, texto: String(n), clase: est === "Vigente" ? "dark" : est === "En trámite" ? "warn" : "bad" };
+        }) : [], "Aún no hay instituciones registradas.");
+
+        /* ---------- INDICADORES ---------- */
+
+        $("#l-indicadores").innerHTML = ind.map(i => `<div class="list-row">
+            <div class="list-main"><strong>${esc(i.nombre)}</strong><span>Meta ${i.metaTxt}</span></div>
+            <div class="list-side"><b style="color:var(--dark-blue);font-size:14px;margin-right:10px">${i.texto}</b>${DEM.badge(i.estado.txt, i.estado.cls)}</div></div>`).join("");
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes | Docente en Marcha</title>
+    <link rel="stylesheet" href="director.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                DI
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Director</strong>
+                <span>Director de programa</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="director.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <p class="menu-title second-title">
+                GESTIÓN
+            </p>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                ANÁLISIS
+            </p>
+            <a href="reportes.html" class="menu-item active">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+            <a href="indicadores.html" class="menu-item">
+                <span class="menu-icon">◐</span>
+                <span>Indicadores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    DI
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Director
+                    </strong>
+                    <span>
+                        Director de programa
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        ANÁLISIS
+                    </p>
+                    <h2>
+                        Reportes
+                    </h2>
+                    <p>
+                        Genera reportes estadísticos, informes individuales, consolidados por grupo y comparativos entre prácticas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-card no-print" style="margin-bottom:20px">
+                <div class="card-title"><p>GENERADOR</p><h3>¿Qué reporte necesitas?</h3></div>
+                <div class="form-grid">
+                    <div class="form-field"><label for="r-tipo">Tipo de reporte</label>
+                        <select class="select-input" id="r-tipo">
+                            <option value="general">Reporte estadístico general</option>
+                            <option value="estudiante">Informe individual por estudiante</option>
+                            <option value="grupo">Informe consolidado por grupo</option>
+                            <option value="comparativo">Comparativo entre prácticas</option>
+                        </select></div>
+                    <div class="form-field" id="r-param-caja"><label for="r-param" id="r-param-label">Parámetro</label>
+                        <select class="select-input" id="r-param"></select></div>
+                    <div class="form-field full" id="r-multi-caja" style="display:none"><label class="form-label">Prácticas a comparar</label><div id="r-multi"></div></div>
+                </div>
+                <div style="margin-top:18px"><button type="button" class="primary-button" id="btn-generar">Generar reporte</button></div>
+            </div>
+
+            <div id="reporte"></div>
+
+        </section>
+    </main>
+
+    <script src="director.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        let ultimo = null;   // { titulo, csv }
+
+        const fmtPct = v => v === null || v === undefined ? "—" : v + "%";
+        const resPct = s => s.horasTot ? s.cumplimiento + "%" : "—";
+
+
+        /* =========================================
+           CONTROLES DEL GENERADOR
+        ========================================= */
+
+        function prepararParametro() {
+            const tipo = $("#r-tipo").value;
+            $("#r-param-caja").style.display = (tipo === "estudiante" || tipo === "grupo") ? "block" : "none";
+            $("#r-multi-caja").style.display = tipo === "comparativo" ? "block" : "none";
+            if (tipo === "estudiante") {
+                $("#r-param-label").textContent = "Estudiante";
+                $("#r-param").innerHTML = DEM.opciones(DEM.estudiantesAsignados().map(e => ({ valor: e.id, texto: e.nombre })), $("#r-param").value, "Selecciona un estudiante");
+            } else if (tipo === "grupo") {
+                $("#r-param-label").textContent = "Grupo";
+                $("#r-param").innerHTML = DEM.opciones(D.grupos.map(g => ({ valor: g.id, texto: g.nombre + " · " + g.institucion })), $("#r-param").value, "Selecciona un grupo");
+            } else if (tipo === "comparativo") {
+                $("#r-multi").innerHTML = D.practicas.length ? D.practicas.map(p => `<label class="check-row" style="padding:7px 0"><input type="checkbox" data-pr="${p.id}" checked><span>${esc(p.nombre)} · ${esc(p.programa)}</span></label>`).join("")
+                    : '<p class="form-hint">Aún no hay prácticas configuradas.</p>';
+            }
+        }
+        $("#r-tipo").onchange = prepararParametro;
+        prepararParametro();
+
+
+        /* =========================================
+           ARMADO DE LA HOJA DEL REPORTE
+        ========================================= */
+
+        function hoja(titulo, sub, cuerpo) {
+            const dir = D.director || {};
+            return `<div class="report-actions no-print">
+                    <button type="button" class="primary-button" id="b-imprimir">Imprimir / Guardar como PDF</button>
+                    <button type="button" class="secondary-button" id="b-csv">Descargar CSV</button>
+                </div>
+                <div class="report-sheet">
+                    <div class="report-head">
+                        <div><p class="section-tag">${esc(sub)}</p><h2>${esc(titulo)}</h2></div>
+                        <div class="report-meta">Docente en Marcha · Prácticas académicas<br>Periodo ${DEM.periodo()}<br>Generado el ${DEM.fmtFecha(DEM.hoy())}${dir.nombre ? "<br>Director: " + esc(dir.nombre) : ""}${dir.programa ? "<br>" + esc(dir.programa) : ""}</div>
+                    </div>${cuerpo}</div>`;
+        }
+
+        const seccion = t => `<h4 class="report-section">${t}</h4>`;
+        const cuadro = (pares) => `<div class="info-grid">${pares.map(p => `<div class="info-item"><span>${p[0]}</span><strong>${esc(p[1] === null || p[1] === undefined || p[1] === "" ? "—" : p[1])}</strong></div>`).join("")}</div>`;
+
+        function mostrar(titulo, sub, cuerpo, csv) {
+            ultimo = { titulo, csv };
+            $("#reporte").innerHTML = hoja(titulo, sub, cuerpo);
+            $("#b-imprimir").onclick = () => window.print();
+            $("#b-csv").onclick = () => DEM.descargarCSV(titulo.toLowerCase().replace(/[^a-z0-9áéíóúñ]+/gi, "_"), csv);
+            $("#reporte").scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+
+        /* =========================================
+           1. REPORTE ESTADÍSTICO GENERAL
+        ========================================= */
+
+        function general() {
+            const asign = DEM.estudiantesAsignados(), s = DEM.estadisticas(asign), ind = calcularIndicadores();
+            const asig = ["Borrador", "Pendiente de aprobación", "Aprobada", "Rechazada"].map(x => [x, D.asignaciones.filter(a => a.estado === x).length]);
+            const dist = distribucionNotas(asign);
+
+            const filasPr = D.practicas.map(p => { const e = DEM.estadisticasPractica(p.id); return [p.nombre, p.programa, e.estudiantes, resPct(e), DEM.fmtNota(e.promedio), fmtPct(e.aprobacion), e.visitas]; });
+            const filasDoc = D.docentes.map(d => { const e = DEM.estadisticasDocente(d.id); return [d.nombre, D.grupos.filter(g => g.docenteId === d.id).length, e.estudiantes, e.visitas, e.evaluaciones, DEM.fmtNota(e.promedio)]; });
+
+            const cuerpo =
+                seccion("RESUMEN DEL PROGRAMA") + cuadro([["Prácticas", D.practicas.length], ["Grupos", D.grupos.length], ["Instituciones", D.instituciones.length],
+                    ["Docentes asesores", D.docentes.length], ["Estudiantes en práctica", s.estudiantes], ["Visitas realizadas", s.visitas]]) +
+                seccion("INDICADORES CLAVE") + DEM.tablaHTML(["INDICADOR", "VALOR", "META", "ESTADO"], ind.map(i => [esc(i.nombre), "<b>" + i.texto + "</b>", i.metaTxt, DEM.badge(i.estado.txt, i.estado.cls)])) +
+                seccion("ASIGNACIONES") + DEM.tablaHTML(["ESTADO", "CANTIDAD"], asig.map(a => [a[0], a[1]]), "") +
+                seccion("RESULTADOS POR PRÁCTICA") + DEM.tablaHTML(["PRÁCTICA", "PROGRAMA", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN", "VISITAS"], filasPr.map(f => f.map(esc)), "Sin prácticas.") +
+                seccion("SEGUIMIENTO POR DOCENTE ASESOR") + DEM.tablaHTML(["DOCENTE", "GRUPOS", "ESTUDIANTES", "VISITAS", "EVAL. CALIFICADAS", "PROMEDIO"], filasDoc.map(f => f.map(esc)), "Sin docentes.") +
+                seccion("DISTRIBUCIÓN DE CALIFICACIONES") + DEM.barrasHTML(dist);
+
+            const csv = [["REPORTE ESTADÍSTICO GENERAL", "Periodo " + DEM.periodo(), DEM.hoy()], [], ["INDICADOR", "VALOR", "META", "ESTADO"],
+                ...ind.map(i => [i.nombre, i.texto, i.metaTxt, i.estado.txt]), [], ["PRÁCTICA", "PROGRAMA", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN", "VISITAS"], ...filasPr,
+                [], ["DOCENTE", "GRUPOS", "ESTUDIANTES", "VISITAS", "EVAL. CALIFICADAS", "PROMEDIO"], ...filasDoc];
+            mostrar("Reporte estadístico general", "REPORTE ESTADÍSTICO", cuerpo, csv);
+        }
+
+
+        /* =========================================
+           2. INFORME INDIVIDUAL POR ESTUDIANTE
+        ========================================= */
+
+        function individual(id) {
+            const e = DEM.estudiante(id);
+            if (!e || !e.grupoId) { DEM.aviso("Selecciona un estudiante con asignación aprobada.", "error"); return; }
+            const g = DEM.grupo(e.grupoId), p = DEM.practica(g.practicaId), d = docenteDeEstudiante(e);
+            const vis = DEM.visitasDe(id), evs = DEM.evaluacionesDe(id), cal = DEM.calificadasDe(id), prom = DEM.promedioEstudiante(id);
+            const retros = DEM.retrosDe(id), est = DEM.estadoAvance(e);
+
+            const concl = "El estudiante lleva " + (e.horasReal || 0) + " de " + p.horas + " horas (" + DEM.progreso(e) + "%) y se encuentra " + est.toLowerCase() + ". " +
+                (cal.length ? "Su promedio en " + cal.length + " evaluación(es) calificada(s) es " + DEM.fmtNota(prom) + " (" + DEM.valoracionDe(prom).toLowerCase() + ")." : "Aún no tiene evaluaciones calificadas.") +
+                " Se han realizado " + vis.filter(v => v.estado === "Realizada").length + " visita(s) de acompañamiento.";
+
+            const cuerpo =
+                seccion("DATOS DEL ESTUDIANTE") + cuadro([["Nombre", e.nombre], ["Cédula", e.cedula], ["Programa", e.programa], ["Semestre", e.semestre + ".º"], ["Correo", e.correo], ["Estado", e.estado]]) +
+                seccion("PRÁCTICA ASIGNADA") + cuadro([["Práctica", p.nombre], ["Grupo", g.nombre], ["Docente asesor", d && d.nombre], ["Institución receptora", g.institucion],
+                    ["Periodo", DEM.fmtFecha(p.inicio) + " – " + DEM.fmtFecha(p.fin)], ["Horas realizadas", (e.horasReal || 0) + " de " + p.horas + " (" + DEM.progreso(e) + "%)"]]) +
+                seccion("VISITAS") + DEM.tablaHTML(["FECHA", "MODALIDAD", "ESTADO", "VALORACIÓN", "OBSERVACIONES"], vis.map(v => [DEM.fmtFecha(v.fecha), esc(v.modalidad), v.estado, esc(v.valoracion || "—"), esc(v.estado === "Realizada" ? v.fortalezas : v.objetivo)]), "Sin visitas registradas.") +
+                seccion("EVALUACIONES") + DEM.tablaHTML(["CUESTIONARIO", "ESTADO", "CUESTIONARIO", "RÚBRICA", "NOTA FINAL", "OBSERVACIÓN GENERAL"], evs.map(x => { const c = DEM.cuestionario(x.cuestionarioId);
+                    return [esc(c ? c.nombre : "—"), x.estado, x.estado === "Calificada" ? DEM.fmtNota(x.notaCuestionario) : "—", x.estado === "Calificada" && x.notaRubrica !== null ? DEM.fmtNota(x.notaRubrica) : "—",
+                        x.estado === "Calificada" ? DEM.pillNota(x.nota) : "—", esc(x.observaciones || "—")]; }), "Sin evaluaciones.") +
+                seccion("RETROALIMENTACIONES") + DEM.tablaHTML(["FECHA", "TIPO", "TÍTULO", "VALORACIÓN"], retros.map(r => [DEM.fmtFecha(r.fecha), r.tipo, esc(r.titulo), esc(r.valoracion || "—")]), "Sin retroalimentaciones.") +
+                seccion("CONCLUSIÓN") + `<div class="text-block">${esc(concl)}</div>`;
+
+            const csv = [["INFORME INDIVIDUAL", e.nombre, e.cedula], ["Práctica", p.nombre], ["Grupo", g.nombre], ["Docente asesor", d ? d.nombre : ""], ["Institución", g.institucion],
+                ["Horas", (e.horasReal || 0) + "/" + p.horas], ["Estado", est], ["Promedio", DEM.fmtNota(prom)], [], ["EVALUACIÓN", "ESTADO", "NOTA CUESTIONARIO", "NOTA RÚBRICA", "NOTA FINAL"],
+                ...evs.map(x => { const c = DEM.cuestionario(x.cuestionarioId); return [c ? c.nombre : "", x.estado, DEM.fmtNota(x.notaCuestionario), DEM.fmtNota(x.notaRubrica), DEM.fmtNota(x.nota)]; }),
+                [], ["VISITA", "ESTADO", "VALORACIÓN"], ...vis.map(v => [v.fecha, v.estado, v.valoracion || ""])];
+            mostrar("Informe individual – " + e.nombre, "INFORME INDIVIDUAL", cuerpo, csv);
+        }
+
+
+        /* =========================================
+           3. INFORME CONSOLIDADO POR GRUPO
+        ========================================= */
+
+        function porGrupo(id) {
+            const g = DEM.grupo(id);
+            if (!g) { DEM.aviso("Selecciona un grupo.", "error"); return; }
+            const p = DEM.practica(g.practicaId), d = g.docenteId && DEM.docente(g.docenteId), ests = DEM.estudiantesDeGrupo(id), s = DEM.estadisticasGrupo(id);
+            const filas = ests.map(e => [e.nombre, (e.horasReal || 0) + "/" + p.horas, DEM.progreso(e) + "%", DEM.estadoAvance(e), DEM.visitasRealizadasDe(e.id).length, DEM.calificadasDe(e.id).length, DEM.fmtNota(DEM.promedioEstudiante(e.id))]);
+
+            const cuerpo =
+                seccion("DATOS DEL GRUPO") + cuadro([["Grupo", g.nombre], ["Práctica", p && p.nombre], ["Docente asesor", d && d.nombre], ["Institución", g.institucion],
+                    ["Jornada y horario", g.jornada + (g.horario ? " · " + g.horario : "")], ["Cupo", ests.length + " de " + g.cupo]]) +
+                seccion("RESUMEN") + cuadro([["Cumplimiento de horas", resPct(s)], ["Promedio de evaluaciones", DEM.fmtNota(s.promedio)], ["Tasa de aprobación", fmtPct(s.aprobacion)],
+                    ["Visitas realizadas", s.visitas], ["Evaluaciones por calificar", s.porCalificar], ["Estudiantes rezagados", s.rezagados]]) +
+                seccion("ESTUDIANTES DEL GRUPO") + DEM.tablaHTML(["ESTUDIANTE", "HORAS", "AVANCE", "ESTADO", "VISITAS", "EVAL. CALIFICADAS", "PROMEDIO"], filas.map(f => f.map(esc)), "El grupo aún no tiene estudiantes con asignación aprobada.") +
+                seccion("DISTRIBUCIÓN DE CALIFICACIONES") + DEM.barrasHTML(distribucionNotas(ests), "Aún no hay evaluaciones calificadas.");
+
+            const csv = [["INFORME CONSOLIDADO POR GRUPO", g.nombre, p ? p.nombre : ""], ["Docente", d ? d.nombre : ""], ["Institución", g.institucion], [],
+                ["ESTUDIANTE", "HORAS", "AVANCE", "ESTADO", "VISITAS", "EVAL. CALIFICADAS", "PROMEDIO"], ...filas];
+            mostrar("Informe consolidado – " + g.nombre, "INFORME POR GRUPO", cuerpo, csv);
+        }
+
+
+        /* =========================================
+           4. COMPARATIVO ENTRE PRÁCTICAS
+        ========================================= */
+
+        function comparativo() {
+            const ids = $$("[data-pr]:checked").map(c => c.dataset.pr);
+            if (ids.length < 2) { DEM.aviso("Selecciona al menos dos prácticas para compararlas.", "error"); return; }
+            const prs = ids.map(DEM.practica), est = prs.map(p => DEM.estadisticasPractica(p.id));
+            const nombres = prs.map(p => p.nombre.split(" – ")[0] + " (" + p.programa + ")");
+
+            const filas = prs.map((p, i) => [p.nombre, p.programa, DEM.estadoPractica(p), est[i].estudiantes, resPct(est[i]), DEM.fmtNota(est[i].promedio), fmtPct(est[i].aprobacion), est[i].visitasPorEstudiante, est[i].rezagados]);
+            const cuerpo =
+                seccion("COMPARATIVO GENERAL") + DEM.tablaHTML(["PRÁCTICA", "PROGRAMA", "ESTADO", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN", "VISITAS/EST.", "REZAGADOS"], filas.map(f => f.map(esc))) +
+                seccion("CUMPLIMIENTO DE HORAS") + DEM.barrasHTML(prs.map((p, i) => ({ etq: nombres[i], valor: est[i].cumplimiento, max: 100, texto: resPct(est[i]) }))) +
+                seccion("PROMEDIO DE EVALUACIONES (0 – 5)") + DEM.barrasHTML(prs.map((p, i) => ({ etq: nombres[i], valor: est[i].promedio || 0, max: 5, texto: DEM.fmtNota(est[i].promedio), clase: "dark" }))) +
+                seccion("TASA DE APROBACIÓN") + DEM.barrasHTML(prs.map((p, i) => ({ etq: nombres[i], valor: est[i].aprobacion || 0, max: 100, texto: fmtPct(est[i].aprobacion), clase: "warn" })));
+            const csv = [["COMPARATIVO ENTRE PRÁCTICAS", "Periodo " + DEM.periodo()], [], ["PRÁCTICA", "PROGRAMA", "ESTADO", "ESTUDIANTES", "CUMPLIMIENTO", "PROMEDIO", "APROBACIÓN", "VISITAS/EST.", "REZAGADOS"], ...filas];
+            mostrar("Comparativo entre prácticas", "COMPARATIVO", cuerpo, csv);
+        }
+
+
+        /* =========================================
+           GENERAR
+        ========================================= */
+
+        $("#btn-generar").onclick = function () {
+            const t = $("#r-tipo").value;
+            if (t === "general") return general();
+            if (t === "estudiante") { if (!$("#r-param").value) return DEM.aviso("Selecciona un estudiante.", "error"); return individual($("#r-param").value); }
+            if (t === "grupo") { if (!$("#r-param").value) return DEM.aviso("Selecciona un grupo.", "error"); return porGrupo($("#r-param").value); }
+            comparativo();
+        };
+
+        $("#reporte").innerHTML = DEM.vacioCard("▥", "Aún no has generado un reporte", "Elige el tipo de reporte, ajusta el parámetro y pulsa «Generar reporte».");
+
+        const pe = DEM.parametros().get("estudiante");
+        if (pe && DEM.estudiante(pe)) { $("#r-tipo").value = "estudiante"; prepararParametro(); $("#r-param").value = pe; individual(pe); }
+    </script>
+
+</body>
+</html>

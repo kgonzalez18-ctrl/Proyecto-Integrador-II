@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluaciones | Docente en Marcha</title>
+    <link rel="stylesheet" href="director.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                DI
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Director</strong>
+                <span>Director de programa</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="director.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <p class="menu-title second-title">
+                GESTIÓN
+            </p>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item active">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                ANÁLISIS
+            </p>
+            <a href="reportes.html" class="menu-item">
+                <span class="menu-icon">▥</span>
+                <span>Reportes</span>
+            </a>
+            <a href="indicadores.html" class="menu-item">
+                <span class="menu-icon">◐</span>
+                <span>Indicadores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    DI
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Director
+                    </strong>
+                    <span>
+                        Director de programa
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        GESTIÓN
+                    </p>
+                    <h2>
+                        Evaluaciones
+                    </h2>
+                    <p>
+                        Revisa los resultados cuantitativos y las observaciones cualitativas de los estudiantes.
+                    </p>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Evaluaciones calificadas</span>
+                    <strong id="c-cal">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Promedio general</span>
+                    <strong id="c-prom">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Tasa de aprobación</span>
+                    <strong id="c-aprob">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Por calificar</span>
+                    <strong id="c-pend">0</strong>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button type="button" class="tab-button active" data-tab="cuantitativas">Resultados cuantitativos</button>
+                <button type="button" class="tab-button" data-tab="cualitativas">Observaciones cualitativas</button>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por estudiante, docente u observación...">
+                <select class="select-input" id="f-practica"></select>
+            </div>
+
+            <div class="tab-panel active" id="panel-cuantitativas">
+            <div id="t-cuantitativas"></div>
+            </div>
+            <div class="tab-panel" id="panel-cualitativas">
+            <div id="t-cualitativas"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="director.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const hay = (q, ...t) => !q || t.join(" ").toLowerCase().includes(q);
+        const calificadas = () => D.evaluaciones.filter(x => x.estado === "Calificada");
+
+        $("#f-practica").innerHTML = DEM.opciones(D.practicas.map(p => ({ valor: p.id, texto: p.nombre })), "", "Todas las prácticas");
+
+        function irA(n) {
+            $$(".content-page > .tabs .tab-button").forEach(b => b.classList.toggle("active", b.dataset.tab === n));
+            $$(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + n));
+        }
+        $$(".content-page > .tabs .tab-button").forEach(b => b.onclick = () => irA(b.dataset.tab));
+
+        function resumen() {
+            const c = calificadas(), aprob = c.filter(x => x.nota >= DEM.NOTA_MINIMA).length;
+            $("#c-cal").textContent = c.length;
+            $("#c-prom").textContent = DEM.fmtNota(DEM.promedio(c.map(x => x.nota)));
+            $("#c-aprob").textContent = c.length ? Math.round(aprob / c.length * 100) + "%" : "—";
+            $("#c-pend").textContent = D.evaluaciones.filter(x => x.estado === "Por calificar").length;
+        }
+
+        const practicaDe = e => { const g = e && e.grupoId && DEM.grupo(e.grupoId); return g ? g.practicaId : null; };
+
+        function pintar() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fp = $("#f-practica").value;
+
+            // ---- cuantitativas ----
+            $("#t-cuantitativas").innerHTML = DEM.tablaHTML(["ESTUDIANTE", "CUESTIONARIO", "DOCENTE", "CUESTIONARIO", "RÚBRICA", "NOTA FINAL", "RESULTADO", ""],
+                calificadas().filter(x => { const e = DEM.estudiante(x.estudianteId), d = e && docenteDeEstudiante(e), c = DEM.cuestionario(x.cuestionarioId);
+                    return hay(q, e ? e.nombre : "", d ? d.nombre : "", c ? c.nombre : "") && (!fp || practicaDe(e) === fp); })
+                .sort((a, b) => b.fechaCalificada.localeCompare(a.fechaCalificada)).map(x => {
+                    const e = DEM.estudiante(x.estudianteId), d = e && docenteDeEstudiante(e), c = DEM.cuestionario(x.cuestionarioId);
+                    return [DEM.persona(e ? e.nombre : "—", DEM.fmtFecha(x.fechaCalificada)), esc(c ? c.nombre : "—"), d ? esc(d.nombre) : "—",
+                        DEM.fmtNota(x.notaCuestionario), x.notaRubrica === null ? "N/A" : DEM.fmtNota(x.notaRubrica), DEM.pillNota(x.nota),
+                        DEM.badge(x.nota >= DEM.NOTA_MINIMA ? "Aprobado" : "No aprobado", x.nota >= DEM.NOTA_MINIMA ? "badge-green" : "badge-red"),
+                        `<button type="button" class="secondary-button small-button" data-ver="${x.id}">Ver detalle</button>`];
+                }), "Aún no hay evaluaciones calificadas por los docentes.");
+
+            // ---- cualitativas: observaciones de visitas, evaluaciones y retroalimentaciones ----
+            const obs = [];
+            D.visitas.filter(v => v.estado === "Realizada").forEach(v => obs.push({ est: v.estudianteId, origen: "Visita", val: v.valoracion, texto: "Fortalezas: " + v.fortalezas + " · Por mejorar: " + v.aspectosMejorar, fecha: v.fecha }));
+            calificadas().forEach(x => obs.push({ est: x.estudianteId, origen: "Evaluación", val: DEM.valoracionDe(x.nota), texto: x.observaciones, fecha: x.fechaCalificada, ev: x.id }));
+            D.retros.filter(r => r.tipo === "Desempeño").forEach(r => obs.push({ est: r.estudianteId, origen: "Retroalimentación", val: r.valoracion, texto: r.titulo + ": " + r.comentario, fecha: r.fecha }));
+
+            $("#t-cualitativas").innerHTML = DEM.tablaHTML(["ESTUDIANTE", "ORIGEN", "VALORACIÓN", "OBSERVACIÓN", "FECHA"],
+                obs.filter(o => { const e = DEM.estudiante(o.est); return hay(q, e ? e.nombre : "", o.texto) && (!fp || practicaDe(e) === fp); })
+                .sort((a, b) => b.fecha.localeCompare(a.fecha)).map(o => {
+                    const e = DEM.estudiante(o.est);
+                    return [DEM.persona(e ? e.nombre : "—", ""), DEM.badge(o.origen, o.origen === "Visita" ? "badge-blue" : o.origen === "Evaluación" ? "badge-amber" : "badge-teal"),
+                        o.val ? DEM.badge(o.val, DEM.CLASE_VALORACION[o.val]) : "—",
+                        "<div style='max-width:460px;line-height:1.5'>" + esc(o.texto.length > 190 ? o.texto.slice(0, 190) + "…" : o.texto) + "</div>", DEM.fmtFecha(o.fecha)];
+                }), "Aún no hay observaciones registradas por los docentes.");
+
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+        }
+
+        $("#f-buscar").addEventListener("input", pintar);
+        $("#f-practica").addEventListener("input", pintar);
+
+
+        /* =========================================
+           DETALLE DE UNA EVALUACIÓN
+        ========================================= */
+
+        function ver(id) {
+            const x = D.evaluaciones.find(v => v.id === id), e = DEM.estudiante(x.estudianteId), c = DEM.cuestionario(x.cuestionarioId), d = e && docenteDeEstudiante(e);
+            const snap = x.snapshot || {}, rub = snap.rubrica;
+            DEM.abrirModal({
+                tam: "xl", tag: "EVALUACIÓN CALIFICADA", titulo: e ? e.nombre : "Evaluación",
+                sub: (c ? c.nombre : "") + " · Docente: " + (d ? d.nombre : "—") + " · " + DEM.fmtFecha(x.fechaCalificada),
+                cuerpo: `
+                <div class="grade-summary" style="margin-top:0;margin-bottom:22px">
+                    <div><span>NOTA DEL CUESTIONARIO</span><strong>${DEM.fmtNota(x.notaCuestionario)}</strong><small>${rub ? snap.pesoCuest + "% de la nota" : "100% de la nota"}</small></div>
+                    <div><span>NOTA DE LA RÚBRICA</span><strong>${rub ? DEM.fmtNota(x.notaRubrica) : "N/A"}</strong><small>${rub ? snap.pesoRub + "% de la nota" : "Sin rúbrica"}</small></div>
+                    <div class="final"><span>NOTA FINAL</span><strong>${DEM.fmtNota(x.nota)}</strong><small>${DEM.valoracionDe(x.nota)} · ${x.nota >= DEM.NOTA_MINIMA ? "Aprobado" : "No aprobado"}</small></div>
+                </div>
+                <div class="modal-block"><h4>OBSERVACIONES GENERALES (CUALITATIVO)</h4><div class="text-block">${esc(x.observaciones)}</div></div>
+                <div class="modal-block"><h4>RESPUESTAS Y RETROALIMENTACIÓN</h4>
+                    ${x.respuestas.map((r, i) => `<div class="question-card" style="padding:14px">
+                        <div class="q-title" style="margin-bottom:8px"><span class="q-number">${i + 1}</span><span>${esc(r.pregunta)}</span></div>
+                        <div class="text-block" style="margin-bottom:8px">${esc(r.respuesta || "Sin respuesta")}</div>
+                        <div style="font-size:10px;color:var(--teal-dark);font-weight:bold;margin-bottom:5px">Puntaje: ${DEM.fmtNota(r.puntaje)} · Retroalimentación del docente</div>
+                        <div style="font-size:11px;color:#344054;line-height:1.6">${esc(r.comentario)}</div></div>`).join("")}</div>
+                ${rub ? `<div class="modal-block"><h4>RÚBRICA: ${esc(rub.nombre.toUpperCase())}</h4>
+                    ${DEM.tablaHTML(["CRITERIO", "PESO", "NIVEL ELEGIDO", "PUNTAJE"], rub.criterios.map(cr => { const n = rub.niveles.find(v => v.id === x.seleccionRubrica[cr.id]);
+                        return [esc(cr.nombre), cr.peso + "%", n ? esc(n.nombre) : "—", n ? Number(n.puntaje).toFixed(1) : "—"]; }))}</div>` : ""}`,
+                pie: '<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>'
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+        }
+
+        resumen(); pintar();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item active">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        CUENTA
+                    </p>
+                    <h2>
+                        Mi perfil
+                    </h2>
+                    <p>
+                        Consulta tu información personal y de asesoría.
+                    </p>
+                </div>
+            </div>
+
+            <!-- INFORMACIÓN PERSONAL -->
+            <div class="content-card profile-card">
+                <div class="card-title">
+                    <p>INFORMACIÓN PERSONAL</p>
+                    <h3>Docente asesor</h3>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Nombre completo</span>
+                        <strong id="p-nombre">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Cédula</span>
+                        <strong id="p-cedula">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Facultad</span>
+                        <strong id="p-facultad">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Correo electrónico</span>
+                        <strong id="p-correo">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Programas que asesora</span>
+                        <strong id="p-programa">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Estado</span>
+                        <strong id="p-estado">—</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESUMEN DE ASESORÍA -->
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title">
+                    <p>ASESORÍA</p>
+                    <h3>Resumen del periodo <span id="p-periodo"></span></h3>
+                </div>
+
+                <div class="small-cards" style="margin-bottom:0">
+                    <div class="small-card"><span>Estudiantes asignados</span><strong id="p-estudiantes">0</strong></div>
+                    <div class="small-card"><span>Grupos</span><strong id="p-grupos">0</strong></div>
+                    <div class="small-card"><span>Visitas realizadas</span><strong id="p-visitas">0</strong></div>
+                    <div class="small-card"><span>Evaluaciones calificadas</span><strong id="p-evaluaciones">0</strong></div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const doc = D.docente || {};
+        const dato = x => x || "—";
+        const $ = DEM.$;
+
+        $("#p-nombre").textContent = dato(doc.nombre);
+        $("#p-cedula").textContent = dato(doc.cedula);
+        $("#p-facultad").textContent = dato(doc.facultad);
+        $("#p-correo").textContent = dato(doc.correo);
+        $("#p-programa").textContent = dato(doc.programa);
+        $("#p-estado").textContent = dato(doc.estado);
+
+        $("#p-periodo").textContent = DEM.periodo();
+        $("#p-estudiantes").textContent = D.estudiantes.length;
+        $("#p-grupos").textContent = D.grupos.length;
+        $("#p-visitas").textContent = D.visitas.filter(v => v.estado === "Realizada").length;
+        $("#p-evaluaciones").textContent = D.evaluaciones.filter(e => e.estado === "Calificada").length;
+    </script>
+
+</body>
+</html>

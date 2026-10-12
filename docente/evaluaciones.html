@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluaciones | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item active">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        EVALUACIÓN
+                    </p>
+                    <h2>
+                        Evaluaciones
+                    </h2>
+                    <p>
+                        Configura cuestionarios según la práctica, evalúa a tus
+                        estudiantes y asigna su calificación.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-asignar">
+                        + Asignar evaluación
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Por calificar</span>
+                    <strong id="c-porcalificar">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Pendientes de respuesta</span>
+                    <strong id="c-pendientes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Calificadas</span>
+                    <strong id="c-calificadas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Promedio general</span>
+                    <strong id="c-promedio">—</strong>
+                </div>
+            </div>
+
+            <!-- PESTAÑAS -->
+            <div class="tabs">
+                <button type="button" class="tab-button active" data-tab="evaluaciones">Evaluaciones de estudiantes</button>
+                <button type="button" class="tab-button" data-tab="cuestionarios">Cuestionarios</button>
+            </div>
+
+            <!-- EVALUACIONES -->
+            <div class="tab-panel active" id="panel-evaluaciones">
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="f-buscar"
+                           placeholder="Buscar por estudiante o cuestionario...">
+                    <select class="select-input" id="f-cuestionario"></select>
+                    <select class="select-input" id="f-estado"></select>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ESTUDIANTE</th>
+                                    <th>CUESTIONARIO</th>
+                                    <th>QUIÉN RESPONDE</th>
+                                    <th>ESTADO</th>
+                                    <th>NOTA</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-evaluaciones"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CUESTIONARIOS -->
+            <div class="tab-panel" id="panel-cuestionarios">
+                <div class="toolbar" style="justify-content:space-between;align-items:center">
+                    <p style="color:var(--text-light);font-size:11px;max-width:620px;line-height:1.6">
+                        Cada cuestionario pertenece a una práctica: solo se puede asignar a los
+                        estudiantes de esa práctica y puede combinarse con una rúbrica.
+                    </p>
+                    <button type="button" class="secondary-button" id="btn-nuevo-cuestionario">
+                        + Nuevo cuestionario
+                    </button>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>CUESTIONARIO</th>
+                                    <th>PRÁCTICA</th>
+                                    <th>QUIÉN RESPONDE</th>
+                                    <th>PREGUNTAS</th>
+                                    <th>RÚBRICA Y PONDERACIÓN</th>
+                                    <th>ASIGNADAS</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-cuestionarios"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        const copia = o => JSON.parse(JSON.stringify(o));
+        const CLASE_ESTADO = { "Calificada": "badge-green", "Por calificar": "badge-amber", "Pendiente de respuesta": "" };
+        const PUNTAJES = [];
+        for (let i = 0; i <= 10; i++) PUNTAJES.push({ valor: (i / 2).toFixed(1), texto: (i / 2).toFixed(1) });
+
+        const quienResponde = q => q.modalidad === "estudiante" ? "El estudiante" : "El docente";
+        const evaluacionesDeCuestionario = id => D.evaluaciones.filter(e => e.cuestionarioId === id);
+
+
+        /* =========================================
+           PESTAÑAS
+        ========================================= */
+
+        function irAPestana(nombre) {
+            $$(".content-page > .tabs .tab-button").forEach(b => b.classList.toggle("active", b.dataset.tab === nombre));
+            $$(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + nombre));
+        }
+        $$(".content-page > .tabs .tab-button").forEach(b => { b.onclick = () => irAPestana(b.dataset.tab); });
+
+
+        /* =========================================
+           RESUMEN
+        ========================================= */
+
+        function resumen() {
+            const cal = D.evaluaciones.filter(e => e.estado === "Calificada");
+            $("#c-porcalificar").textContent = D.evaluaciones.filter(e => e.estado === "Por calificar").length;
+            $("#c-pendientes").textContent = D.evaluaciones.filter(e => e.estado === "Pendiente de respuesta").length;
+            $("#c-calificadas").textContent = cal.length;
+            $("#c-promedio").textContent = cal.length
+                ? DEM.fmtNota(DEM.r1(cal.reduce((s, e) => s + e.nota, 0) / cal.length)) : "—";
+        }
+
+
+        /* =========================================
+           TABLA DE EVALUACIONES
+        ========================================= */
+
+        function llenarFiltros() {
+            const valorQ = $("#f-cuestionario").value;
+            const valorE = $("#f-estado").value;
+            $("#f-cuestionario").innerHTML = DEM.opciones(
+                D.cuestionarios.map(q => ({ valor: q.id, texto: q.nombre })), valorQ, "Todos los cuestionarios");
+            $("#f-estado").innerHTML = DEM.opciones(
+                ["Por calificar", "Pendiente de respuesta", "Calificada"].map(x => ({ valor: x, texto: x })), valorE, "Todos los estados");
+        }
+
+        function tablaEvaluaciones() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const fq = $("#f-cuestionario").value;
+            const fe = $("#f-estado").value;
+
+            const orden = { "Por calificar": 0, "Pendiente de respuesta": 1, "Calificada": 2 };
+            const lista = D.evaluaciones.filter(ev => {
+                const e = DEM.estudiante(ev.estudianteId);
+                const c = DEM.cuestionario(ev.cuestionarioId);
+                return (!q || (e.nombre + " " + c.nombre).toLowerCase().includes(q)) &&
+                       (!fq || ev.cuestionarioId === fq) && (!fe || ev.estado === fe);
+            }).sort((a, b) => orden[a.estado] - orden[b.estado] || b.fechaAsignada.localeCompare(a.fechaAsignada));
+
+            $("#tabla-evaluaciones").innerHTML = lista.length ? lista.map(ev => {
+                const e = DEM.estudiante(ev.estudianteId);
+                const c = DEM.cuestionario(ev.cuestionarioId);
+                let accion;
+                if (ev.estado === "Por calificar") {
+                    accion = `<button type="button" class="primary-button small-button" data-evaluar="${ev.id}">Evaluar</button>`;
+                } else if (ev.estado === "Calificada") {
+                    accion = `<button type="button" class="secondary-button small-button" data-evaluar="${ev.id}">Ver / editar</button>`;
+                } else {
+                    accion = `<button type="button" class="secondary-button small-button" disabled>Esperando respuesta</button>`;
+                }
+                return `
+                <tr>
+                    <td>
+                        <div class="person-cell">
+                            <div class="mini-avatar">${DEM.iniciales(e.nombre)}</div>
+                            <div><strong>${esc(e.nombre)}</strong><span>${esc(DEM.grupoDe(e).nombre)}</span></div>
+                        </div>
+                    </td>
+                    <td>${esc(c.nombre)}<small>${esc(DEM.practica(c.practicaId).nombre.split(" – ")[0])}</small></td>
+                    <td>${quienResponde(c)}</td>
+                    <td><span class="badge ${CLASE_ESTADO[ev.estado]}">${ev.estado}</span>
+                        <small>${ev.estado === "Calificada" ? DEM.fmtFecha(ev.fechaCalificada) : "Asignada " + DEM.fmtFecha(ev.fechaAsignada)}</small></td>
+                    <td>${ev.estado === "Calificada" ? DEM.pillNota(ev.nota) : '<span class="grade-pill empty">—</span>'}</td>
+                    <td class="actions">${accion}</td>
+                </tr>`;
+            }).join("") : '<tr><td colspan="6" class="table-empty">' + (D.evaluaciones.length ? "No hay evaluaciones con esos filtros." : "Aún no has asignado evaluaciones.") + '</td></tr>';
+
+            $$("[data-evaluar]").forEach(b => { b.onclick = () => evaluar(b.dataset.evaluar); });
+        }
+
+        ["#f-buscar", "#f-cuestionario", "#f-estado"].forEach(s => $(s).addEventListener("input", tablaEvaluaciones));
+
+
+        /* =========================================
+           EVALUAR A UN ESTUDIANTE
+        ========================================= */
+
+        function evaluar(id) {
+            const ev = D.evaluaciones.find(x => x.id === id);
+            const e = DEM.estudiante(ev.estudianteId);
+            const q = DEM.cuestionario(ev.cuestionarioId);
+            const calificada = ev.estado === "Calificada";
+            const porEstudiante = q.modalidad === "estudiante";
+
+            // Una evaluación calificada conserva la rúbrica y ponderaciones con las que se calificó
+            const rub = calificada && ev.snapshot ? ev.snapshot.rubrica : (q.rubricaId ? DEM.rubrica(q.rubricaId) : null);
+            const pesoC = calificada && ev.snapshot ? ev.snapshot.pesoCuest : q.pesoCuest;
+            const pesoR = calificada && ev.snapshot ? ev.snapshot.pesoRub : q.pesoRub;
+
+            // Copia de trabajo (no se toca el original hasta guardar)
+            const resp = copia(ev.respuestas);
+            const sel = copia(ev.seleccionRubrica || {});
+            let observaciones = ev.observaciones || "";
+
+            const preguntasHTML = resp.map((r, i) => `
+                <div class="question-card">
+                    <div class="q-title"><span class="q-number">${i + 1}</span><span>${esc(r.pregunta)}</span></div>
+                    <div class="q-answer">
+                        <label class="form-label">${porEstudiante ? "Respuesta del estudiante" : "Observación / respuesta registrada por el docente"}${porEstudiante ? "" : ' <span class="req" style="color:var(--danger)">*</span>'}</label>
+                        ${porEstudiante
+                            ? `<div class="text-block">${r.respuesta ? esc(r.respuesta) : "El estudiante no escribió respuesta."}</div>`
+                            : `<textarea class="text-area" data-resp="${i}" placeholder="Registra lo observado o la respuesta del estudiante.">${esc(r.respuesta)}</textarea>`}
+                    </div>
+                    <div class="q-grid">
+                        <div class="form-field"><label>Retroalimentación sobre la respuesta <span class="req">* obligatoria</span></label>
+                            <textarea class="text-area" style="min-height:62px" data-coment="${i}" placeholder="Comenta la respuesta: qué está bien y qué debe mejorar.">${esc(r.comentario)}</textarea></div>
+                        <div class="form-field"><label>Puntaje (0 – 5) <span class="req">*</span></label>
+                            <select class="select-input" data-punt="${i}">${DEM.opciones(PUNTAJES, r.puntaje === null || r.puntaje === "" ? "" : Number(r.puntaje).toFixed(1), "Elegir")}</select></div>
+                    </div>
+                </div>`).join("");
+
+            DEM.abrirModal({
+                tam: "xl",
+                tag: calificada ? "EVALUACIÓN CALIFICADA" : "EVALUAR ESTUDIANTE",
+                encabezado: `<div class="modal-person"><div class="mini-avatar">${DEM.iniciales(e.nombre)}</div>
+                    <div><h3>${esc(e.nombre)}</h3>
+                    <p class="modal-sub">${esc(q.nombre)} · ${esc(DEM.practicaDe(e).nombre.split(" – ")[0])}</p></div></div>`,
+                cuerpo: `
+                    <div class="callout">${porEstudiante
+                        ? "El estudiante respondió este cuestionario. Califica cada respuesta y escribe su retroalimentación (obligatoria)."
+                        : "Este cuestionario lo diligencias tú a partir de lo observado. Registra cada respuesta, su puntaje y su retroalimentación (obligatoria)."}
+                        ${calificada ? "<br><b>Al guardar de nuevo se actualizará la calificación y la retroalimentación del estudiante.</b>" : ""}</div>
+
+                    <div class="modal-block">
+                        <h4>CUESTIONARIO</h4>
+                        ${preguntasHTML}
+                    </div>
+
+                    ${rub ? `<div class="modal-block">
+                        <h4>RÚBRICA: ${esc(rub.nombre.toUpperCase())}</h4>
+                        <div id="ev-matriz"></div>
+                        <p class="form-hint" style="margin-top:8px">Elige el nivel de desempeño de cada criterio. La nota se calcula con las ponderaciones de la rúbrica.</p>
+                    </div>` : ""}
+
+                    <div class="modal-block">
+                        <h4>OBSERVACIONES GENERALES SOBRE EL DESEMPEÑO</h4>
+                        <textarea class="text-area" id="ev-obs" style="min-height:90px" placeholder="Valoración global del desempeño del estudiante, fortalezas y recomendaciones.">${esc(observaciones)}</textarea>
+                    </div>
+
+                    <div class="grade-summary">
+                        <div><span>NOTA DEL CUESTIONARIO</span><strong id="g-cuest">—</strong><small>Promedio de las respuestas${rub ? " · " + pesoC + "% de la nota" : ""}</small></div>
+                        <div><span>NOTA DE LA RÚBRICA</span><strong id="g-rub">${rub ? "—" : "N/A"}</strong><small>${rub ? "Suma ponderada de criterios · " + pesoR + "% de la nota" : "Este cuestionario no usa rúbrica"}</small></div>
+                        <div class="final"><span>NOTA FINAL</span><strong id="g-final">—</strong><small id="g-estado">Escala 0.0 – 5.0 · Mínima aprobatoria ${DEM.NOTA_MINIMA.toFixed(1)}</small></div>
+                    </div>
+                    <div class="form-error" id="ev-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="ev-cancelar">Cancelar</button>
+                      ${calificada ? "" : '<button type="button" class="secondary-button" id="ev-borrador">Guardar borrador</button>'}
+                      <button type="button" class="primary-button" id="ev-calificar">${calificada ? "Actualizar calificación" : "Calificar y enviar al estudiante"}</button>`
+            });
+
+            /* ---- lectura de campos y cálculo en vivo ---- */
+
+            function leer() {
+                $$("[data-resp]").forEach(t => { resp[t.dataset.resp].respuesta = t.value; });
+                $$("[data-coment]").forEach(t => { resp[t.dataset.coment].comentario = t.value; });
+                $$("[data-punt]").forEach(s => { resp[s.dataset.punt].puntaje = s.value === "" ? null : parseFloat(s.value); });
+                observaciones = $("#ev-obs").value;
+            }
+
+            function recalcular() {
+                leer();
+                const err = $("#ev-error");
+                if (err && !window.__calificando) err.classList.remove("show");
+                const nC = DEM.notaCuestionario(resp);
+                const nR = rub ? DEM.notaRubrica(rub, sel) : null;
+                const nF = DEM.notaFinal(nC, nR, !!rub, pesoC, pesoR);
+                $("#g-cuest").textContent = DEM.fmtNota(nC);
+                if (rub) $("#g-rub").textContent = DEM.fmtNota(nR);
+                $("#g-final").textContent = DEM.fmtNota(nF);
+                $("#g-estado").textContent = nF === null
+                    ? "Completa los puntajes" + (rub ? " y la rúbrica" : "") + " para calcular la nota"
+                    : (nF >= DEM.NOTA_MINIMA ? "Aprobado" : "No aprobado") + " · Escala 0.0 – 5.0";
+                return { nC, nR, nF };
+            }
+
+            $$("[data-resp],[data-coment],[data-punt],#ev-obs").forEach(c => {
+                c.addEventListener("input", recalcular);
+                c.addEventListener("change", recalcular);
+            });
+            if (rub) DEM.montarMatriz($("#ev-matriz"), rub, sel, recalcular);
+            recalcular();
+
+            $("#ev-cancelar").onclick = DEM.cerrarModal;
+
+            /* ---- guardar borrador ---- */
+
+            if (!calificada) {
+                $("#ev-borrador").onclick = function () {
+                    leer();
+                    ev.respuestas = copia(resp);
+                    ev.seleccionRubrica = copia(sel);
+                    ev.observaciones = observaciones;
+                    DEM.guardar();
+                    DEM.cerrarModal();
+                    DEM.aviso("Borrador guardado. Puedes continuar más tarde.");
+                };
+            }
+
+            /* ---- calificar ---- */
+
+            $("#ev-calificar").onclick = function () {
+                window.__calificando = true;
+                const calc = recalcular();
+                window.__calificando = false;
+                const fallo = msg => DEM.mostrarError($(".modal"), msg);
+
+                for (let i = 0; i < resp.length; i++) {
+                    const n = i + 1;
+                    if (!porEstudiante && !resp[i].respuesta.trim()) return fallo("Registra la respuesta u observación de la pregunta " + n + ".");
+                    if (resp[i].puntaje === null) return fallo("Asigna el puntaje de la pregunta " + n + ".");
+                    if (resp[i].comentario.trim().length < 10) return fallo("La retroalimentación de la pregunta " + n + " es obligatoria (mínimo 10 caracteres).");
+                }
+                if (rub) {
+                    const falta = rub.criterios.find(c => !sel[c.id]);
+                    if (falta) return fallo("Selecciona el nivel de desempeño del criterio «" + falta.nombre + "».");
+                }
+                if (observaciones.trim().length < 20) return fallo("Escribe las observaciones generales del desempeño (mínimo 20 caracteres).");
+
+                ev.respuestas = copia(resp);
+                ev.seleccionRubrica = copia(sel);
+                ev.observaciones = observaciones.trim();
+                ev.notaCuestionario = calc.nC;
+                ev.notaRubrica = calc.nR;
+                ev.nota = calc.nF;
+                ev.snapshot = { rubrica: rub ? copia(rub) : null, pesoCuest: pesoC, pesoRub: pesoR };
+                ev.estado = "Calificada";
+                ev.fechaCalificada = DEM.hoy();
+
+                // La calificación se comparte con el estudiante como retroalimentación
+                DEM.upsertRetro({
+                    estudianteId: ev.estudianteId, tipo: "Evaluación", origenId: ev.id,
+                    titulo: "Evaluación: " + q.nombre, comentario: ev.observaciones,
+                    valoracion: DEM.valoracionDe(ev.nota)
+                });
+
+                DEM.guardar();
+                DEM.cerrarModal();
+                resumen(); tablaEvaluaciones(); tablaCuestionarios();
+                DEM.aviso("Evaluación calificada: " + DEM.fmtNota(ev.nota) + ". El estudiante ya puede ver su retroalimentación.");
+            };
+        }
+
+
+        /* =========================================
+           ASIGNAR EVALUACIÓN A ESTUDIANTES
+        ========================================= */
+
+        function asignar(estudianteId) {
+            if (!D.estudiantes.length) {
+                DEM.aviso("Aún no tienes estudiantes asignados.", "error");
+                return;
+            }
+            if (!D.cuestionarios.length) {
+                DEM.aviso("Primero crea un cuestionario.", "error");
+                irAPestana("cuestionarios");
+                return;
+            }
+            const est = estudianteId ? DEM.estudiante(estudianteId) : null;
+            const inicial = est
+                ? (D.cuestionarios.find(q => q.practicaId === DEM.practicaDe(est).id) || D.cuestionarios[0])
+                : D.cuestionarios[0];
+
+            DEM.abrirModal({
+                tam: "",
+                tag: "EVALUACIONES",
+                titulo: "Asignar evaluación",
+                sub: "La evaluación aparecerá disponible para los estudiantes de la práctica correspondiente.",
+                cuerpo: `
+                    <div class="form-field" style="margin-bottom:16px">
+                        <label for="a-q">Cuestionario <span class="req">*</span></label>
+                        <select class="select-input" id="a-q">
+                            ${DEM.opciones(D.cuestionarios.map(q => ({ valor: q.id, texto: q.nombre })), inicial.id)}
+                        </select>
+                        <p class="form-hint" id="a-info"></p>
+                    </div>
+                    <div class="form-field">
+                        <label class="form-label">Estudiantes <span class="req">*</span></label>
+                        <div id="a-lista"></div>
+                    </div>
+                    <div class="form-error" id="a-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="a-cancelar">Cancelar</button>
+                      <button type="button" class="primary-button" id="a-guardar">Asignar</button>`
+            });
+
+            function dibujar() {
+                const q = DEM.cuestionario($("#a-q").value);
+                $("#a-info").textContent = DEM.practica(q.practicaId).nombre + " · " + q.preguntas.length +
+                    " preguntas · " + (q.modalidad === "estudiante" ? "responde el estudiante" : "lo diligencia el docente");
+                const elegibles = D.estudiantes.filter(e => DEM.practicaDe(e).id === q.practicaId);
+                $("#a-lista").innerHTML = elegibles.map(e => {
+                    const yaTiene = D.evaluaciones.some(x => x.estudianteId === e.id && x.cuestionarioId === q.id);
+                    return `<label class="check-row" style="padding:9px 0;border-top:1px solid #edf0f3;${yaTiene ? "opacity:.55" : ""}">
+                        <input type="checkbox" data-est="${e.id}" ${yaTiene ? "disabled" : (est && e.id === est.id ? "checked" : "")}>
+                        <span><b>${esc(e.nombre)}</b> · ${esc(DEM.grupoDe(e).nombre)}${yaTiene ? " — ya tiene esta evaluación" : ""}</span></label>`;
+                }).join("") || '<div class="list-empty">No hay estudiantes en esta práctica.</div>';
+            }
+            $("#a-q").onchange = dibujar;
+            dibujar();
+
+            $("#a-cancelar").onclick = DEM.cerrarModal;
+            $("#a-guardar").onclick = function () {
+                const q = DEM.cuestionario($("#a-q").value);
+                const ids = $$("[data-est]:checked").map(c => c.dataset.est);
+                if (!ids.length) return DEM.mostrarError($(".modal"), "Selecciona al menos un estudiante.");
+
+                ids.forEach(idEst => {
+                    DEM.agregar("evaluaciones", {
+                        id: DEM.uid("ev"), estudianteId: idEst, cuestionarioId: q.id,
+                        estado: q.modalidad === "estudiante" ? "Pendiente de respuesta" : "Por calificar",
+                        fechaAsignada: DEM.hoy(), fechaCalificada: null,
+                        respuestas: q.preguntas.map(p => ({ pregunta: p, respuesta: "", puntaje: null, comentario: "" })),
+                        seleccionRubrica: {}, observaciones: "",
+                        notaCuestionario: null, notaRubrica: null, nota: null, snapshot: null
+                    });
+                });
+                DEM.guardar();
+                DEM.cerrarModal();
+                resumen(); tablaEvaluaciones(); tablaCuestionarios();
+                irAPestana("evaluaciones");
+                DEM.aviso("Evaluación asignada a " + ids.length + (ids.length === 1 ? " estudiante." : " estudiantes."));
+            };
+        }
+
+        $("#btn-asignar").onclick = () => asignar();
+
+
+        /* =========================================
+           CUESTIONARIOS
+        ========================================= */
+
+        function tablaCuestionarios() {
+            $("#tabla-cuestionarios").innerHTML = D.cuestionarios.length ? D.cuestionarios.map(q => {
+                const rub = q.rubricaId ? DEM.rubrica(q.rubricaId) : null;
+                const asignadas = evaluacionesDeCuestionario(q.id).length;
+                return `
+                <tr>
+                    <td><strong style="color:var(--dark-blue)">${esc(q.nombre)}</strong><small>${esc(q.descripcion)}</small></td>
+                    <td>${esc(DEM.practica(q.practicaId).nombre.split(" – ")[0])}</td>
+                    <td><span class="badge ${q.modalidad === "estudiante" ? "badge-blue" : "badge-teal"}">${quienResponde(q)}</span></td>
+                    <td>${q.preguntas.length}</td>
+                    <td>${rub ? esc(rub.nombre) + "<small>Cuestionario " + q.pesoCuest + "% · Rúbrica " + q.pesoRub + "%</small>" : "Sin rúbrica<small>Cuestionario 100%</small>"}</td>
+                    <td>${asignadas}</td>
+                    <td class="actions">
+                        <button type="button" class="secondary-button small-button" data-q-editar="${q.id}">Editar</button>
+                        <button type="button" class="secondary-button small-button" data-q-usar="${q.id}">Duplicar</button>
+                        <button type="button" class="danger-button small-button" data-q-eliminar="${q.id}">Eliminar</button>
+                    </td>
+                </tr>`;
+            }).join("") : '<tr><td colspan="7" class="table-empty">Aún no has creado cuestionarios.</td></tr>';
+
+            $$("[data-q-editar]").forEach(b => { b.onclick = () => formularioCuestionario(b.dataset.qEditar); });
+            $$("[data-q-usar]").forEach(b => { b.onclick = () => duplicarCuestionario(b.dataset.qUsar); });
+            $$("[data-q-eliminar]").forEach(b => { b.onclick = () => eliminarCuestionario(b.dataset.qEliminar); });
+            llenarFiltros();
+        }
+
+        function duplicarCuestionario(id) {
+            const nuevo = copia(DEM.cuestionario(id));
+            nuevo.id = DEM.uid("q");
+            nuevo.nombre += " (copia)";
+            DEM.agregar("cuestionarios", nuevo);
+            DEM.guardar();
+            tablaCuestionarios();
+            DEM.aviso("Cuestionario duplicado. Ya puedes editarlo.");
+        }
+
+        function eliminarCuestionario(id) {
+            const n = evaluacionesDeCuestionario(id).length;
+            if (n) {
+                DEM.aviso("No se puede eliminar: tiene " + n + " evaluación(es) asignada(s).", "error");
+                return;
+            }
+            if (!confirm("¿Eliminar este cuestionario?")) return;
+            D.cuestionarios = D.cuestionarios.filter(q => q.id !== id);
+            DEM.guardar();
+            tablaCuestionarios();
+            DEM.aviso("Cuestionario eliminado.");
+        }
+
+        function formularioCuestionario(id) {
+            if (!D.practicas.length) {
+                DEM.aviso("Aún no hay prácticas configuradas para asociar el cuestionario.", "error");
+                return;
+            }
+            const original = id ? DEM.cuestionario(id) : null;
+            const w = original ? copia(original) : {
+                nombre: "", descripcion: "", practicaId: D.practicas[0].id, modalidad: "estudiante",
+                rubricaId: "", pesoCuest: 40, pesoRub: 60, preguntas: [""]
+            };
+            const asignadas = original ? evaluacionesDeCuestionario(original.id).length : 0;
+
+            DEM.abrirModal({
+                tam: "wide",
+                tag: "CUESTIONARIOS",
+                titulo: original ? "Editar cuestionario" : "Nuevo cuestionario",
+                sub: "El cuestionario se configura según la práctica y puede combinarse con una rúbrica.",
+                cuerpo: `
+                    ${asignadas ? '<div class="callout warn">Este cuestionario ya está asignado. Los cambios solo se aplican a las nuevas asignaciones; las evaluaciones existentes conservan sus preguntas.</div>' : ""}
+                    <div class="form-grid">
+                        <div class="form-field full"><label for="q-nombre">Nombre <span class="req">*</span></label>
+                            <input type="text" class="text-input" id="q-nombre" value="${esc(w.nombre)}"></div>
+                        <div class="form-field full"><label for="q-desc">Descripción</label>
+                            <input type="text" class="text-input" id="q-desc" value="${esc(w.descripcion)}"></div>
+                        <div class="form-field"><label for="q-pr">Práctica <span class="req">*</span></label>
+                            <select class="select-input" id="q-pr">${DEM.opciones(D.practicas.map(p => ({ valor: p.id, texto: p.nombre })), w.practicaId)}</select></div>
+                        <div class="form-field"><label for="q-mod">¿Quién responde?</label>
+                            <select class="select-input" id="q-mod">${DEM.opciones([
+                                { valor: "estudiante", texto: "El estudiante responde y el docente califica" },
+                                { valor: "docente", texto: "El docente diligencia (observación directa)" }], w.modalidad)}</select></div>
+                        <div class="form-field"><label for="q-rub">Rúbrica asociada</label>
+                            <select class="select-input" id="q-rub">${DEM.opciones(D.rubricas.map(r => ({ valor: r.id, texto: r.nombre })), w.rubricaId, "Sin rúbrica (solo cuestionario)")}</select></div>
+                        <div class="form-field" id="q-pesos"><label for="q-peso">Peso del cuestionario en la nota final (%)</label>
+                            <input type="number" class="text-input" id="q-peso" min="1" max="99" value="${w.pesoCuest}">
+                            <p class="form-hint" id="q-peso-hint"></p></div>
+
+                        <div class="form-section-title">PREGUNTAS</div>
+                        <div class="form-field full" id="q-preguntas"></div>
+                        <div class="form-field full"><button type="button" class="secondary-button small-button" id="q-add">+ Agregar pregunta</button></div>
+                    </div>
+                    <div class="form-error" id="q-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="q-cancelar">Cancelar</button>
+                      <button type="button" class="primary-button" id="q-guardar">Guardar cuestionario</button>`
+            });
+
+            function pesos() {
+                const conRub = $("#q-rub").value !== "";
+                $("#q-pesos").style.display = conRub ? "block" : "none";
+                const p = parseInt($("#q-peso").value, 10) || 0;
+                $("#q-peso-hint").textContent = "La rúbrica aportará el " + (100 - p) + "% restante.";
+            }
+            $("#q-rub").onchange = pesos;
+            $("#q-peso").oninput = pesos;
+            pesos();
+
+            function dibujarPreguntas() {
+                $("#q-preguntas").innerHTML = w.preguntas.map((p, i) => `
+                    <div style="display:flex;gap:10px;align-items:flex-start;margin-bottom:10px">
+                        <span class="q-number" style="margin-top:8px">${i + 1}</span>
+                        <textarea class="text-area" style="min-height:52px" data-p="${i}" placeholder="Escribe la pregunta o el aspecto a evaluar">${esc(p)}</textarea>
+                        <button type="button" class="remove-row" style="margin-top:6px" data-quitar="${i}" title="Quitar pregunta">×</button>
+                    </div>`).join("");
+                $$("[data-p]").forEach(t => { t.oninput = () => { w.preguntas[t.dataset.p] = t.value; }; });
+                $$("[data-quitar]").forEach(b => {
+                    b.onclick = () => {
+                        if (w.preguntas.length <= 1) { DEM.aviso("El cuestionario necesita al menos una pregunta.", "error"); return; }
+                        w.preguntas.splice(parseInt(b.dataset.quitar, 10), 1);
+                        dibujarPreguntas();
+                    };
+                });
+            }
+            dibujarPreguntas();
+            $("#q-add").onclick = () => { w.preguntas.push(""); dibujarPreguntas(); };
+            $("#q-cancelar").onclick = DEM.cerrarModal;
+
+            $("#q-guardar").onclick = function () {
+                const fallo = msg => DEM.mostrarError($(".modal"), msg);
+                const nombre = $("#q-nombre").value.trim();
+                const rubricaId = $("#q-rub").value;
+                const pesoCuest = rubricaId ? parseInt($("#q-peso").value, 10) : 100;
+                const preguntas = w.preguntas.map(p => p.trim());
+
+                if (!nombre) return fallo("Escribe el nombre del cuestionario.");
+                if (preguntas.some(p => !p)) return fallo("Todas las preguntas deben tener texto (o elimina las vacías).");
+                if (rubricaId && !(pesoCuest >= 1 && pesoCuest <= 99)) return fallo("El peso del cuestionario debe estar entre 1% y 99%.");
+
+                const datos = {
+                    nombre, descripcion: $("#q-desc").value.trim(),
+                    practicaId: $("#q-pr").value, modalidad: $("#q-mod").value,
+                    rubricaId, pesoCuest, pesoRub: rubricaId ? 100 - pesoCuest : 0, preguntas
+                };
+
+                if (original) Object.assign(original, datos);
+                else DEM.agregar("cuestionarios", Object.assign({ id: DEM.uid("q") }, datos));
+
+                DEM.guardar();
+                DEM.cerrarModal();
+                tablaCuestionarios();
+                DEM.aviso(original ? "Cuestionario actualizado." : "Cuestionario creado correctamente.");
+            };
+        }
+
+        $("#btn-nuevo-cuestionario").onclick = () => formularioCuestionario();
+
+
+        /* =========================================
+           INICIO DE LA PANTALLA
+        ========================================= */
+
+        llenarFiltros();
+        resumen();
+        tablaEvaluaciones();
+        tablaCuestionarios();
+
+        const params = DEM.parametros();
+        if (params.get("evaluar") && D.evaluaciones.some(x => x.id === params.get("evaluar"))) {
+            const ev = D.evaluaciones.find(x => x.id === params.get("evaluar"));
+            if (ev.estado === "Pendiente de respuesta") {
+                DEM.aviso("El estudiante aún no ha respondido esta evaluación.", "error");
+            } else {
+                evaluar(ev.id);
+            }
+        } else if (params.get("asignar") && DEM.estudiante(params.get("asignar"))) {
+            asignar(params.get("asignar"));
+        }
+    </script>
+
+</body>
+</html>

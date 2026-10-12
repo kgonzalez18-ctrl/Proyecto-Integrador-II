@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item active">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        CUENTA
+                    </p>
+                    <h2>
+                        Mi perfil
+                    </h2>
+                    <p>
+                        Consulta y completa tu información personal y de gestión.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-editar">Editar perfil</button>
+                </div>
+            </div>
+
+            <div class="content-card profile-card">
+                <div class="card-title">
+                    <p>INFORMACIÓN PERSONAL</p>
+                    <h3>Coordinador de práctica</h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Nombre completo</span>
+                        <strong id="p-nombre">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Cédula</span>
+                        <strong id="p-cedula">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Facultad</span>
+                        <strong id="p-facultad">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Correo electrónico</span>
+                        <strong id="p-correo">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Teléfono</span>
+                        <strong id="p-telefono">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Programa académico</span>
+                        <strong id="p-programa">—</strong>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title">
+                    <p>GESTIÓN</p>
+                    <h3>Resumen del periodo <span id="p-periodo"></span></h3>
+                </div>
+                <div class="small-cards" style="margin-bottom:0">
+                    <div class="small-card"><span>Prácticas</span><strong id="p-practicas">0</strong></div>
+                    <div class="small-card"><span>Grupos</span><strong id="p-grupos">0</strong></div>
+                    <div class="small-card"><span>Estudiantes</span><strong id="p-estudiantes">0</strong></div>
+                    <div class="small-card"><span>Instituciones</span><strong id="p-instituciones">0</strong></div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const $ = DEM.$;
+
+        function pintar() {
+            const p = D.coordinador || {};
+            ["nombre", "cedula", "facultad", "correo", "telefono", "programa"].forEach(k => { $("#p-" + k).textContent = p[k] || "—"; });
+            $("#p-periodo").textContent = DEM.periodo();
+            $("#p-practicas").textContent = D.practicas.length;
+            $("#p-grupos").textContent = D.grupos.length;
+            $("#p-estudiantes").textContent = D.estudiantes.length;
+            $("#p-instituciones").textContent = D.instituciones.length;
+            $("#btn-editar").textContent = D.coordinador ? "Editar perfil" : "Completar perfil";
+        }
+
+        $("#btn-editar").onclick = function () {
+            const p = D.coordinador || {};
+            DEM.formModal({
+                tam: "", tag: "CUENTA", titulo: "Mi perfil", sub: "Esta información se mostrará en tu cuenta.",
+                valores: p,
+                campos: [
+                    { k: "nombre", label: "Nombre completo", tipo: "text", req: true, full: true },
+                    { k: "cedula", label: "Cédula", tipo: "text", req: true },
+                    { k: "correo", label: "Correo electrónico", tipo: "email", req: true },
+                    { k: "telefono", label: "Teléfono", tipo: "text" },
+                    { k: "facultad", label: "Facultad", tipo: "text" },
+                    { k: "programa", label: "Programa académico", tipo: "text", full: true }
+                ],
+                validar: v => /^\S+@\S+\.\S+$/.test(v.correo) ? null : "Escribe un correo electrónico válido.",
+                guardar: v => { D.coordinador = Object.assign({ id: "co1", estado: "Activo" }, D.coordinador || {}, v); DEM.guardar(); window.location.reload(); }
+            });
+        };
+
+        pintar();
+    </script>
+
+</body>
+</html>

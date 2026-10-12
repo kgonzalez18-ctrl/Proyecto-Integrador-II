@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item active">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <!-- INICIO -->
+        <section class="home-section home-docente">
+            <div class="home-content">
+
+                <div class="home-logo">
+                    <img src="../imagenes/fotoiniciosesion.jpg"
+                         alt="Docente en Marcha">
+                </div>
+
+                <p class="home-tag">
+                    PLATAFORMA DE PRÁCTICAS ACADÉMICAS
+                </p>
+
+                <h2>
+                    Bienvenido a
+                    <span>
+                        Docente en Marcha
+                    </span>
+                </h2>
+
+                <p class="home-description">
+                    Plataforma para la gestión y seguimiento
+                    de las prácticas académicas.
+                    Desde aquí acompañas, visitas y evalúas
+                    a tus estudiantes asignados.
+                </p>
+
+                <div class="home-line"></div>
+
+                <p class="home-help">
+                    Selecciona una opción del menú lateral para comenzar.
+                </p>
+
+            </div>
+        </section>
+
+        <!-- RESUMEN -->
+        <section class="content-page dashboard">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        RESUMEN
+                    </p>
+                    <h2>
+                        Tu asesoría hoy
+                    </h2>
+                    <p>
+                        Lo más importante de tus estudiantes asignados en un vistazo.
+                    </p>
+                </div>
+                <span class="status-badge teal" id="periodo">
+                    Periodo académico
+                </span>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Estudiantes asignados</span>
+                    <strong id="r-estudiantes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Visitas en los próximos 7 días</span>
+                    <strong id="r-visitas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Evaluaciones por calificar</span>
+                    <strong id="r-evaluaciones">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Retroalimentaciones sin consultar</span>
+                    <strong id="r-retros">0</strong>
+                </div>
+            </div>
+
+            <div class="two-columns">
+
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>AGENDA</p>
+                            <h3>Próximas visitas</h3>
+                        </div>
+                        <a href="visitas.html" class="link-more">Ver todas</a>
+                    </div>
+                    <div id="lista-visitas"></div>
+                </div>
+
+                <div class="content-card">
+                    <div class="card-header-row">
+                        <div class="card-title">
+                            <p>EVALUACIÓN</p>
+                            <h3>Por calificar</h3>
+                        </div>
+                        <a href="evaluaciones.html" class="link-more">Ver todas</a>
+                    </div>
+                    <div id="lista-evaluaciones"></div>
+                </div>
+
+            </div>
+
+            <div class="content-card" style="margin-top: 16px;">
+                <div class="card-header-row">
+                    <div class="card-title">
+                        <p>SEGUIMIENTO</p>
+                        <h3>Estudiantes que requieren atención</h3>
+                    </div>
+                    <a href="estudiantes.html" class="link-more">Ver estudiantes</a>
+                </div>
+                <div id="lista-atencion"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+
+        document.getElementById("periodo").textContent =
+            "Periodo académico " + DEM.periodo();
+
+        /* ---------- RESUMEN ---------- */
+
+        document.getElementById("r-estudiantes").textContent = D.estudiantes.length;
+        document.getElementById("r-visitas").textContent = DEM.proximasVisitas(7).length;
+        document.getElementById("r-evaluaciones").textContent =
+            D.evaluaciones.filter(e => e.estado === "Por calificar").length;
+        document.getElementById("r-retros").textContent =
+            D.retros.filter(r => !r.consultada).length;
+
+        /* ---------- PRÓXIMAS VISITAS ---------- */
+
+        const visitas = DEM.proximasVisitas(30).slice(0, 4);
+        document.getElementById("lista-visitas").innerHTML = visitas.length
+            ? visitas.map(v => {
+                const e = DEM.estudiante(v.estudianteId);
+                const f = v.fecha.split("-");
+                return `
+                <a href="visitas.html?ver=${v.id}" class="list-row" style="text-decoration:none">
+                    <div class="with-date">
+                        <div class="date-box">
+                            <strong>${parseInt(f[2], 10)}</strong>
+                            <span>${DEM.fmtFecha(v.fecha).split(" ")[1].toUpperCase()}</span>
+                        </div>
+                        <div class="list-main">
+                            <strong>${esc(e.nombre)}</strong>
+                            <span>${esc(DEM.grupoDe(e).institucion)} · ${DEM.fmtHora(v.hora)}</span>
+                        </div>
+                    </div>
+                    <span class="badge badge-blue">${esc(v.modalidad)}</span>
+                </a>`;
+            }).join("")
+            : '<div class="list-empty">No tienes visitas programadas.</div>';
+
+        /* ---------- EVALUACIONES POR CALIFICAR ---------- */
+
+        const evals = D.evaluaciones.filter(e => e.estado === "Por calificar").slice(0, 4);
+        document.getElementById("lista-evaluaciones").innerHTML = evals.length
+            ? evals.map(ev => {
+                const e = DEM.estudiante(ev.estudianteId);
+                const q = DEM.cuestionario(ev.cuestionarioId);
+                return `
+                <div class="list-row">
+                    <div class="list-main">
+                        <strong>${esc(e.nombre)}</strong>
+                        <span>${esc(q.nombre)}</span>
+                    </div>
+                    <a href="evaluaciones.html?evaluar=${ev.id}" class="primary-button small-button">Evaluar</a>
+                </div>`;
+            }).join("")
+            : '<div class="list-empty">No tienes evaluaciones pendientes por calificar.</div>';
+
+        /* ---------- ESTUDIANTES QUE REQUIEREN ATENCIÓN ---------- */
+
+        const atencion = [];
+        D.estudiantes.forEach(e => {
+            const motivos = [];
+            if (DEM.estadoAvance(e) === "Rezagado") {
+                motivos.push("Avance de horas del " + DEM.progreso(e) + "% (esperado " + DEM.progresoEsperado(e) + "%)");
+            }
+            if (!DEM.visitasDe(e.id).some(v => v.estado === "Realizada")) {
+                motivos.push("Aún no tiene visitas realizadas");
+            }
+            const vencidas = e.actividades.filter(a => a.estado === "Pendiente" && a.fechaLimite < DEM.hoy()).length;
+            if (vencidas) motivos.push(vencidas + (vencidas === 1 ? " actividad vencida" : " actividades vencidas"));
+            if (motivos.length) atencion.push({ e, motivos });
+        });
+
+        document.getElementById("lista-atencion").innerHTML = atencion.length
+            ? atencion.map(a => `
+                <div class="list-row">
+                    <div class="person-cell">
+                        <div class="mini-avatar">${DEM.iniciales(a.e.nombre)}</div>
+                        <div class="list-main">
+                            <strong>${esc(a.e.nombre)}</strong>
+                            <span>${a.motivos.map(esc).join(" · ")}</span>
+                        </div>
+                    </div>
+                    <a href="estudiantes.html?ver=${a.e.id}" class="secondary-button small-button">Revisar</a>
+                </div>`).join("")
+            : '<div class="list-empty">' + (D.estudiantes.length
+                ? "Todos tus estudiantes van al día."
+                : "Aún no tienes estudiantes asignados.") + "</div>";
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Actividades | Docente en Marcha</title>
+
+    <link rel="stylesheet" href="estudiante.css">
+
+</head>
+
+<body>
+
+
+    <!-- BARRA LATERAL -->
+
+    <aside class="sidebar">
+
+
+        <div class="sidebar-logo">
+
+            <div class="logo-image">
+
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+
+            </div>
+
+            <div class="logo-text">
+
+                <strong>DOCENTE</strong>
+
+                <span>EN MARCHA</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="user-card">
+
+            <div class="user-avatar">
+                ES
+            </div>
+
+            <div class="user-info">
+
+                <strong>Estudiante</strong>
+
+                <span>Practicante</span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="menu">
+
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+
+
+            <a href="estudiante.html" class="menu-item">
+
+                <span class="menu-icon">⌂</span>
+
+                <span>Inicio</span>
+
+            </a>
+
+
+            <a href="practica.html" class="menu-item">
+
+                <span class="menu-icon">▣</span>
+
+                <span>Mi práctica</span>
+
+            </a>
+
+
+            <a href="actividades.html" class="menu-item active">
+
+                <span class="menu-icon">✓</span>
+
+                <span>Actividades</span>
+
+            </a>
+
+
+            <a href="evidencias.html" class="menu-item">
+
+                <span class="menu-icon">▧</span>
+
+                <span>Evidencias</span>
+
+            </a>
+
+
+            <a href="evaluaciones.html" class="menu-item">
+
+                <span class="menu-icon">★</span>
+
+                <span>Evaluaciones</span>
+
+            </a>
+
+
+            <a href="retroalimentacion.html" class="menu-item">
+
+                <span class="menu-icon">◌</span>
+
+                <span>Retroalimentaciones</span>
+
+            </a>
+
+
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+
+
+            <a href="perfil.html" class="menu-item">
+
+                <span class="menu-icon">●</span>
+
+                <span>Mi perfil</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <button type="button" class="logout" onclick="cerrarSesion()">
+            <span>←</span>
+            Cerrar sesión
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- CONTENIDO -->
+
+    <main class="main-content">
+
+
+        <header class="topbar">
+
+            <div class="page-title">
+
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+
+                <h1>
+                    Docente en Marcha
+                </h1>
+
+            </div>
+
+
+            <div class="topbar-user">
+
+                <div class="notification">
+                    ♢
+                </div>
+
+                <div class="top-user-avatar">
+                    ES
+                </div>
+
+                <div class="top-user-info">
+
+                    <strong>
+                        Estudiante
+                    </strong>
+
+                    <span>
+                        Practicante
+                    </span>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <section class="content-page">
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-tag">
+                        SEGUIMIENTO
+                    </p>
+
+                    <h2>
+                        Actividades
+                    </h2>
+
+                    <p>
+                        Consulta las actividades asignadas para tu práctica.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="small-cards">
+
+
+                <div class="small-card">
+
+                    <span>
+                        Actividades asignadas
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Completadas
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Pendientes
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+
+                <div class="small-card">
+
+                    <span>
+                        Total
+                    </span>
+
+                    <strong>
+                        0
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="empty-card">
+
+
+                <div class="empty-icon">
+                    ✓
+                </div>
+
+
+                <h3>
+                    No hay actividades asignadas
+                </h3>
+
+
+                <p>
+                    Las actividades asignadas por los responsables
+                    de tu práctica aparecerán en esta sección.
+                </p>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+    
+<script>
+
+    function cerrarSesion() {
+
+        const confirmar = confirm("¿Estás seguro de cerrar sesión?");
+
+        if (confirmar) {
+
+            window.location.replace("../inicio/index.html");
+
+        }
+
+    }
+
+</script>
+
+</body>
+
+</html>

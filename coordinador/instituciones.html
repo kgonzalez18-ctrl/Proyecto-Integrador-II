@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituciones | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item active">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        GESTIÓN
+                    </p>
+                    <h2>
+                        Instituciones receptoras
+                    </h2>
+                    <p>
+                        Registra las instituciones, actualiza su información y administra sus convenios.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">+ Nueva institución</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Instituciones</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Convenios vigentes</span>
+                    <strong id="c-vigentes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Convenios en trámite</span>
+                    <strong id="c-tramite">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Vencidas o sin convenio</span>
+                    <strong id="c-alerta">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre, ciudad o NIT...">
+                <select class="select-input" id="f-convenio"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v || "—")}</strong></div>`;
+
+        function resumen() {
+            const est = D.instituciones.map(DEM.estadoConvenio);
+            $("#c-total").textContent = D.instituciones.length;
+            $("#c-vigentes").textContent = est.filter(e => e === "Vigente").length;
+            $("#c-tramite").textContent = est.filter(e => e === "En trámite").length;
+            $("#c-alerta").textContent = est.filter(e => e === "Vencido" || e === "Sin convenio").length;
+        }
+
+        $("#f-convenio").innerHTML = DEM.opciones(["Vigente", "En trámite", "Vencido", "Sin convenio"].map(x => ({ valor: x, texto: "Convenio: " + x })), "", "Todos los convenios");
+
+        function practicasDe(i) { return D.practicas.filter(p => p.institucionIds.includes(i.id)); }
+        function gruposDe(i) { return D.grupos.filter(g => g.institucionId === i.id); }
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const fc = $("#f-convenio").value;
+            const lista = D.instituciones.filter(i =>
+                (!q || (i.nombre + " " + i.ciudad + " " + i.nit).toLowerCase().includes(q)) && (!fc || DEM.estadoConvenio(i) === fc));
+
+            $("#tabla").innerHTML = DEM.tablaHTML(
+                ["INSTITUCIÓN", "CONTACTO", "CONVENIO", "PRÁCTICAS", "GRUPOS", ""],
+                lista.map(i => {
+                    const e = DEM.estadoConvenio(i), c = i.convenio || {};
+                    return [
+                        "<strong style='color:var(--dark-blue)'>" + esc(i.nombre) + "</strong><small>" + esc(i.ciudad) + " · " + esc(i.tipo) + "</small>",
+                        esc(i.contacto || "—") + "<small>" + esc(i.telefono || i.correo || "") + "</small>",
+                        DEM.badge(e, DEM.CLASE_CONVENIO[e]) + (c.numero ? "<small>N.º " + esc(c.numero) + (c.fechaFin ? " · hasta " + DEM.fmtFecha(c.fechaFin) : "") + "</small>" : ""),
+                        practicasDe(i).length, gruposDe(i).length,
+                        `<button type="button" class="secondary-button small-button" data-ver="${i.id}">Ver</button>
+                         <button type="button" class="secondary-button small-button" data-editar="${i.id}">Editar</button>
+                         <button type="button" class="danger-button small-button" data-eliminar="${i.id}">Eliminar</button>`
+                    ];
+                }),
+                D.instituciones.length ? "No hay instituciones con esos filtros." : "Aún no has registrado instituciones receptoras.");
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+            $$("[data-eliminar]").forEach(b => b.onclick = () => eliminar(b.dataset.eliminar));
+        }
+
+        function refrescar() { resumen(); tabla(); }
+        ["#f-buscar", "#f-convenio"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+
+        /* =========================================
+           DETALLE
+        ========================================= */
+
+        function ver(id) {
+            const i = DEM.institucion(id), c = i.convenio || {}, e = DEM.estadoConvenio(i);
+            const prs = practicasDe(i), grs = gruposDe(i);
+            let vig = "—";
+            if (c.fechaFin) { const d = DEM.diasEntre(DEM.hoy(), c.fechaFin); vig = d >= 0 ? "Vence en " + d + " días" : "Venció hace " + Math.abs(d) + " días"; }
+            DEM.abrirModal({
+                tam: "wide", tag: "INSTITUCIÓN RECEPTORA", titulo: i.nombre, sub: i.ciudad + " · " + i.tipo,
+                cuerpo: `
+                <div class="modal-block"><h4>INFORMACIÓN GENERAL</h4><div class="info-grid">
+                    ${info("NIT", i.nit)}${info("Dirección", i.direccion)}${info("Teléfono", i.telefono)}
+                    ${info("Correo electrónico", i.correo)}${info("Persona de contacto", i.contacto)}${info("Tipo", i.tipo)}
+                </div></div>
+                <div class="modal-block"><h4>CONVENIO ${DEM.badge(e, DEM.CLASE_CONVENIO[e])}</h4><div class="info-grid">
+                    ${info("Número de convenio", c.numero)}${info("Fecha de inicio", c.fechaInicio ? DEM.fmtFecha(c.fechaInicio) : "—")}
+                    ${info("Fecha de finalización", c.fechaFin ? DEM.fmtFecha(c.fechaFin) : "—")}${info("Vigencia", vig)}
+                </div>${c.observaciones ? `<div class="text-block" style="margin-top:12px">${esc(c.observaciones)}</div>` : ""}</div>
+                <div class="modal-block"><h4>PRÁCTICAS ASOCIADAS (${prs.length})</h4>
+                    ${prs.length ? prs.map(p => `<div class="list-row"><div class="list-main"><strong>${esc(p.nombre)}</strong><span>${esc(p.programa)}</span></div>${DEM.badge(DEM.estadoPractica(p), DEM.CLASE_PRACTICA[DEM.estadoPractica(p)])}</div>`).join("")
+                    : '<div class="list-empty">No está asociada a ninguna práctica.</div>'}</div>
+                <div class="modal-block"><h4>GRUPOS (${grs.length})</h4>
+                    ${grs.length ? grs.map(g => `<div class="list-row"><div class="list-main"><strong>${esc(g.nombre)}</strong><span>${DEM.estudiantesDeGrupo(g.id).length}/${g.cupo} estudiantes</span></div></div>`).join("")
+                    : '<div class="list-empty">Aún no tiene grupos.</div>'}</div>`,
+                pie: `<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>
+                      <button type="button" class="secondary-button" id="x-asociar">Asociar a prácticas</button>
+                      <button type="button" class="primary-button" id="x-editar">Editar</button>`
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+            $("#x-editar").onclick = () => formulario(id);
+            $("#x-asociar").onclick = () => asociar(id);
+        }
+
+
+        /* =========================================
+           ASOCIAR A PRÁCTICAS
+        ========================================= */
+
+        function asociar(id) {
+            const i = DEM.institucion(id), vig = DEM.convenioVigente(i);
+            if (!D.practicas.length) { DEM.aviso("Primero crea al menos una práctica.", "error"); return; }
+            DEM.abrirModal({
+                tam: "", tag: "INSTITUCIONES", titulo: "Asociar a prácticas", sub: i.nombre,
+                cuerpo: (vig ? "" : '<div class="callout warn">Esta institución no tiene convenio vigente: solo puedes quitar prácticas, no agregar nuevas.</div>') +
+                    D.practicas.map(p => {
+                        const marcada = p.institucionIds.includes(id);
+                        const bloq = D.grupos.some(g => g.practicaId === p.id && g.institucionId === id);
+                        return `<label class="check-row" style="padding:9px 0;border-top:1px solid #edf0f3;${!vig && !marcada ? "opacity:.55" : ""}">
+                            <input type="checkbox" data-pr="${p.id}" ${marcada ? "checked" : ""} ${bloq || (!vig && !marcada) ? "disabled" : ""}>
+                            <span><b>${esc(p.nombre)}</b> · ${esc(p.programa)}${bloq ? " — tiene grupos en esta práctica" : ""}</span></label>`;
+                    }).join("") + '<div class="form-error"></div>',
+                pie: '<button type="button" class="secondary-button" id="a-cancelar">Cancelar</button><button type="button" class="primary-button" id="a-guardar">Guardar</button>'
+            });
+            $("#a-cancelar").onclick = () => ver(id);
+            $("#a-guardar").onclick = () => {
+                $$("[data-pr]").forEach(c => {
+                    const p = DEM.practica(c.dataset.pr), tiene = p.institucionIds.includes(id);
+                    if (c.checked && !tiene) p.institucionIds.push(id);
+                    if (!c.checked && tiene) p.institucionIds = p.institucionIds.filter(x => x !== id);
+                });
+                DEM.guardar(); refrescar(); ver(id); DEM.aviso("Asociación actualizada.");
+            };
+        }
+
+
+        /* =========================================
+           FORMULARIO
+        ========================================= */
+
+        function formulario(id) {
+            const i = id ? DEM.institucion(id) : null, c = (i && i.convenio) || {};
+            DEM.formModal({
+                tag: "INSTITUCIONES", titulo: i ? "Editar institución" : "Nueva institución",
+                sub: "Registra la información de la institución y el estado de su convenio.",
+                valores: i ? { nombre: i.nombre, nit: i.nit, tipo: i.tipo, ciudad: i.ciudad, direccion: i.direccion, telefono: i.telefono,
+                               correo: i.correo, contacto: i.contacto, cEstado: c.estado || "Sin convenio", cNumero: c.numero, cInicio: c.fechaInicio,
+                               cFin: c.fechaFin, cObs: c.observaciones } : { tipo: "Pública", cEstado: "Sin convenio" },
+                campos: [
+                    { k: "nombre", label: "Nombre de la institución", tipo: "text", req: true, full: true },
+                    { k: "nit", label: "NIT", tipo: "text", req: true, ph: "Ej: 890.300.000-1" },
+                    { k: "tipo", label: "Tipo", tipo: "select", opciones: ["Pública", "Privada"].map(x => ({ valor: x, texto: x })) },
+                    { k: "ciudad", label: "Ciudad", tipo: "text", req: true },
+                    { k: "direccion", label: "Dirección", tipo: "text" },
+                    { k: "telefono", label: "Teléfono", tipo: "text" },
+                    { k: "correo", label: "Correo electrónico", tipo: "email" },
+                    { k: "contacto", label: "Persona de contacto", tipo: "text", full: true, ph: "Rector(a), coordinador(a) de práctica..." },
+                    { tipo: "seccion", label: "CONVENIO" },
+                    { k: "cEstado", label: "Estado del convenio", tipo: "select", refresca: true, opciones: ["Sin convenio", "En trámite", "Firmado"].map(x => ({ valor: x, texto: x })) },
+                    { k: "cNumero", label: "Número de convenio", tipo: "text" },
+                    { k: "cInicio", label: "Fecha de inicio", tipo: "date" },
+                    { k: "cFin", label: "Fecha de finalización", tipo: "date" },
+                    { k: "cObs", label: "Observaciones del convenio", tipo: "textarea", full: true }
+                ],
+                validar: v => {
+                    if (D.instituciones.some(x => x.id !== id && x.nit.toLowerCase() === v.nit.toLowerCase())) return "Ya existe una institución con ese NIT.";
+                    if (v.cEstado === "Firmado") {
+                        if (!v.cNumero || !v.cInicio || !v.cFin) return "Un convenio firmado necesita número, fecha de inicio y fecha de finalización.";
+                        if (v.cFin <= v.cInicio) return "La fecha de finalización del convenio debe ser posterior a la de inicio.";
+                    }
+                    return null;
+                },
+                guardar: v => {
+                    const datos = { nombre: v.nombre, nit: v.nit, tipo: v.tipo, ciudad: v.ciudad, direccion: v.direccion, telefono: v.telefono,
+                        correo: v.correo, contacto: v.contacto,
+                        convenio: { estado: v.cEstado, numero: v.cNumero, fechaInicio: v.cInicio, fechaFin: v.cFin, observaciones: v.cObs } };
+                    if (i) Object.assign(i, datos); else D.instituciones.push(Object.assign({ id: DEM.uid("in") }, datos));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(i ? "Institución actualizada." : "Institución registrada correctamente.");
+                }
+            });
+        }
+
+        function eliminar(id) {
+            const i = DEM.institucion(id);
+            if (gruposDe(i).length || practicasDe(i).length) { DEM.aviso("No se puede eliminar: está asociada a prácticas o grupos.", "error"); return; }
+            if (!confirm("¿Eliminar esta institución?")) return;
+            D.instituciones = D.instituciones.filter(x => x.id !== id);
+            DEM.guardar(); refrescar(); DEM.aviso("Institución eliminada.");
+        }
+
+        refrescar();
+    </script>
+
+</body>
+</html>

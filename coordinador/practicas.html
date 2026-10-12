@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prácticas | Docente en Marcha</title>
+    <link rel="stylesheet" href="coordinador.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                CO
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Coordinador</strong>
+                <span>Coordinador de práctica</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="coordinador.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicas.html" class="menu-item active">
+                <span class="menu-icon">▧</span>
+                <span>Prácticas</span>
+            </a>
+            <a href="grupos.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Grupos</span>
+            </a>
+            <a href="instituciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Instituciones</span>
+            </a>
+            <a href="asignaciones.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asignaciones</span>
+            </a>
+            <a href="seguimiento.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Seguimiento</span>
+            </a>
+            <p class="menu-title second-title">
+                PERSONAS
+            </p>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Estudiantes</span>
+            </a>
+            <a href="docentes.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Docentes asesores</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    CO
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Coordinador
+                    </strong>
+                    <span>
+                        Coordinador de práctica
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        GESTIÓN
+                    </p>
+                    <h2>
+                        Prácticas
+                    </h2>
+                    <p>
+                        Configura las prácticas del programa: fechas de ejecución, horas reglamentarias e instituciones receptoras. Máximo 8 prácticas por programa.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">+ Nueva práctica</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Prácticas</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>En curso</span>
+                    <strong id="c-curso">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Grupos creados</span>
+                    <strong id="c-grupos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Horas reglamentarias (suma)</span>
+                    <strong id="c-horas">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre o programa...">
+                <select class="select-input" id="f-programa"></select>
+                <select class="select-input" id="f-estado"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="coordinador.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const MAX_POR_PROGRAMA = 8;
+
+
+        /* =========================================
+           RESUMEN Y LISTADO
+        ========================================= */
+
+        function resumen() {
+            $("#c-total").textContent = D.practicas.length;
+            $("#c-curso").textContent = D.practicas.filter(p => DEM.estadoPractica(p) === "En curso").length;
+            $("#c-grupos").textContent = D.grupos.length;
+            $("#c-horas").textContent = D.practicas.reduce((s, p) => s + p.horas, 0);
+        }
+
+        function filtros() {
+            const prog = $("#f-programa").value, est = $("#f-estado").value;
+            const programas = [...new Set(D.practicas.map(p => p.programa))].sort();
+            $("#f-programa").innerHTML = DEM.opciones(programas.map(x => ({ valor: x, texto: x })), prog, "Todos los programas");
+            $("#f-estado").innerHTML = DEM.opciones(["Planeada", "En curso", "Finalizada"].map(x => ({ valor: x, texto: x })), est, "Todos los estados");
+        }
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const fp = $("#f-programa").value, fe = $("#f-estado").value;
+            const lista = D.practicas.filter(p =>
+                (!q || (p.nombre + " " + p.programa).toLowerCase().includes(q)) &&
+                (!fp || p.programa === fp) && (!fe || DEM.estadoPractica(p) === fe));
+
+            $("#tabla").innerHTML = DEM.tablaHTML(
+                ["PRÁCTICA", "SEMESTRE", "EJECUCIÓN", "HORAS", "INSTITUCIONES", "GRUPOS", "ESTADO", ""],
+                lista.map(p => {
+                    const est = DEM.estadoPractica(p);
+                    return [
+                        "<strong style='color:var(--dark-blue)'>" + esc(p.nombre) + "</strong><small>" + esc(p.programa) + "</small>",
+                        p.semestre + ".º",
+                        DEM.fmtFecha(p.inicio) + "<small>al " + DEM.fmtFecha(p.fin) + "</small>",
+                        p.horas + " h",
+                        p.institucionIds.length,
+                        DEM.gruposDePractica(p.id).length,
+                        DEM.badge(est, DEM.CLASE_PRACTICA[est]),
+                        `<button type="button" class="secondary-button small-button" data-ver="${p.id}">Ver</button>
+                         <button type="button" class="secondary-button small-button" data-editar="${p.id}">Editar</button>
+                         <button type="button" class="danger-button small-button" data-eliminar="${p.id}">Eliminar</button>`
+                    ];
+                }),
+                D.practicas.length ? "No hay prácticas con esos filtros." : "Aún no has configurado prácticas. Crea la primera con «Nueva práctica».");
+
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+            $$("[data-eliminar]").forEach(b => b.onclick = () => eliminar(b.dataset.eliminar));
+        }
+
+        function refrescar() { resumen(); filtros(); tabla(); }
+        ["#f-buscar", "#f-programa", "#f-estado"].forEach(s => $(s).addEventListener("input", tabla));
+        $("#btn-nueva").onclick = () => formulario();
+
+
+        /* =========================================
+           DETALLE
+        ========================================= */
+
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v)}</strong></div>`;
+
+        function ver(id) {
+            const p = DEM.practica(id);
+            const est = DEM.estadoPractica(p);
+            const s = DEM.estadisticasPractica(id);
+            const grupos = DEM.gruposDePractica(id);
+            DEM.abrirModal({
+                tam: "wide", tag: "PRÁCTICA", titulo: p.nombre, sub: p.programa + " · " + p.semestre + ".º semestre",
+                cuerpo: `
+                <div class="small-cards">
+                    <div class="small-card"><span>Estudiantes</span><strong>${s.estudiantes}</strong></div>
+                    <div class="small-card"><span>Cumplimiento de horas</span><strong>${s.cumplimiento}%</strong></div>
+                    <div class="small-card"><span>Promedio evaluaciones</span><strong>${DEM.fmtNota(s.promedio)}</strong></div>
+                    <div class="small-card"><span>Grupos</span><strong>${grupos.length}</strong></div>
+                </div>
+                <div class="modal-block"><h4>CONFIGURACIÓN</h4><div class="info-grid">
+                    ${info("Estado", est)}${info("Horas reglamentarias", p.horas + " h")}
+                    ${info("Fecha de inicio", DEM.fmtFecha(p.inicio))}${info("Fecha de finalización", DEM.fmtFecha(p.fin))}
+                    ${info("Semestre", p.semestre + ".º")}${info("Programa académico", p.programa)}
+                </div>${p.descripcion ? `<div class="text-block" style="margin-top:12px">${esc(p.descripcion)}</div>` : ""}</div>
+                <div class="modal-block"><h4>INSTITUCIONES RECEPTORAS (${p.institucionIds.length})</h4>
+                    ${p.institucionIds.length ? p.institucionIds.map(i => { const x = DEM.institucion(i); if (!x) return ""; const e = DEM.estadoConvenio(x);
+                        return `<div class="list-row"><div class="list-main"><strong>${esc(x.nombre)}</strong><span>${esc(x.ciudad)}</span></div>${DEM.badge("Convenio " + e.toLowerCase(), DEM.CLASE_CONVENIO[e])}</div>`; }).join("")
+                    : '<div class="list-empty">No hay instituciones asociadas.</div>'}</div>
+                <div class="modal-block"><h4>GRUPOS (${grupos.length})</h4>
+                    ${grupos.length ? grupos.map(g => { const d = g.docenteId && DEM.docente(g.docenteId);
+                        return `<div class="list-row"><div class="list-main"><strong>${esc(g.nombre)}</strong><span>${esc(g.institucion)} · ${d ? esc(d.nombre) : "Sin docente asesor"}</span></div>
+                        <span class="badge badge-teal">${DEM.estudiantesDeGrupo(g.id).length}/${g.cupo}</span></div>`; }).join("")
+                    : '<div class="list-empty">Aún no hay grupos en esta práctica.</div>'}</div>`,
+                pie: `<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>
+                      <a class="secondary-button" href="grupos.html?nuevo=${p.id}">+ Crear grupo</a>
+                      <button type="button" class="primary-button" id="x-editar">Editar</button>`
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+            $("#x-editar").onclick = () => formulario(id);
+        }
+
+
+        /* =========================================
+           FORMULARIO
+        ========================================= */
+
+        function formulario(id) {
+            const p = id ? DEM.practica(id) : null;
+            const usadas = new Set(p ? DEM.gruposDePractica(p.id).map(g => g.institucionId) : []);
+            const asociadas = new Set(p ? p.institucionIds : []);
+
+            const instHTML = D.instituciones.length ? D.instituciones.map(i => {
+                const vig = DEM.convenioVigente(i), marcada = asociadas.has(i.id), bloqueada = usadas.has(i.id);
+                const apagada = !vig && !marcada;
+                return `<label class="check-row" style="padding:8px 0;border-top:1px solid #edf0f3;${apagada ? "opacity:.55" : ""}">
+                    <input type="checkbox" data-inst="${i.id}" ${marcada ? "checked" : ""} ${apagada || bloqueada ? "disabled" : ""}>
+                    <span><b>${esc(i.nombre)}</b> · ${esc(i.ciudad)} ${DEM.badge("Convenio " + DEM.estadoConvenio(i).toLowerCase(), DEM.CLASE_CONVENIO[DEM.estadoConvenio(i)])}
+                    ${bloqueada ? " — tiene grupos en esta práctica" : ""}${apagada ? " — requiere convenio vigente" : ""}</span></label>`;
+            }).join("") : '<p class="form-hint">Aún no hay instituciones registradas. Regístralas primero en la sección Instituciones.</p>';
+
+            DEM.formModal({
+                tag: "PRÁCTICAS", titulo: p ? "Editar práctica" : "Nueva práctica",
+                sub: "Define las características de la práctica. Solo se asocian instituciones con convenio vigente.",
+                valores: p ? { nombre: p.nombre, programa: p.programa, semestre: String(p.semestre), horas: p.horas, inicio: p.inicio, fin: p.fin, descripcion: p.descripcion } : {},
+                campos: [
+                    { k: "nombre", label: "Nombre de la práctica", tipo: "text", req: true, full: true, ph: "Ej: Práctica Pedagógica II – Intervención Didáctica" },
+                    { k: "programa", label: "Programa académico", tipo: "text", req: true, ph: "Ej: Licenciatura en Matemáticas" },
+                    { k: "semestre", label: "Semestre", tipo: "select", req: true, vacio: "Selecciona", opciones: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(n => ({ valor: n, texto: n + ".º semestre" })) },
+                    { k: "horas", label: "Horas reglamentarias", tipo: "number", req: true, min: 1, max: 2000, hint: "Horas que debe cumplir cada estudiante." },
+                    { k: "inicio", label: "Fecha de inicio", tipo: "date", req: true },
+                    { k: "fin", label: "Fecha de finalización", tipo: "date", req: true },
+                    { k: "descripcion", label: "Descripción", tipo: "textarea", full: true },
+                    { tipo: "seccion", label: "INSTITUCIONES RECEPTORAS ASOCIADAS" },
+                    { tipo: "html", html: instHTML }
+                ],
+                validar: v => {
+                    if (v.fin <= v.inicio) return "La fecha de finalización debe ser posterior a la de inicio.";
+                    if (!(v.horas >= 1)) return "Las horas reglamentarias deben ser mayores que 0.";
+                    const mismas = D.practicas.filter(x => x.id !== id && x.programa.toLowerCase() === v.programa.toLowerCase());
+                    if (mismas.length >= MAX_POR_PROGRAMA) return "Este programa ya tiene " + MAX_POR_PROGRAMA + " prácticas, que es el máximo permitido.";
+                    if (mismas.some(x => x.nombre.toLowerCase() === v.nombre.toLowerCase())) return "Ya existe una práctica con ese nombre en el programa.";
+                    return null;
+                },
+                guardar: v => {
+                    const datos = {
+                        nombre: v.nombre, programa: v.programa, semestre: parseInt(v.semestre, 10), horas: v.horas,
+                        inicio: v.inicio, fin: v.fin, descripcion: v.descripcion,
+                        institucionIds: $$("[data-inst]:checked").map(c => c.dataset.inst)
+                    };
+                    if (p) Object.assign(p, datos); else D.practicas.push(Object.assign({ id: DEM.uid("pr") }, datos));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(p ? "Práctica actualizada." : "Práctica creada correctamente.");
+                }
+            });
+        }
+
+        function eliminar(id) {
+            const g = DEM.gruposDePractica(id).length;
+            if (g) { DEM.aviso("No se puede eliminar: tiene " + g + " grupo(s) creado(s).", "error"); return; }
+            if (!confirm("¿Eliminar esta práctica?")) return;
+            D.practicas = D.practicas.filter(p => p.id !== id);
+            DEM.guardar(); refrescar(); DEM.aviso("Práctica eliminada.");
+        }
+
+        refrescar();
+        const params = DEM.parametros();
+        if (params.get("nueva")) formulario();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retroalimentaciones | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item active">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        SEGUIMIENTO
+                    </p>
+                    <h2>
+                        Retroalimentaciones
+                    </h2>
+                    <p>
+                        Da retroalimentación a cada estudiante y consulta las
+                        observaciones que ya compartiste sobre su práctica.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nueva">
+                        + Nueva retroalimentación
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Retroalimentaciones</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Consultadas por el estudiante</span>
+                    <strong id="c-consultadas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Sin consultar</span>
+                    <strong id="c-pendientes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Estudiantes sin retroalimentación</span>
+                    <strong id="c-sin">0</strong>
+                </div>
+            </div>
+
+            <!-- FILTROS -->
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar"
+                       placeholder="Buscar por estudiante o contenido...">
+                <select class="select-input" id="f-estudiante"></select>
+                <select class="select-input" id="f-tipo"></select>
+            </div>
+
+            <!-- LISTADO -->
+            <div id="lista-retros"></div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        const VALORACIONES = ["Excelente", "Bueno", "Aceptable", "Por mejorar"];
+        const CLASE_VAL = { "Excelente": "badge-green", "Bueno": "badge-teal", "Aceptable": "badge-amber", "Por mejorar": "badge-red" };
+        const ASPECTOS = ["Responsabilidad y cumplimiento", "Desempeño pedagógico", "Relación con la comunidad educativa",
+                          "Reflexión y análisis", "Avance de horas y actividades", "Otro"];
+        const CLASE_TIPO = { "Desempeño": "badge-teal", "Visita": "badge-blue", "Evaluación": "badge-amber" };
+
+
+        /* =========================================
+           RESUMEN Y LISTADO
+        ========================================= */
+
+        function resumen() {
+            const conRetro = new Set(D.retros.map(r => r.estudianteId));
+            $("#c-total").textContent = D.retros.length;
+            $("#c-consultadas").textContent = D.retros.filter(r => r.consultada).length;
+            $("#c-pendientes").textContent = D.retros.filter(r => !r.consultada).length;
+            $("#c-sin").textContent = D.estudiantes.filter(e => !conRetro.has(e.id)).length;
+        }
+
+        $("#f-estudiante").innerHTML = DEM.opciones(
+            D.estudiantes.map(e => ({ valor: e.id, texto: e.nombre })), "", "Todos los estudiantes");
+        $("#f-tipo").innerHTML = DEM.opciones(
+            ["Desempeño", "Visita", "Evaluación"].map(x => ({ valor: x, texto: x })), "", "Todos los tipos");
+
+        function listado() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const fe = $("#f-estudiante").value;
+            const ft = $("#f-tipo").value;
+
+            const lista = D.retros.filter(r => {
+                const e = DEM.estudiante(r.estudianteId);
+                return (!q || (e.nombre + " " + r.titulo + " " + r.comentario).toLowerCase().includes(q)) &&
+                       (!fe || r.estudianteId === fe) && (!ft || r.tipo === ft);
+            }).sort((a, b) => b.fecha.localeCompare(a.fecha));
+
+            if (!lista.length) {
+                $("#lista-retros").innerHTML = `
+                <div class="empty-card">
+                    <div class="empty-icon">◌</div>
+                    <h3>No hay retroalimentaciones</h3>
+                    <p>Las retroalimentaciones que registres, y las que se generen desde tus visitas y evaluaciones, aparecerán aquí.</p>
+                </div>`;
+                return;
+            }
+
+            $("#lista-retros").innerHTML = lista.map(r => {
+                const e = DEM.estudiante(r.estudianteId);
+                return `
+                <div class="feed-item">
+                    <div>
+                        <span class="badge ${CLASE_TIPO[r.tipo]}">${r.tipo}</span>
+                        <h3>${esc(r.titulo)}</h3>
+                        <p class="feed-student">${esc(e.nombre)} · ${DEM.fmtFecha(r.fecha)}</p>
+                        <p class="feed-text">${esc(r.comentario)}</p>
+                    </div>
+                    <div class="feed-side">
+                        <span class="badge ${r.consultada ? "badge-green" : "badge-amber"}">${r.consultada ? "Consultada" : "Sin consultar"}</span>
+                        ${r.valoracion ? `<span class="badge ${CLASE_VAL[r.valoracion]}">${r.valoracion}</span>` : ""}
+                        <button type="button" class="secondary-button small-button" data-ver="${r.id}">Ver detalle</button>
+                    </div>
+                </div>`;
+            }).join("");
+
+            $$("[data-ver]").forEach(b => { b.onclick = () => ver(b.dataset.ver); });
+        }
+
+        ["#f-buscar", "#f-estudiante", "#f-tipo"].forEach(s => $(s).addEventListener("input", listado));
+        function refrescar() { resumen(); listado(); }
+
+
+        /* =========================================
+           DETALLE
+        ========================================= */
+
+        function ver(id) {
+            const r = D.retros.find(x => x.id === id);
+            const e = DEM.estudiante(r.estudianteId);
+            let extra = "";
+            let acciones = "";
+
+            if (r.tipo === "Evaluación") {
+                const ev = D.evaluaciones.find(x => x.id === r.origenId);
+                if (ev) {
+                    extra = `
+                    <div class="modal-block">
+                        <h4>COMENTARIOS SOBRE LAS RESPUESTAS · NOTA FINAL ${DEM.fmtNota(ev.nota)}</h4>
+                        ${ev.respuestas.map((x, i) => `
+                            <div class="question-card" style="padding:14px">
+                                <div class="q-title" style="margin-bottom:8px"><span class="q-number">${i + 1}</span><span>${esc(x.pregunta)}</span></div>
+                                <div class="text-block" style="margin-bottom:8px">${esc(x.respuesta || "Sin respuesta")}</div>
+                                <div style="font-size:10px;color:var(--teal-dark);font-weight:bold;margin-bottom:5px">Puntaje: ${DEM.fmtNota(x.puntaje)} · Retroalimentación</div>
+                                <div style="font-size:11px;color:#344054;line-height:1.6">${esc(x.comentario)}</div>
+                            </div>`).join("")}
+                    </div>`;
+                    acciones = `<a class="secondary-button" href="evaluaciones.html?evaluar=${ev.id}">Ir a la evaluación</a>`;
+                }
+            } else if (r.tipo === "Visita") {
+                acciones = `<a class="secondary-button" href="visitas.html?ver=${r.origenId}">Ir a la visita</a>`;
+            }
+
+            const editable = r.tipo === "Desempeño";
+            DEM.abrirModal({
+                tam: "wide",
+                tag: "RETROALIMENTACIÓN · " + r.tipo.toUpperCase(),
+                titulo: r.titulo,
+                sub: e.nombre + " · " + DEM.fmtFecha(r.fecha),
+                cuerpo: `
+                    <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+                        <span class="badge ${r.consultada ? "badge-green" : "badge-amber"}">${r.consultada ? "Consultada por el estudiante" : "El estudiante aún no la consulta"}</span>
+                        ${r.valoracion ? `<span class="badge ${CLASE_VAL[r.valoracion]}">Valoración: ${r.valoracion}</span>` : ""}
+                        ${r.aspecto ? `<span class="badge">${esc(r.aspecto)}</span>` : ""}
+                    </div>
+                    <div class="modal-block"><h4>${r.tipo === "Evaluación" ? "OBSERVACIONES GENERALES" : "OBSERVACIONES SOBRE EL DESEMPEÑO"}</h4>
+                        <div class="text-block">${esc(r.comentario)}</div></div>
+                    ${extra}
+                    ${editable ? "" : '<div class="callout" style="margin-bottom:0">Esta retroalimentación se genera desde la ' + (r.tipo === "Visita" ? "visita" : "evaluación") + ": para modificarla edita su origen.</div>"}`,
+                pie: `${editable ? '<button type="button" class="danger-button footer-left" id="r-eliminar">Eliminar</button>' : ""}
+                      <button type="button" class="secondary-button" id="r-cerrar">Cerrar</button>
+                      ${acciones}
+                      ${editable ? '<button type="button" class="primary-button" id="r-editar">Editar</button>' : ""}`
+            });
+            $("#r-cerrar").onclick = DEM.cerrarModal;
+            if (editable) {
+                $("#r-editar").onclick = () => formulario(id);
+                $("#r-eliminar").onclick = () => {
+                    if (!confirm("¿Eliminar esta retroalimentación?")) return;
+                    D.retros = D.retros.filter(x => x.id !== id);
+                    DEM.guardar();
+                    DEM.cerrarModal();
+                    refrescar();
+                    DEM.aviso("Retroalimentación eliminada.");
+                };
+            }
+        }
+
+
+        /* =========================================
+           FORMULARIO: NUEVA / EDITAR (DESEMPEÑO)
+        ========================================= */
+
+        function formulario(id, estudianteId) {
+            if (!D.estudiantes.length) {
+                DEM.aviso("Aún no tienes estudiantes asignados.", "error");
+                return;
+            }
+            const r = id ? D.retros.find(x => x.id === id) : null;
+            const a = r || { estudianteId: estudianteId || "", aspecto: ASPECTOS[1], titulo: "", valoracion: "", comentario: "" };
+
+            DEM.abrirModal({
+                tam: "",
+                tag: "RETROALIMENTACIONES",
+                titulo: r ? "Editar retroalimentación" : "Nueva retroalimentación",
+                sub: "Se muestra al estudiante en la sección «Retroalimentaciones» de su cuenta.",
+                cuerpo: `
+                    <div class="form-grid">
+                        <div class="form-field full"><label for="r-est">Estudiante <span class="req">*</span></label>
+                            <select class="select-input" id="r-est" ${r ? "disabled" : ""}>
+                                ${DEM.opciones(D.estudiantes.map(e => ({ valor: e.id, texto: e.nombre })), a.estudianteId, "Selecciona un estudiante")}
+                            </select></div>
+                        <div class="form-field"><label for="r-aspecto">Aspecto</label>
+                            <select class="select-input" id="r-aspecto">${DEM.opciones(ASPECTOS.map(x => ({ valor: x, texto: x })), a.aspecto)}</select></div>
+                        <div class="form-field"><label for="r-val">Valoración cualitativa <span class="req">*</span></label>
+                            <select class="select-input" id="r-val">${DEM.opciones(VALORACIONES.map(x => ({ valor: x, texto: x })), a.valoracion, "Selecciona")}</select></div>
+                        <div class="form-field full"><label for="r-titulo">Título <span class="req">*</span></label>
+                            <input type="text" class="text-input" id="r-titulo" value="${esc(a.titulo)}" placeholder="Ej: Avance en la planeación de clases"></div>
+                        <div class="form-field full"><label for="r-comentario">Observaciones sobre el desempeño <span class="req">*</span></label>
+                            <textarea class="text-area" id="r-comentario" style="min-height:140px" placeholder="Describe fortalezas, aspectos por mejorar y recomendaciones concretas.">${esc(a.comentario)}</textarea>
+                            <p class="form-hint">Mínimo 30 caracteres. Sé específico para que el estudiante pueda actuar sobre tu comentario.</p></div>
+                    </div>
+                    <div class="form-error" id="r-error"></div>`,
+                pie: `<button type="button" class="secondary-button" id="r-cancelar">Cancelar</button>
+                      <button type="button" class="primary-button" id="r-guardar">${r ? "Guardar cambios" : "Enviar retroalimentación"}</button>`
+            });
+
+            $("#r-cancelar").onclick = DEM.cerrarModal;
+            $("#r-guardar").onclick = function () {
+                const fallo = msg => DEM.mostrarError($(".modal"), msg);
+                const datos = {
+                    estudianteId: $("#r-est").value, aspecto: $("#r-aspecto").value,
+                    valoracion: $("#r-val").value, titulo: $("#r-titulo").value.trim(),
+                    comentario: $("#r-comentario").value.trim()
+                };
+                if (!datos.estudianteId) return fallo("Selecciona el estudiante.");
+                if (!datos.valoracion) return fallo("Selecciona la valoración cualitativa.");
+                if (!datos.titulo) return fallo("Escribe un título.");
+                if (datos.comentario.length < 30) return fallo("La retroalimentación debe tener al menos 30 caracteres.");
+
+                if (r) {
+                    Object.assign(r, datos, { fecha: DEM.hoy(), consultada: false });
+                } else {
+                    DEM.agregar("retros", Object.assign({ id: DEM.uid("rt"), tipo: "Desempeño", origenId: null,
+                                                  fecha: DEM.hoy(), consultada: false }, datos));
+                }
+                DEM.guardar();
+                DEM.cerrarModal();
+                refrescar();
+                DEM.aviso(r ? "Retroalimentación actualizada." : "Retroalimentación enviada al estudiante.");
+            };
+        }
+
+        $("#btn-nueva").onclick = () => formulario();
+
+
+        /* =========================================
+           INICIO DE LA PANTALLA
+        ========================================= */
+
+        refrescar();
+
+        const params = DEM.parametros();
+        if (params.get("nuevo") && DEM.estudiante(params.get("nuevo"))) {
+            formulario(null, params.get("nuevo"));
+        } else if (params.get("ver") && D.retros.some(x => x.id === params.get("ver"))) {
+            ver(params.get("ver"));
+        }
+    </script>
+
+</body>
+</html>

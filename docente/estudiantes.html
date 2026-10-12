@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis estudiantes | Docente en Marcha</title>
+    <link rel="stylesheet" href="docente.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-docente-iniciales>
+                DO
+            </div>
+            <div class="user-info">
+                <strong data-docente-nombre>Docente</strong>
+                <span>Docente asesor</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="docente.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="estudiantes.html" class="menu-item active">
+                <span class="menu-icon">▣</span>
+                <span>Mis estudiantes</span>
+            </a>
+            <a href="visitas.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Visitas</span>
+            </a>
+            <a href="evaluaciones.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Evaluaciones</span>
+            </a>
+            <a href="retroalimentacion.html" class="menu-item">
+                <span class="menu-icon">◌</span>
+                <span>Retroalimentaciones</span>
+            </a>
+            <a href="rubricas.html" class="menu-item">
+                <span class="menu-icon">▤</span>
+                <span>Rúbricas</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-docente-iniciales>
+                    CR
+                </div>
+                <div class="top-user-info">
+                    <strong data-docente-nombre>
+                        Docente
+                    </strong>
+                    <span>
+                        Docente asesor
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <!-- TITULO -->
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        SEGUIMIENTO
+                    </p>
+                    <h2>
+                        Mis estudiantes
+                    </h2>
+                    <p>
+                        Consulta los estudiantes, prácticas y grupos que tienes
+                        asignados y revisa el progreso de cada uno.
+                    </p>
+                </div>
+                <span class="status-badge teal" id="periodo">
+                    Periodo académico
+                </span>
+            </div>
+
+            <!-- RESUMEN -->
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Estudiantes asignados</span>
+                    <strong id="c-estudiantes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Grupos</span>
+                    <strong id="c-grupos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Prácticas</span>
+                    <strong id="c-practicas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Progreso promedio</span>
+                    <strong id="c-progreso">0%</strong>
+                </div>
+            </div>
+
+            <!-- PESTAÑAS -->
+            <div class="tabs">
+                <button type="button" class="tab-button active" data-tab="estudiantes">Estudiantes</button>
+                <button type="button" class="tab-button" data-tab="practicas">Prácticas</button>
+                <button type="button" class="tab-button" data-tab="grupos">Grupos</button>
+            </div>
+
+            <!-- ESTUDIANTES -->
+            <div class="tab-panel active" id="panel-estudiantes">
+                <div class="toolbar">
+                    <input type="text" class="search-input" id="f-buscar"
+                           placeholder="Buscar por nombre, cédula o institución...">
+                    <select class="select-input" id="f-grupo"></select>
+                    <select class="select-input" id="f-avance"></select>
+                </div>
+                <div class="table-card">
+                    <div class="table-scroll">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ESTUDIANTE</th>
+                                    <th>PRÁCTICA</th>
+                                    <th>GRUPO</th>
+                                    <th>HORAS</th>
+                                    <th>PROGRESO</th>
+                                    <th>PROMEDIO</th>
+                                    <th>ESTADO</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabla-estudiantes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRÁCTICAS -->
+            <div class="tab-panel" id="panel-practicas">
+                <div class="cards-grid" id="lista-practicas"></div>
+            </div>
+
+            <!-- GRUPOS -->
+            <div class="tab-panel" id="panel-grupos">
+                <div class="cards-grid" id="lista-grupos"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="docente.js"></script>
+    <script>
+        DEM.iniciarPagina();
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+
+        $("#periodo").textContent = "Periodo académico " + DEM.periodo();
+
+
+        /* =========================================
+           UTILIDADES DE ESTA PANTALLA
+        ========================================= */
+
+        function insigniaAvance(e) {
+            const estado = DEM.estadoAvance(e);
+            const clase = estado === "Al día" ? "badge-green"
+                        : estado === "Rezagado" ? "badge-red" : "badge-teal";
+            return '<span class="badge ' + clase + '">' + estado + "</span>";
+        }
+
+        function barra(p, esperado) {
+            const baja = esperado !== undefined && p < esperado - 15;
+            return '<div class="progress"><div class="progress-bar ' + (baja ? "low" : p >= 100 ? "done" : "") +
+                   '" style="width:' + p + '%"></div></div>';
+        }
+
+        function resumen() {
+            const prom = D.estudiantes.length
+                ? Math.round(D.estudiantes.reduce((s, e) => s + DEM.progreso(e), 0) / D.estudiantes.length) : 0;
+            $("#c-estudiantes").textContent = D.estudiantes.length;
+            $("#c-grupos").textContent = D.grupos.length;
+            $("#c-practicas").textContent = D.practicas.length;
+            $("#c-progreso").textContent = prom + "%";
+        }
+
+
+        /* =========================================
+           PESTAÑAS
+        ========================================= */
+
+        function irAPestana(nombre) {
+            $$(".content-page > .tabs .tab-button").forEach(b => b.classList.toggle("active", b.dataset.tab === nombre));
+            $$(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + nombre));
+        }
+
+        $$(".content-page > .tabs .tab-button").forEach(b => { b.onclick = () => irAPestana(b.dataset.tab); });
+
+
+        /* =========================================
+           TABLA DE ESTUDIANTES
+        ========================================= */
+
+        $("#f-grupo").innerHTML = DEM.opciones(
+            D.grupos.map(g => ({ valor: g.id, texto: g.nombre })), "", "Todos los grupos");
+        $("#f-avance").innerHTML = DEM.opciones(
+            ["Al día", "Rezagado", "Completada"].map(x => ({ valor: x, texto: x })), "", "Todos los estados");
+
+        function tablaEstudiantes() {
+            const q = $("#f-buscar").value.trim().toLowerCase();
+            const g = $("#f-grupo").value;
+            const a = $("#f-avance").value;
+
+            const lista = D.estudiantes.filter(e => {
+                const gr = DEM.grupoDe(e);
+                const texto = (e.nombre + " " + e.cedula + " " + gr.institucion + " " + e.programa).toLowerCase();
+                return (!q || texto.includes(q)) && (!g || e.grupoId === g) &&
+                       (!a || DEM.estadoAvance(e) === a);
+            });
+
+            $("#tabla-estudiantes").innerHTML = lista.length ? lista.map(e => {
+                const gr = DEM.grupoDe(e);
+                const pr = DEM.practicaDe(e);
+                const p = DEM.progreso(e);
+                const prom = DEM.promedioEstudiante(e.id);
+                return `
+                <tr>
+                    <td>
+                        <div class="person-cell">
+                            <div class="mini-avatar">${DEM.iniciales(e.nombre)}</div>
+                            <div><strong>${esc(e.nombre)}</strong><span>${esc(e.programa)}</span></div>
+                        </div>
+                    </td>
+                    <td>${esc(pr.nombre.split(" – ")[0])}<small>${esc(gr.institucion)}</small></td>
+                    <td>${esc(gr.nombre)}<small>${esc(gr.jornada)}</small></td>
+                    <td>${e.horasReal} / ${pr.horas}<small>${DEM.horasPendientes(e)} pendientes</small></td>
+                    <td class="progress-cell">${barra(p, DEM.progresoEsperado(e))}<small>${p}% · esperado ${DEM.progresoEsperado(e)}%</small></td>
+                    <td>${DEM.pillNota(prom)}</td>
+                    <td>${insigniaAvance(e)}</td>
+                    <td class="actions"><button type="button" class="secondary-button small-button" data-ver="${e.id}">Ver</button></td>
+                </tr>`;
+            }).join("") : '<tr><td colspan="8" class="table-empty">' + (D.estudiantes.length
+                ? "No se encontraron estudiantes con esos filtros."
+                : "Aún no tienes estudiantes asignados. Aparecerán aquí cuando se te asignen.") + '</td></tr>';
+
+            $$("[data-ver]").forEach(b => { b.onclick = () => abrirDetalle(b.dataset.ver); });
+        }
+
+        ["#f-buscar", "#f-grupo", "#f-avance"].forEach(s => {
+            $(s).addEventListener("input", tablaEstudiantes);
+        });
+
+
+        /* =========================================
+           PRÁCTICAS
+        ========================================= */
+
+        function vacioCard(icono, titulo, texto) {
+            return '<div class="empty-card" style="grid-column:1/-1"><div class="empty-icon">' + icono + "</div><h3>" +
+                   titulo + "</h3><p>" + texto + "</p></div>";
+        }
+
+        function listaPracticas() {
+            if (!D.practicas.length) {
+                $("#lista-practicas").innerHTML = vacioCard("▧", "No hay prácticas asignadas",
+                    "Las prácticas que tengas a cargo aparecerán aquí cuando sean configuradas.");
+                return;
+            }
+            $("#lista-practicas").innerHTML = D.practicas.map(p => {
+                const grupos = D.grupos.filter(g => g.practicaId === p.id);
+                const ests = D.estudiantes.filter(e => grupos.some(g => g.id === e.grupoId));
+                const prom = ests.length ? Math.round(ests.reduce((s, e) => s + DEM.progreso(e), 0) / ests.length) : 0;
+                const instrumentos = D.cuestionarios.filter(q => q.practicaId === p.id);
+                return `
+                <div class="info-card">
+                    <div class="info-card-head">
+                        <div>
+                            <p class="section-tag">${p.semestre}.º SEMESTRE</p>
+                            <h3>${esc(p.nombre)}</h3>
+                        </div>
+                        <span class="badge badge-teal">${p.horas} h</span>
+                    </div>
+                    <p style="color:var(--text-light);font-size:11px;line-height:1.6;margin-bottom:14px">${esc(p.descripcion)}</p>
+                    <div class="meta">
+                        <div><span>Grupos</span><strong>${grupos.length}</strong></div>
+                        <div><span>Estudiantes</span><strong>${ests.length}</strong></div>
+                        <div><span>Instituciones</span><strong>${esc(grupos.map(g => g.institucion).join(", "))}</strong></div>
+                        <div><span>Instrumentos de evaluación</span><strong>${instrumentos.length ? esc(instrumentos.map(q => q.nombre).join(" · ")) : "Sin configurar"}</strong></div>
+                    </div>
+                    <div style="padding-top:14px;border-top:1px solid #edf0f3">
+                        <span style="display:block;color:#8a95a3;font-size:9px;margin-bottom:7px">Progreso promedio de horas</span>
+                        ${barra(prom)}
+                        <small style="display:block;color:var(--text-light);font-size:9px;margin-top:6px">${prom}%</small>
+                    </div>
+                </div>`;
+            }).join("");
+        }
+
+
+        /* =========================================
+           GRUPOS
+        ========================================= */
+
+        function listaGrupos() {
+            if (!D.grupos.length) {
+                $("#lista-grupos").innerHTML = vacioCard("▣", "No hay grupos asignados",
+                    "Los grupos de práctica que tengas a cargo aparecerán aquí.");
+                return;
+            }
+            $("#lista-grupos").innerHTML = D.grupos.map(g => {
+                const pr = DEM.practica(g.practicaId);
+                const ests = D.estudiantes.filter(e => e.grupoId === g.id);
+                return `
+                <div class="info-card">
+                    <div class="info-card-head">
+                        <div>
+                            <p class="section-tag">${esc(pr.nombre.split(" – ")[0].toUpperCase())}</p>
+                            <h3>${esc(g.nombre)}</h3>
+                        </div>
+                        <span class="badge badge-teal">${ests.length} estudiantes</span>
+                    </div>
+                    <div class="meta" style="border-top:none;padding-top:0">
+                        <div><span>Institución receptora</span><strong>${esc(g.institucion)} · ${esc(g.ciudad)}</strong></div>
+                        <div><span>Jornada</span><strong>${esc(g.jornada)}</strong></div>
+                        <div><span>Horario</span><strong>${esc(g.horario)}</strong></div>
+                        <div><span>Periodo</span><strong>${DEM.fmtFecha(g.inicio)} – ${DEM.fmtFecha(g.fin)}</strong></div>
+                    </div>
+                    <div class="chip-list">
+                        ${ests.map(e => `<span class="chip" data-ver="${e.id}"><span class="mini-avatar">${DEM.iniciales(e.nombre)}</span>${esc(e.nombre.split(" ").slice(0, 2).join(" "))}</span>`).join("")}
+                    </div>
+                </div>`;
+            }).join("");
+            $$("#lista-grupos [data-ver]").forEach(b => { b.onclick = () => abrirDetalle(b.dataset.ver); });
+        }
+
+
+        /* =========================================
+           DETALLE DEL ESTUDIANTE (PROGRESO)
+        ========================================= */
+
+        function abrirDetalle(id, pestana) {
+            const e = DEM.estudiante(id);
+            DEM.abrirModal({
+                tam: "wide",
+                tag: "ESTUDIANTE ASIGNADO",
+                encabezado: `<div class="modal-person"><div class="mini-avatar">${DEM.iniciales(e.nombre)}</div>
+                    <div><h3>${esc(e.nombre)}</h3>
+                    <p class="modal-sub">${esc(e.programa)} · ${e.semestre}.º semestre</p></div></div>`,
+                cuerpo: `
+                    <div class="tabs" id="d-tabs">
+                        <button type="button" class="tab-button" data-d="resumen">Resumen</button>
+                        <button type="button" class="tab-button" data-d="practica">Práctica</button>
+                        <button type="button" class="tab-button" data-d="actividades">Actividades y evidencias</button>
+                        <button type="button" class="tab-button" data-d="visitas">Visitas</button>
+                        <button type="button" class="tab-button" data-d="evaluaciones">Evaluaciones</button>
+                        <button type="button" class="tab-button" data-d="retros">Retroalimentaciones</button>
+                    </div>
+                    <div id="d-panel"></div>`,
+                pie: '<button type="button" class="secondary-button" id="d-cerrar">Cerrar</button>'
+            });
+            $("#d-cerrar").onclick = DEM.cerrarModal;
+
+            function mostrar(tab) {
+                $$("#d-tabs .tab-button").forEach(b => b.classList.toggle("active", b.dataset.d === tab));
+                $("#d-panel").innerHTML = PANELES[tab](e);
+                enlazar(tab, e);
+            }
+
+            $$("#d-tabs .tab-button").forEach(b => { b.onclick = () => mostrar(b.dataset.d); });
+            mostrar(pestana || "resumen");
+        }
+
+        const info = (etq, val) => `<div class="info-item"><span>${etq}</span><strong>${esc(val)}</strong></div>`;
+
+        const PANELES = {
+
+            resumen(e) {
+                const p = DEM.progreso(e);
+                const visitas = DEM.visitasDe(e.id);
+                const realizadas = visitas.filter(v => v.estado === "Realizada").length;
+                const evs = DEM.evaluacionesDe(e.id);
+                const calificadas = evs.filter(x => x.estado === "Calificada").length;
+                const prox = visitas.filter(v => v.estado === "Programada" && v.fecha >= DEM.hoy())
+                                    .sort((a, b) => a.fecha.localeCompare(b.fecha))[0];
+                const porCalificar = evs.filter(x => x.estado === "Por calificar").length;
+                return `
+                <div class="small-cards">
+                    <div class="small-card"><span>Progreso de horas</span><strong>${p}%</strong></div>
+                    <div class="small-card"><span>Visitas realizadas</span><strong>${realizadas}</strong></div>
+                    <div class="small-card"><span>Evaluaciones calificadas</span><strong>${calificadas}</strong></div>
+                    <div class="small-card"><span>Promedio</span><strong>${DEM.fmtNota(DEM.promedioEstudiante(e.id))}</strong></div>
+                </div>
+                <div class="modal-block">
+                    <h4>AVANCE DE LA PRÁCTICA</h4>
+                    ${barra(p, DEM.progresoEsperado(e))}
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:10px;color:var(--text-light)">
+                        <span>${e.horasReal} de ${DEM.horasReglamentarias(e)} horas · Avance esperado a la fecha: ${DEM.progresoEsperado(e)}%</span>
+                        ${insigniaAvance(e)}
+                    </div>
+                </div>
+                <div class="modal-block">
+                    <h4>PENDIENTES CON ESTE ESTUDIANTE</h4>
+                    <div class="list-row">
+                        <div class="list-main"><strong>Próxima visita</strong>
+                            <span>${prox ? DEM.fmtFecha(prox.fecha) + " · " + DEM.fmtHora(prox.hora) + " · " + esc(prox.modalidad) : "No hay visitas programadas"}</span></div>
+                    </div>
+                    <div class="list-row">
+                        <div class="list-main"><strong>Evaluaciones por calificar</strong>
+                            <span>${porCalificar ? porCalificar + " pendiente(s) de tu revisión" : "Ninguna por ahora"}</span></div>
+                    </div>
+                    <div class="list-row">
+                        <div class="list-main"><strong>Evidencias sin revisar</strong>
+                            <span>${e.evidencias.filter(x => !x.revisada).length} evidencia(s)</span></div>
+                    </div>
+                </div>`;
+            },
+
+            practica(e) {
+                const gr = DEM.grupoDe(e);
+                const pr = DEM.practicaDe(e);
+                return `
+                <div class="modal-block">
+                    <h4>DATOS DE ASIGNACIÓN</h4>
+                    <div class="info-grid">
+                        ${info("Práctica", pr.nombre)}
+                        ${info("Institución receptora", gr.institucion + " · " + gr.ciudad)}
+                        ${info("Docente asesor", DEM.nombreDocente())}
+                        ${info("Grupo", gr.nombre)}
+                        ${info("Fecha de inicio", DEM.fmtFecha(gr.inicio))}
+                        ${info("Fecha de finalización", DEM.fmtFecha(gr.fin))}
+                        ${info("Horas reglamentarias", DEM.horasReglamentarias(e))}
+                        ${info("Horas realizadas", e.horasReal)}
+                        ${info("Horas pendientes", DEM.horasPendientes(e))}
+                        ${info("Horario", gr.horario)}
+                    </div>
+                </div>
+                <div class="modal-block">
+                    <h4>INFORMACIÓN PERSONAL Y ACADÉMICA</h4>
+                    <div class="info-grid">
+                        ${info("Nombre completo", e.nombre)}
+                        ${info("Cédula", e.cedula)}
+                        ${info("Programa académico", e.programa)}
+                        ${info("Correo electrónico", e.correo)}
+                        ${info("Semestre", e.semestre)}
+                        ${info("Estado", e.estado)}
+                    </div>
+                </div>`;
+            },
+
+            actividades(e) {
+                const acts = e.actividades.map(a => {
+                    const vencida = a.estado === "Pendiente" && a.fechaLimite < DEM.hoy();
+                    const badge = a.estado === "Completada" ? '<span class="badge badge-green">Completada</span>'
+                                : vencida ? '<span class="badge badge-red">Vencida</span>'
+                                : '<span class="badge badge-amber">Pendiente</span>';
+                    return `<div class="list-row"><div class="list-main"><strong>${esc(a.titulo)}</strong>
+                        <span>Fecha límite: ${DEM.fmtFecha(a.fechaLimite)}</span></div>${badge}</div>`;
+                }).join("");
+                const evs = e.evidencias.length ? e.evidencias.map(v => `
+                    <div class="file-item ${v.revisada ? "delivered-file" : ""}" style="margin-bottom:8px">
+                        <div class="file-icon">${v.revisada ? "✓" : "📄"}</div>
+                        <div class="file-information">
+                            <span class="file-label ${v.revisada ? "delivered-label" : ""}">${v.revisada ? "REVISADA" : "SIN REVISAR"}</span>
+                            <h3>${esc(v.archivo)}</h3>
+                            <p>${esc(v.actividad)} · Entregada el ${DEM.fmtFecha(v.fecha)}</p>
+                        </div>
+                        ${v.revisada ? "" : `<button type="button" class="primary-button small-button" data-revisar="${v.id}">Marcar como revisada</button>`}
+                    </div>`).join("")
+                    : '<div class="list-empty">El estudiante aún no ha entregado evidencias.</div>';
+                return `
+                <div class="modal-block"><h4>ACTIVIDADES ASIGNADAS (${e.actividades.length})</h4>${acts}</div>
+                <div class="modal-block"><h4>EVIDENCIAS ENTREGADAS (${e.evidencias.length})</h4>${evs}</div>`;
+            },
+
+            visitas(e) {
+                const vs = DEM.visitasDe(e.id);
+                return `
+                <div class="card-header-row">
+                    <div class="modal-block" style="margin:0"><h4>VISITAS (${vs.length})</h4></div>
+                    <a class="primary-button small-button" href="visitas.html?nuevo=${e.id}">+ Registrar visita</a>
+                </div>
+                ${vs.length ? vs.map(v => `
+                    <a href="visitas.html?ver=${v.id}" class="list-row" style="text-decoration:none">
+                        <div class="list-main"><strong>${DEM.fmtFecha(v.fecha)} · ${DEM.fmtHora(v.hora)}</strong>
+                            <span>${esc(v.claseObservada || v.objetivo)}</span></div>
+                        <span class="badge ${v.estado === "Realizada" ? "badge-green" : "badge-blue"}">${v.estado}</span>
+                    </a>`).join("") : '<div class="list-empty">Aún no hay visitas registradas.</div>'}`;
+            },
+
+            evaluaciones(e) {
+                const evs = DEM.evaluacionesDe(e.id);
+                const cls = { "Calificada": "badge-green", "Por calificar": "badge-amber", "Pendiente de respuesta": "" };
+                return `
+                <div class="card-header-row">
+                    <div class="modal-block" style="margin:0"><h4>EVALUACIONES (${evs.length})</h4></div>
+                    <a class="primary-button small-button" href="evaluaciones.html?asignar=${e.id}">+ Asignar evaluación</a>
+                </div>
+                ${evs.length ? evs.map(v => {
+                    const q = DEM.cuestionario(v.cuestionarioId);
+                    return `<a href="evaluaciones.html?evaluar=${v.id}" class="list-row" style="text-decoration:none">
+                        <div class="list-main"><strong>${esc(q.nombre)}</strong>
+                            <span>${v.estado === "Calificada" ? "Calificada el " + DEM.fmtFecha(v.fechaCalificada) : "Asignada el " + DEM.fmtFecha(v.fechaAsignada)}</span></div>
+                        <div class="list-side">${v.estado === "Calificada" ? DEM.pillNota(v.nota) + " " : ""}<span class="badge ${cls[v.estado]}">${v.estado}</span></div>
+                    </a>`;
+                }).join("") : '<div class="list-empty">Aún no tiene evaluaciones asignadas.</div>'}`;
+            },
+
+            retros(e) {
+                const rs = DEM.retrosDe(e.id);
+                return `
+                <div class="card-header-row">
+                    <div class="modal-block" style="margin:0"><h4>RETROALIMENTACIONES (${rs.length})</h4></div>
+                    <a class="primary-button small-button" href="retroalimentacion.html?nuevo=${e.id}">+ Nueva retroalimentación</a>
+                </div>
+                ${rs.length ? rs.map(r => `
+                    <a href="retroalimentacion.html?ver=${r.id}" class="list-row" style="text-decoration:none">
+                        <div class="list-main"><strong>${esc(r.titulo)}</strong>
+                            <span>${esc(r.tipo)} · ${DEM.fmtFecha(r.fecha)}</span></div>
+                        <span class="badge ${r.consultada ? "badge-green" : "badge-amber"}">${r.consultada ? "Consultada" : "Sin consultar"}</span>
+                    </a>`).join("") : '<div class="list-empty">Aún no has dado retroalimentación a este estudiante.</div>'}`;
+            }
+        };
+
+        function enlazar(tab, e) {
+            if (tab !== "actividades") return;
+            $$("[data-revisar]").forEach(b => {
+                b.onclick = () => {
+                    const ev = e.evidencias.find(x => x.id === b.dataset.revisar);
+                    ev.revisada = true;
+                    DEM.guardar();
+                    $("#d-panel").innerHTML = PANELES.actividades(e);
+                    enlazar("actividades", e);
+                    DEM.aviso("Evidencia marcada como revisada.");
+                };
+            });
+        }
+
+
+        /* =========================================
+           INICIO DE LA PANTALLA
+        ========================================= */
+
+        resumen();
+        tablaEstudiantes();
+        listaPracticas();
+        listaGrupos();
+
+        const params = DEM.parametros();
+        if (params.get("avance")) $("#f-avance").value = params.get("avance");
+        if (params.get("grupo")) $("#f-grupo").value = params.get("grupo");
+        tablaEstudiantes();
+        if (params.get("ver") && DEM.estudiante(params.get("ver"))) {
+            abrirDetalle(params.get("ver"));
+        }
+    </script>
+
+</body>
+</html>
