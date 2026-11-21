@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desempeño | Docente en Marcha</title>
+    <link rel="stylesheet" href="institucion.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                IR
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Institución</strong>
+                <span>Institución receptora</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="institucion.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Practicantes</span>
+            </a>
+            <a href="asistencia.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asistencia</span>
+            </a>
+            <a href="desempeno.html" class="menu-item active">
+                <span class="menu-icon">★</span>
+                <span>Desempeño</span>
+            </a>
+            <a href="validaciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Validaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    IR
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Institución
+                    </strong>
+                    <span>
+                        Institución receptora
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        DESEMPEÑO
+                    </p>
+                    <h2>
+                        Desempeño
+                    </h2>
+                    <p>
+                        Registra y valida el desempeño de los practicantes y deja tus observaciones sobre cada uno.
+                    </p>
+                </div>
+                <div class="heading-actions">
+                    <button type="button" class="primary-button" id="btn-nuevo">+ Registrar desempeño</button>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Valoraciones</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Validadas</span>
+                    <strong id="c-validadas">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Promedio de desempeño</span>
+                    <strong id="c-prom">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Practicantes sin valorar</span>
+                    <strong id="c-sin">0</strong>
+                </div>
+            </div>
+
+            <div class="callout">
+                Las valoraciones <b>validadas</b> se comparten con el docente asesor, el coordinador y el director. Las que no has validado son un borrador solo visible para ti.
+            </div>
+
+            <div class="tabs">
+                <button type="button" class="tab-button active" data-tab="registros">Valoraciones</button>
+                <button type="button" class="tab-button" data-tab="resumen">Resumen por practicante</button>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por practicante u observación...">
+                <select class="select-input" id="f-tipo"></select>
+            </div>
+
+            <div class="tab-panel active" id="panel-registros">
+            <div id="t-registros"></div>
+            </div>
+            <div class="tab-panel" id="panel-resumen">
+            <div id="t-resumen"></div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="../api.js"></script>
+    <script src="institucion.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const hoy = DEM.hoy();
+        const TIPOS = ["Seguimiento parcial", "Evaluación final"];
+        const CRITERIOS = ["Puntualidad y asistencia", "Responsabilidad y compromiso", "Relación con los estudiantes",
+                           "Relación con la comunidad educativa", "Desempeño pedagógico en el aula", "Disposición para aprender y recibir observaciones"];
+        const NIVELES = [{ valor: "5", texto: "5 – Excelente" }, { valor: "4", texto: "4 – Bueno" }, { valor: "3", texto: "3 – Aceptable" }, { valor: "2", texto: "2 – Deficiente" }, { valor: "1", texto: "1 – Muy deficiente" }];
+        const hay = (q, ...t) => !q || t.join(" ").toLowerCase().includes(q);
+        const registros = () => { const ids = misIds(); return D.desempenos.filter(d => ids.has(d.estudianteId)).sort((a, b) => b.fecha.localeCompare(a.fecha)); };
+        const nombreDe = id => { const e = DEM.estudiante(id); return e ? e.nombre : "—"; };
+
+        $("#f-tipo").innerHTML = DEM.opciones(TIPOS.map(x => ({ valor: x, texto: x })), "", "Todos los tipos");
+
+        function irA(n) {
+            $$(".content-page > .tabs .tab-button").forEach(b => b.classList.toggle("active", b.dataset.tab === n));
+            $$(".tab-panel").forEach(p => p.classList.toggle("active", p.id === "panel-" + n));
+        }
+        $$(".content-page > .tabs .tab-button").forEach(b => b.onclick = () => irA(b.dataset.tab));
+
+        function resumen() {
+            const r = registros(), val = r.filter(d => d.validado);
+            $("#c-total").textContent = r.length;
+            $("#c-validadas").textContent = val.length;
+            $("#c-prom").textContent = DEM.fmtNota(DEM.promedio(val.map(d => d.nota)));
+            $("#c-sin").textContent = misPracticantes().filter(e => !r.some(d => d.estudianteId === e.id)).length;
+        }
+
+        function pintar() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), ft = $("#f-tipo").value, todos = registros();
+            const lista = todos.filter(d => hay(q, nombreDe(d.estudianteId), d.observaciones) && (!ft || d.tipo === ft));
+
+            $("#t-registros").innerHTML = DEM.tablaHTML(["PRACTICANTE", "FECHA", "TIPO", "NOTA", "VALORACIÓN", "ESTADO", ""],
+                lista.map(d => [DEM.persona(nombreDe(d.estudianteId), ""), DEM.fmtFecha(d.fecha), esc(d.tipo), DEM.pillNota(d.nota), DEM.badge(d.valoracion, DEM.CLASE_VALORACION[d.valoracion]),
+                    d.validado ? DEM.badge("Validada", "badge-green") + "<small>" + DEM.fmtFecha(d.validadoFecha) + "</small>" : DEM.badge("Sin validar", "badge-amber"),
+                    `<button type="button" class="secondary-button small-button" data-ver="${d.id}">Ver</button> ` + (d.validado
+                        ? `<button type="button" class="secondary-button small-button" data-anular="${d.id}">Anular validación</button>`
+                        : `<button type="button" class="primary-button small-button" data-validar="${d.id}">Validar</button>
+                           <button type="button" class="secondary-button small-button" data-editar="${d.id}">Editar</button>`)]),
+                todos.length ? "No hay valoraciones con esos filtros." : "Aún no has registrado el desempeño de tus practicantes.");
+
+            $("#t-resumen").innerHTML = DEM.tablaHTML(["PRACTICANTE", "VALORACIONES", "PROMEDIO VALIDADO", "ÚLTIMA VALORACIÓN", "ASISTENCIA", "PROGRESO DE HORAS"],
+                misPracticantes().filter(e => hay(q, e.nombre)).map(e => {
+                    const l = todos.filter(d => d.estudianteId === e.id), asi = DEM.resumenAsistencia(e.id);
+                    return [DEM.persona(e.nombre, DEM.grupo(e.grupoId).nombre), l.length, DEM.pillNota(DEM.promedioDesempeno(e.id)),
+                        l.length ? DEM.badge(l[0].valoracion, DEM.CLASE_VALORACION[l[0].valoracion]) + "<small>" + DEM.fmtFecha(l[0].fecha) + "</small>" : "—",
+                        asi.pct === null ? "—" : asi.pct + "%", '<div class="progress-cell">' + DEM.barra(DEM.progreso(e)) + "<small>" + DEM.progreso(e) + "%</small></div>"];
+                }), "Aún no hay practicantes asignados.");
+
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+            $$("[data-validar]").forEach(b => b.onclick = () => validar(b.dataset.validar));
+            $$("[data-anular]").forEach(b => b.onclick = () => anular(b.dataset.anular));
+            $$("[data-editar]").forEach(b => b.onclick = () => formulario(b.dataset.editar));
+        }
+        function refrescar() { resumen(); pintar(); }
+        ["#f-buscar", "#f-tipo"].forEach(s => $(s).addEventListener("input", pintar));
+
+        function validar(id) {
+            const d = D.desempenos.find(x => x.id === id);
+            d.validado = true; d.validadoFecha = hoy;
+            DEM.guardar(); DEM.cerrarModal(); refrescar(); DEM.aviso("Valoración validada: ya es visible para el docente asesor.");
+        }
+        function anular(id) {
+            if (!confirm("¿Anular la validación? La valoración volverá a ser un borrador solo visible para ti.")) return;
+            const d = D.desempenos.find(x => x.id === id);
+            d.validado = false; d.validadoFecha = null;
+            DEM.guardar(); DEM.cerrarModal(); refrescar(); DEM.aviso("Validación anulada.");
+        }
+
+
+        /* =========================================
+           DETALLE
+        ========================================= */
+
+        function ver(id) {
+            const d = D.desempenos.find(x => x.id === id);
+            DEM.abrirModal({
+                tam: "wide", tag: "DESEMPEÑO · " + (d.validado ? "VALIDADO" : "SIN VALIDAR"), titulo: nombreDe(d.estudianteId), sub: d.tipo + " · " + DEM.fmtFecha(d.fecha),
+                cuerpo: `
+                <div class="grade-summary" style="margin-top:0;margin-bottom:22px;grid-template-columns:1fr 1fr">
+                    <div class="final"><span>NOTA DE DESEMPEÑO</span><strong>${DEM.fmtNota(d.nota)}</strong><small>Promedio de los criterios · escala 1.0 – 5.0</small></div>
+                    <div><span>VALORACIÓN CUALITATIVA</span><strong style="font-size:20px">${esc(d.valoracion)}</strong><small>${d.validado ? "Compartida con el docente asesor" : "Borrador: solo visible para la institución"}</small></div>
+                </div>
+                <div class="modal-block"><h4>CRITERIOS</h4>${DEM.tablaHTML(["CRITERIO", "PUNTAJE"], d.criterios.map(c => [esc(c.nombre), DEM.pillNota(c.puntaje)]))}</div>
+                <div class="modal-block"><h4>OBSERVACIONES SOBRE EL PRACTICANTE</h4><div class="text-block">${esc(d.observaciones)}</div></div>
+                ${d.mejoras ? `<div class="modal-block"><h4>ASPECTOS POR MEJORAR</h4><div class="text-block">${esc(d.mejoras)}</div></div>` : ""}`,
+                pie: '<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>' + (d.validado
+                    ? '<button type="button" class="secondary-button" id="x-anular">Anular validación</button>'
+                    : '<button type="button" class="secondary-button" id="x-editar">Editar</button><button type="button" class="primary-button" id="x-validar">Validar</button>')
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+            if (d.validado) $("#x-anular").onclick = () => anular(id);
+            else { $("#x-editar").onclick = () => formulario(id); $("#x-validar").onclick = () => validar(id); }
+        }
+
+
+        /* =========================================
+           FORMULARIO
+        ========================================= */
+
+        function formulario(id, estudianteId) {
+            const ms = misPracticantes();
+            if (!id && !ms.length) { DEM.aviso("Aún no tienes practicantes asignados a tu institución.", "error"); return; }
+            const d = id ? D.desempenos.find(x => x.id === id) : null;
+            const valores = d ? { estudianteId: d.estudianteId, fecha: d.fecha, tipo: d.tipo, observaciones: d.observaciones, mejoras: d.mejoras, validar: d.validado }
+                              : { estudianteId: estudianteId || "", fecha: hoy, tipo: TIPOS[0], validar: true };
+            CRITERIOS.forEach((c, i) => { valores["c" + i] = d ? String(d.criterios[i].puntaje) : ""; });
+
+            DEM.formModal({
+                tag: "DESEMPEÑO", titulo: d ? "Editar valoración" : "Registrar desempeño",
+                sub: "Califica cada criterio de 1 a 5. La nota y la valoración cualitativa se calculan automáticamente.", valores,
+                campos: [
+                    { k: "estudianteId", label: "Practicante", tipo: "select", req: true, full: true, vacio: "Selecciona al practicante", deshabilitado: !!d,
+                      opciones: ms.map(e => ({ valor: e.id, texto: e.nombre + " · " + DEM.grupo(e.grupoId).nombre })) },
+                    { k: "fecha", label: "Fecha de la valoración", tipo: "date", req: true, max: hoy },
+                    { k: "tipo", label: "Tipo de valoración", tipo: "select", req: true, opciones: TIPOS.map(x => ({ valor: x, texto: x })) },
+                    { tipo: "seccion", label: "CRITERIOS DE DESEMPEÑO" }
+                ].concat(CRITERIOS.map((c, i) => ({ k: "c" + i, label: c, tipo: "select", req: true, refresca: true, vacio: "Calificar", opciones: NIVELES })))
+                 .concat([
+                    { tipo: "html", html: '<div class="rubric-result" style="margin-top:0"><span id="d-detalle">Califica todos los criterios para calcular la nota.</span><span>Nota de desempeño: <strong id="d-nota">—</strong></span></div>' },
+                    { tipo: "seccion", label: "OBSERVACIONES" },
+                    { k: "observaciones", label: "Observaciones sobre el practicante", tipo: "textarea", req: true, full: true, ph: "Describe fortalezas y aspectos observados durante la práctica." },
+                    { k: "mejoras", label: "Aspectos por mejorar (opcional)", tipo: "textarea", full: true },
+                    { k: "validar", label: "Validar y compartir con el docente asesor", tipo: "checkbox" }
+                 ]),
+                alCambiar: v => {
+                    const pts = CRITERIOS.map((c, i) => parseInt(v["c" + i], 10)).filter(n => !isNaN(n));
+                    if (pts.length === CRITERIOS.length) {
+                        const nota = DEM.r1(pts.reduce((a, b) => a + b, 0) / pts.length);
+                        $("#d-nota").textContent = DEM.fmtNota(nota);
+                        $("#d-detalle").textContent = "Valoración cualitativa: " + DEM.valoracionDe(nota);
+                    } else {
+                        $("#d-nota").textContent = "—";
+                        $("#d-detalle").textContent = "Califica todos los criterios para calcular la nota.";
+                    }
+                },
+                validar: v => {
+                    if (v.fecha > hoy) return "La fecha no puede ser futura.";
+                    if (v.observaciones.length < 20) return "Escribe las observaciones (mínimo 20 caracteres).";
+                    return null;
+                },
+                guardar: v => {
+                    const criterios = CRITERIOS.map((n, i) => ({ nombre: n, puntaje: parseInt(v["c" + i], 10) }));
+                    const nota = DEM.r1(criterios.reduce((s, c) => s + c.puntaje, 0) / criterios.length);
+                    const datos = { fecha: v.fecha, tipo: v.tipo, criterios, nota, valoracion: DEM.valoracionDe(nota), observaciones: v.observaciones, mejoras: v.mejoras,
+                                    validado: v.validar, validadoFecha: v.validar ? hoy : null };
+                    if (d) Object.assign(d, datos);
+                    else D.desempenos.push(Object.assign({ id: DEM.uid("dp"), estudianteId: v.estudianteId, institucionId: institucionActual() ? institucionActual().id : null }, datos));
+                    DEM.guardar(); DEM.cerrarModal(); refrescar();
+                    DEM.aviso(d ? "Valoración actualizada." : "Desempeño registrado" + (v.validar ? " y validado." : " como borrador."));
+                }
+            });
+        }
+
+        $("#btn-nuevo").onclick = () => formulario();
+
+        refrescar();
+        const pn = DEM.parametros().get("nuevo");
+        if (pn && DEM.estudiante(pn)) formulario(null, pn);
+    </script>
+
+</body>
+</html>

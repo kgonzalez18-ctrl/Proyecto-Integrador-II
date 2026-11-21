@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Docente en Marcha</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+
+    <main class="login-container">
+
+
+        <!-- LADO IZQUIERDO -->
+
+        <section class="welcome-section">
+
+
+            <div class="logo">
+
+
+                <div class="logo-icon">
+
+                    <img
+                        src="../imagenes/fotoiniciosesion.jpg"
+                        alt="Logo Docente en Marcha">
+
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        DOCENTE
+                    </h1>
+
+                    <span>
+                        EN MARCHA
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <div class="welcome-content">
+
+
+                <p class="small-title">
+                    PLATAFORMA ACADÉMICA
+                </p>
+
+
+                <h2>
+
+                    Gestiona tus prácticas
+
+                    <span>
+                        de forma fácil y segura.
+                    </span>
+
+                </h2>
+
+
+                <p>
+
+                    Una plataforma para organizar, gestionar y hacer
+                    seguimiento a las prácticas académicas de los futuros
+                    docentes.
+
+                </p>
+
+
+            </div>
+
+
+
+            <div class="welcome-footer">
+
+                <span>
+                    Gestión
+                </span>
+
+                <span>
+                    •
+                </span>
+
+                <span>
+                    Seguimiento
+                </span>
+
+                <span>
+                    •
+                </span>
+
+                <span>
+                    Educación
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- LADO DERECHO -->
+
+        <section class="login-section">
+
+
+            <div class="login-box">
+
+
+                <div class="login-header">
+
+
+                    <p class="login-subtitle">
+                        BIENVENIDO
+                    </p>
+
+
+                    <h2>
+                        Iniciar sesión
+                    </h2>
+
+
+                    <p>
+                        Ingresa tus datos para acceder a la plataforma.
+                    </p>
+
+
+                </div>
+
+
+
+                <!-- FORMULARIO -->
+
+                <form onsubmit="iniciarSesion(event)">
+
+
+                    <!-- CÉDULA -->
+
+                    <div class="input-group">
+
+
+                        <label for="cedula">
+                            Correo electrónico
+                        </label>
+
+
+                        <input
+                            type="text"
+                            id="cedula"
+                            name="cedula"
+                            placeholder="Ingresa tu correo electrónico"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- CONTRASEÑA -->
+
+                    <div class="input-group">
+
+
+                        <label for="password">
+                            Contraseña
+                        </label>
+
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Ingresa tu contraseña"
+                        >
+
+
+                    </div>
+
+
+
+                    <!-- ROLES -->
+
+                    <div class="role-section">
+
+
+                        <div class="role-title">
+
+                            <label>
+                                Selecciona tu rol
+                            </label>
+
+                            <span>
+                                Requerido
+                            </span>
+
+                        </div>
+
+
+
+                        <div class="roles-container">
+
+
+
+                            <!-- ESTUDIANTE -->
+
+                            <label class="role-card">
+
+
+                                <input
+                                    type="radio"
+                                    name="rol"
+                                    value="estudiante"
+                                >
+
+
+                                <div class="role-content">
+
+
+                                    <div class="role-icon">
+                                        🎓
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Estudiante
+                                        </strong>
+
+
+                                        <small>
+                                            Gestiona tu práctica
+                                        </small>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </label>
+
+
+
+                            <!-- DOCENTE -->
+
+                            <label class="role-card">
+
+
+                                <input
+                                    type="radio"
+                                    name="rol"
+                                    value="docente"
+                                >
+
+
+                                <div class="role-content">
+
+
+                                    <div class="role-icon">
+                                        👨‍🏫
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Docente asesor
+                                        </strong>
+
+
+                                        <small>
+                                            Seguimiento y evaluación
+                                        </small>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </label>
+
+
+
+                            <!-- COORDINADOR -->
+
+                            <label class="role-card">
+
+
+                                <input
+                                    type="radio"
+                                    name="rol"
+                                    value="coordinador"
+                                >
+
+
+                                <div class="role-content">
+
+
+                                    <div class="role-icon">
+                                        📋
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Coordinador
+                                        </strong>
+
+
+                                        <small>
+                                            Gestión de prácticas
+                                        </small>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </label>
+
+
+
+                            <!-- INSTITUCIÓN -->
+
+                            <label class="role-card">
+
+
+                                <input
+                                    type="radio"
+                                    name="rol"
+                                    value="institucion"
+                                >
+
+
+                                <div class="role-content">
+
+
+                                    <div class="role-icon">
+                                        🏫
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Institución receptora
+                                        </strong>
+
+
+                                        <small>
+                                            Validación y seguimiento
+                                        </small>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </label>
+
+
+
+                            <!-- DIRECTOR -->
+
+                            <label class="role-card">
+
+
+                                <input
+                                    type="radio"
+                                    name="rol"
+                                    value="director"
+                                >
+
+
+                                <div class="role-content">
+
+
+                                    <div class="role-icon">
+                                        👔
+                                    </div>
+
+
+                                    <div>
+
+                                        <strong>
+                                            Director
+                                        </strong>
+
+
+                                        <small>
+                                            Control y administración
+                                        </small>
+
+                                    </div>
+
+
+                                </div>
+
+
+                            </label>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <!-- MENSAJE DE ERROR -->
+
+                    <p
+                        id="mensaje-error"
+                        class="login-error">
+                    </p>
+
+
+
+                    <!-- BOTÓN -->
+
+                    <button
+                        type="submit"
+                        class="login-button">
+
+                        Iniciar sesión
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                </form>
+
+
+
+                <div class="login-footer">
+
+
+                    <p>
+
+                        Sistema Integral de Gestión de Prácticas Académicas
+
+                    </p>
+
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="../api.js"></script>
+    <script>
+
+
+        async function iniciarSesion(event) {
+
+
+            /*
+            Evita que el formulario
+            recargue la página.
+            */
+
+            event.preventDefault();
+
+
+
+            /*
+            Obtenemos los datos.
+            */
+
+            const cedula =
+                document.getElementById("cedula").value.trim();
+
+
+            const password =
+                document.getElementById("password").value;
+
+
+            const rol =
+                document.querySelector(
+                    'input[name="rol"]:checked'
+                );
+
+
+            const mensaje =
+                document.getElementById("mensaje-error");
+
+
+
+            /*
+            Limpiamos el mensaje anterior.
+            */
+
+            mensaje.textContent = "";
+
+
+
+            /*
+            Verificamos que haya
+            seleccionado un rol.
+            */
+
+            if (!rol) {
+
+                mensaje.textContent =
+                    "Debes seleccionar un rol.";
+
+                return;
+
+            }
+
+
+
+            /*
+            USUARIO DE PRUEBA Y USUARIOS REGISTRADOS
+            El usuario es el correo electrónico y la
+            contraseña inicial se genera automáticamente:
+            cédula (estudiantes, docentes, coordinador,
+            director) o NIT (instituciones receptoras).
+            */
+            const RUTAS = {
+                estudiante: "../estudiante/estudiante.html",
+                docente: "../docente/docente.html",
+                coordinador: "../coordinador/coordinador.html",
+                director: "../director/director.html",
+                institucion: "../institucion/institucion.html"
+            };
+
+            const usuario = cedula.toLowerCase();
+            let acceso = false;
+            let apiOk = false;   // true si el servidor (Oracle) respondió
+            try {
+                const r = await API.post('/login', { usuario: usuario, clave: password, rol: rol.value });
+                apiOk = true;
+                acceso = r.ok === true;
+            } catch (e) {
+                if (e.status === 401) { apiOk = true; acceso = false; }
+                // sin servidor: se usa el acceso local de antes
+            }
+
+            if (usuario === "admin123" && password === "123") {
+                acceso = true;
+            }
+            else if (!acceso) {   // si Oracle no lo reconoce, se busca en los datos locales del navegador
+                let BD = {};
+                try {
+                    BD = JSON.parse(localStorage.getItem("dem_datos_v3")) || {};
+                } catch (e) { BD = {}; }
+
+                const mismoCorreo = function (x) {
+                    return String(x.correo || "").toLowerCase() === usuario;
+                };
+
+                let registro = null;
+                let clave = "";
+
+                if (rol.value === "estudiante") {
+                    registro = (BD.estudiantes || []).find(function (x) {
+                        return mismoCorreo(x) && x.estado === "Activo";
+                    });
+                    clave = registro ? (registro.password || registro.cedula) : "";
+                }
+                else if (rol.value === "docente") {
+                    registro = (BD.docentes || []).find(function (x) {
+                        return mismoCorreo(x) && x.estado === "Activo";
+                    });
+                    clave = registro ? (registro.password || registro.cedula) : "";
+                }
+                else if (rol.value === "institucion") {
+                    registro = (BD.instituciones || []).find(mismoCorreo);
+                    clave = registro ? (registro.password || registro.nit) : "";
+                }
+                else if (rol.value === "coordinador") {
+                    registro = BD.coordinador && mismoCorreo(BD.coordinador) ? BD.coordinador : null;
+                    clave = registro ? (registro.password || registro.cedula) : "";
+                }
+                else if (rol.value === "director") {
+                    registro = BD.director && mismoCorreo(BD.director) ? BD.director : null;
+                    clave = registro ? (registro.password || registro.cedula) : "";
+                }
+
+                acceso = !!registro && String(clave) !== "" && password === String(clave);
+            }
+
+            if (!acceso) {
+                mensaje.textContent =
+                    "El correo o la contraseña son incorrectos.";
+                return;
+            }
+
+            if (!RUTAS[rol.value]) {
+                mensaje.textContent =
+                    "El panel de este rol todavía está en construcción.";
+                return;
+            }
+
+            /*
+            Guardamos la sesión para que cada panel
+            sepa quién ingresó.
+            */
+            try {
+                localStorage.setItem("dem_sesion",
+                    JSON.stringify({ rol: rol.value, usuario: usuario }));
+            } catch (e) { }
+
+            window.location.href = RUTAS[rol.value];
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>
