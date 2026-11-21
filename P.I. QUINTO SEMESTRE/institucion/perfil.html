@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi perfil | Docente en Marcha</title>
+    <link rel="stylesheet" href="institucion.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                IR
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Institución</strong>
+                <span>Institución receptora</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="institucion.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicantes.html" class="menu-item">
+                <span class="menu-icon">◉</span>
+                <span>Practicantes</span>
+            </a>
+            <a href="asistencia.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asistencia</span>
+            </a>
+            <a href="desempeno.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Desempeño</span>
+            </a>
+            <a href="validaciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Validaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item active">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    IR
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Institución
+                    </strong>
+                    <span>
+                        Institución receptora
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        CUENTA
+                    </p>
+                    <h2>
+                        Mi perfil
+                    </h2>
+                    <p>
+                        Información de tu institución y de su convenio con el programa. La actualiza el coordinador de práctica.
+                    </p>
+                </div>
+            </div>
+
+            <div class="content-card profile-card">
+                <div class="card-title">
+                    <p>INFORMACIÓN INSTITUCIONAL</p>
+                    <h3>Institución receptora</h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Nombre de la institución</span>
+                        <strong id="p-nombre">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>NIT</span>
+                        <strong id="p-nit">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Tipo</span>
+                        <strong id="p-tipo">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Ciudad</span>
+                        <strong id="p-ciudad">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Dirección</span>
+                        <strong id="p-direccion">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Teléfono</span>
+                        <strong id="p-telefono">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Correo electrónico (usuario)</span>
+                        <strong id="p-correo">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Persona de contacto</span>
+                        <strong id="p-contacto">—</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title">
+                    <p>CONVENIO</p>
+                    <h3>Estado del convenio <span id="p-badge"></span></h3>
+                </div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span>Número de convenio</span>
+                        <strong id="p-cnumero">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Fecha de inicio</span>
+                        <strong id="p-cinicio">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Fecha de finalización</span>
+                        <strong id="p-cfin">—</strong>
+                    </div>
+                    <div class="info-item">
+                        <span>Vigencia</span>
+                        <strong id="p-cvigencia">—</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-card" style="margin-top:16px">
+                <div class="card-title">
+                    <p>PRÁCTICAS</p>
+                    <h3>Resumen del periodo <span id="p-periodo"></span></h3>
+                </div>
+                <div class="small-cards" style="margin-bottom:0">
+                    <div class="small-card"><span>Practicantes</span><strong id="p-practicantes">0</strong></div>
+                    <div class="small-card"><span>Grupos</span><strong id="p-grupos">0</strong></div>
+                    <div class="small-card"><span>Prácticas asociadas</span><strong id="p-practicas">0</strong></div>
+                    <div class="small-card"><span>Asistencias validadas</span><strong id="p-validadas">0</strong></div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <script src="../api.js"></script>
+    <script src="institucion.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const $ = DEM.$;
+        const y = institucionActual() || {};
+        const c = y.convenio || {};
+        const dato = v => v || "—";
+
+        $("#p-nombre").textContent = dato(y.nombre);
+        $("#p-nit").textContent = dato(y.nit);
+        $("#p-tipo").textContent = dato(y.tipo);
+        $("#p-ciudad").textContent = dato(y.ciudad);
+        $("#p-direccion").textContent = dato(y.direccion);
+        $("#p-telefono").textContent = dato(y.telefono);
+        $("#p-correo").textContent = dato(y.correo);
+        $("#p-contacto").textContent = dato(y.contacto);
+
+        if (y.id) {
+            const e = DEM.estadoConvenio(y);
+            $("#p-badge").innerHTML = DEM.badge(e, DEM.CLASE_CONVENIO[e]);
+            let vig = "—";
+            if (c.fechaFin) { const d = DEM.diasEntre(DEM.hoy(), c.fechaFin); vig = d >= 0 ? "Vence en " + d + " días" : "Venció hace " + Math.abs(d) + " días"; }
+            $("#p-cvigencia").textContent = vig;
+        }
+        $("#p-cnumero").textContent = dato(c.numero);
+        $("#p-cinicio").textContent = c.fechaInicio ? DEM.fmtFecha(c.fechaInicio) : "—";
+        $("#p-cfin").textContent = c.fechaFin ? DEM.fmtFecha(c.fechaFin) : "—";
+
+        const ids = misIds();
+        $("#p-periodo").textContent = DEM.periodo();
+        $("#p-practicantes").textContent = misPracticantes().length;
+        $("#p-grupos").textContent = misGrupos().length;
+        $("#p-practicas").textContent = new Set(misGrupos().map(g => g.practicaId)).size;
+        $("#p-validadas").textContent = D.asistencias.filter(a => ids.has(a.estudianteId) && a.validada).length;
+    </script>
+
+</body>
+</html>

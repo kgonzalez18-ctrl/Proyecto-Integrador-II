@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practicantes | Docente en Marcha</title>
+    <link rel="stylesheet" href="institucion.css">
+</head>
+<body>
+
+    <!-- BARRA LATERAL -->
+    <aside class="sidebar">
+
+        <!-- LOGO -->
+        <div class="sidebar-logo">
+            <div class="logo-image">
+                <img src="../imagenes/fotoiniciosesion.jpg"
+                     alt="Docente en Marcha">
+            </div>
+            <div class="logo-text">
+                <strong>DOCENTE</strong>
+                <span>EN MARCHA</span>
+            </div>
+        </div>
+
+        <!-- USUARIO -->
+        <div class="user-card">
+            <div class="user-avatar" data-user-iniciales>
+                IR
+            </div>
+            <div class="user-info">
+                <strong data-user-nombre>Institución</strong>
+                <span>Institución receptora</span>
+            </div>
+        </div>
+
+        <!-- MENÚ -->
+        <nav class="menu">
+            <p class="menu-title">
+                MENÚ PRINCIPAL
+            </p>
+            <a href="institucion.html" class="menu-item">
+                <span class="menu-icon">⌂</span>
+                <span>Inicio</span>
+            </a>
+            <a href="practicantes.html" class="menu-item active">
+                <span class="menu-icon">◉</span>
+                <span>Practicantes</span>
+            </a>
+            <a href="asistencia.html" class="menu-item">
+                <span class="menu-icon">✓</span>
+                <span>Asistencia</span>
+            </a>
+            <a href="desempeno.html" class="menu-item">
+                <span class="menu-icon">★</span>
+                <span>Desempeño</span>
+            </a>
+            <a href="validaciones.html" class="menu-item">
+                <span class="menu-icon">◈</span>
+                <span>Validaciones</span>
+            </a>
+            <p class="menu-title second-title">
+                CUENTA
+            </p>
+            <a href="perfil.html" class="menu-item">
+                <span class="menu-icon">●</span>
+                <span>Mi perfil</span>
+            </a>
+        </nav>
+
+        <!-- CERRAR SESIÓN -->
+        <div class="sidebar-bottom">
+            <button
+                type="button"
+                class="logout"
+                onclick="DEM.cerrarSesion()">
+                <span>←</span>
+                Cerrar sesión
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+
+        <!-- ENCABEZADO -->
+        <header class="topbar">
+            <div class="page-title">
+                <p>
+                    PLATAFORMA ACADÉMICA
+                </p>
+                <h1>
+                    Docente en Marcha
+                </h1>
+            </div>
+            <div class="topbar-user">
+                <div class="notification">
+                    ♢
+                </div>
+                <div class="top-user-avatar" data-user-iniciales>
+                    IR
+                </div>
+                <div class="top-user-info">
+                    <strong data-user-nombre>
+                        Institución
+                    </strong>
+                    <span>
+                        Institución receptora
+                    </span>
+                </div>
+            </div>
+        </header>
+
+        <section class="content-page">
+
+            <div class="section-heading">
+                <div>
+                    <p class="section-tag">
+                        PRACTICANTES
+                    </p>
+                    <h2>
+                        Practicantes
+                    </h2>
+                    <p>
+                        Consulta los practicantes asignados a tu institución, la información básica de sus prácticas y su docente asesor.
+                    </p>
+                </div>
+            </div>
+
+            <div class="small-cards">
+                <div class="small-card">
+                    <span>Practicantes</span>
+                    <strong id="c-total">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Grupos de práctica</span>
+                    <strong id="c-grupos">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Docentes asesores</span>
+                    <strong id="c-docentes">0</strong>
+                </div>
+                <div class="small-card">
+                    <span>Horas validadas</span>
+                    <strong id="c-horas">0</strong>
+                </div>
+            </div>
+
+            <div class="toolbar">
+                <input type="text" class="search-input" id="f-buscar" placeholder="Buscar por nombre, cédula o docente...">
+                <select class="select-input" id="f-grupo"></select>
+            </div>
+
+            <div id="tabla"></div>
+
+        </section>
+    </main>
+
+    <script src="../api.js"></script>
+    <script src="institucion.js"></script>
+    <script>
+        DEM.iniciarPagina(CFG);
+
+        const D = DEM.datos;
+        const esc = DEM.esc;
+        const $ = DEM.$;
+        const $$ = DEM.$$;
+        const info = (e, v) => `<div class="info-item"><span>${e}</span><strong>${esc(v === null || v === undefined || v === "" ? "—" : v)}</strong></div>`;
+
+        function resumen() {
+            const ms = misPracticantes();
+            $("#c-total").textContent = ms.length;
+            $("#c-grupos").textContent = misGrupos().length;
+            $("#c-docentes").textContent = new Set(misGrupos().filter(g => g.docenteId).map(g => g.docenteId)).size;
+            $("#c-horas").textContent = ms.reduce((s, e) => s + DEM.resumenAsistencia(e.id).horasValidadas, 0);
+        }
+
+        $("#f-grupo").innerHTML = DEM.opciones(misGrupos().map(g => ({ valor: g.id, texto: g.nombre })), "", "Todos los grupos");
+
+        function tabla() {
+            const q = $("#f-buscar").value.trim().toLowerCase(), fg = $("#f-grupo").value;
+            const lista = misPracticantes().filter(e => { const d = docenteDe(e);
+                return (!q || (e.nombre + " " + e.cedula + " " + (d ? d.nombre : "")).toLowerCase().includes(q)) && (!fg || e.grupoId === fg); });
+            $("#tabla").innerHTML = DEM.tablaHTML(["PRACTICANTE", "PRÁCTICA Y GRUPO", "HORARIO", "DOCENTE ASESOR", "HORAS", "ASISTENCIA", "ESTADO", ""],
+                lista.map(e => {
+                    const g = DEM.grupo(e.grupoId), p = DEM.practica(g.practicaId), d = docenteDe(e), asi = DEM.resumenAsistencia(e.id), est = DEM.estadoAvance(e);
+                    return [DEM.persona(e.nombre, e.semestre + ".º semestre"), esc(p.nombre.split(" – ")[0]) + "<small>" + esc(g.nombre) + "</small>",
+                        esc(g.jornada) + "<small>" + esc(g.horario || "") + "</small>", d ? esc(d.nombre) + "<small>" + esc(d.correo) + "</small>" : "Sin asignar",
+                        '<div class="progress-cell">' + DEM.barra(DEM.progreso(e), est === "Rezagado") + "<small>" + (e.horasReal || 0) + " / " + p.horas + " h</small></div>",
+                        asi.pct === null ? "—" : DEM.badge(asi.pct + "%", asi.pct >= D.config.metaAsistencia ? "badge-green" : "badge-amber"),
+                        DEM.badge(est, DEM.CLASE_AVANCE[est]),
+                        `<button type="button" class="secondary-button small-button" data-ver="${e.id}">Ver</button>`];
+                }), misPracticantes().length ? "No hay practicantes con esos filtros." : "Aún no hay practicantes asignados a tu institución. Aparecerán cuando el director apruebe las asignaciones.");
+            $$("[data-ver]").forEach(b => b.onclick = () => ver(b.dataset.ver));
+        }
+        resumen(); tabla();
+        ["#f-buscar", "#f-grupo"].forEach(s => $(s).addEventListener("input", tabla));
+
+        function ver(id) {
+            const e = DEM.estudiante(id), g = DEM.grupo(e.grupoId), p = DEM.practica(g.practicaId), d = docenteDe(e);
+            const asi = DEM.resumenAsistencia(id), prom = DEM.promedioDesempeno(id);
+            DEM.abrirModal({
+                tam: "wide", tag: "PRACTICANTE",
+                encabezado: `<div class="modal-person"><div class="mini-avatar">${DEM.iniciales(e.nombre)}</div><div><h3>${esc(e.nombre)}</h3><p class="modal-sub">${e.semestre}.º semestre · ${esc(e.estado)}</p></div></div>`,
+                cuerpo: `
+                <div class="small-cards">
+                    <div class="small-card"><span>Progreso de horas</span><strong>${DEM.progreso(e)}%</strong></div>
+                    <div class="small-card"><span>Asistencia</span><strong>${asi.pct === null ? "—" : asi.pct + "%"}</strong></div>
+                    <div class="small-card"><span>Ausencias</span><strong>${asi.ausencias}</strong></div>
+                    <div class="small-card"><span>Desempeño</span><strong>${DEM.fmtNota(prom)}</strong></div>
+                </div>
+                <div class="modal-block"><h4>INFORMACIÓN BÁSICA DE LA PRÁCTICA</h4><div class="info-grid">
+                    ${info("Práctica", p.nombre)}${info("Grupo", g.nombre)}${info("Jornada", g.jornada)}
+                    ${info("Horario", g.horario)}${info("Inicio", DEM.fmtFecha(g.inicio))}${info("Finalización", DEM.fmtFecha(g.fin))}
+                    ${info("Horas reglamentarias", p.horas + " h")}${info("Horas realizadas", (e.horasReal || 0) + " h")}${info("Estado", DEM.estadoAvance(e))}
+                </div></div>
+                <div class="modal-block"><h4>DOCENTE ASESOR</h4>${d ? `<div class="info-grid">${info("Nombre", d.nombre)}${info("Correo electrónico", d.correo)}${info("Teléfono", d.telefono)}</div>`
+                    : '<div class="list-empty">El grupo aún no tiene docente asesor asignado.</div>'}</div>
+                <div class="modal-block"><h4>DATOS DEL PRACTICANTE</h4><div class="info-grid">
+                    ${info("Cédula", e.cedula)}${info("Correo electrónico", e.correo)}${info("Teléfono", e.telefono)}
+                </div></div>`,
+                pie: `<button type="button" class="secondary-button" id="x-cerrar">Cerrar</button>
+                      <a class="secondary-button" href="desempeno.html?nuevo=${id}">Registrar desempeño</a>
+                      <a class="primary-button" href="asistencia.html?registrar=1">Registrar asistencia</a>`
+            });
+            $("#x-cerrar").onclick = DEM.cerrarModal;
+        }
+    </script>
+
+</body>
+</html>
